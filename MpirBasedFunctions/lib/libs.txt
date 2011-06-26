@@ -1,0 +1,7 @@
+mpir.lib
+FastFactorialLibrary.lib
+libboost_date_time-vc100-mt-1_46_1.lib
+libboost_date_time-vc100-mt-s-1_46_1.lib
+libboost_thread-vc100-mt-1_46_1.lib
+libboost_thread-vc100-mt-s-1_46_1.lib
+
