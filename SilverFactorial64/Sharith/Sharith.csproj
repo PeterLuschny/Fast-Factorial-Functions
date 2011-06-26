@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1BEB9265-1E27-4279-9062-DD518F1BC9AB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Sharith</RootNamespace>
+    <AssemblyName>Sharith</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE;MPIR</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Arithmetic\XInt.cs" />
+    <Compile Include="Factorial\FactorialAdditiveMoessner.cs" />
+    <Compile Include="Factorial\FactorialAdditiveSwing.cs" />
+    <Compile Include="Factorial\FactorialBoitenSplit.cs" />
+    <Compile Include="Factorial\FactorialFactors.cs" />
+    <Compile Include="Factorial\FactorialHyper.cs" />
+    <Compile Include="Factorial\FactorialLinearDifference.cs" />
+    <Compile Include="Factorial\FactorialMyFactorial.cs" />
+    <Compile Include="Factorial\FactorialParallelForPrimeSplit.cs" />
+    <Compile Include="Factorial\FactorialParallelPrimeSplit.cs" />
+    <Compile Include="Factorial\FactorialParallelPrimeSwing.cs" />
+    <Compile Include="Factorial\FactorialParallelPrimeSwingList.cs" />
+    <Compile Include="Factorial\FactorialParallelSplit.cs" />
+    <Compile Include="Factorial\FactorialParallelSwing.cs" />
+    <Compile Include="Factorial\FactorialPoorMans.cs" />
+    <Compile Include="Factorial\FactorialPrimeBorwein.cs" />
+    <Compile Include="Factorial\FactorialPrimeLeenstra.cs" />
+    <Compile Include="Factorial\FactorialPrimeSchoenhage.cs" />
+    <Compile Include="Factorial\FactorialPrimeSwing.cs" />
+    <Compile Include="Factorial\FactorialPrimeSwingCache.cs" />
+    <Compile Include="Factorial\FactorialPrimeSwingList.cs" />
+    <Compile Include="Factorial\FactorialPrimeVardi.cs" />
+    <Compile Include="Factorial\FactorialProductNaive.cs" />
+    <Compile Include="Factorial\FactorialProductRecursive.cs" />
+    <Compile Include="Factorial\FactorialSplit.cs" />
+    <Compile Include="Factorial\FactorialSquaredDifference.cs" />
+    <Compile Include="Factorial\FactorialSquaredDiffProd.cs" />
+    <Compile Include="Factorial\FactorialSwing.cs" />
+    <Compile Include="Factorial\FactorialSwingDouble.cs" />
+    <Compile Include="Factorial\FactorialSwingRational.cs" />
+    <Compile Include="Factorial\FactorialSwingRationalDouble.cs" />
+    <Compile Include="Factorial\FactorialSwingSimple.cs" />
+    <Compile Include="Factorial\FactorialTuttiFrutti.cs" />
+    <Compile Include="Factorial\IFactorialFunction.cs" />
+    <Compile Include="MathUtils\PositiveRange.cs" />
+    <Compile Include="MathUtils\XMath.cs" />
+    <Compile Include="Primes\IPrimeCollection.cs" />
+    <Compile Include="Primes\IPrimeSieve.cs" />
+    <Compile Include="Primes\PrimeSieve.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

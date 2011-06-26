@@ -1,0 +1,90 @@
+﻿<Window x:Class="SilverFactorial.BenchmarkWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Factorial Algorithm Benchmark II" mc:Ignorable="d" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" Height="616" Width="595" Background="#FFEDEDED" Icon="/SilverFactorial;component/silverfactorial.ico" AllowDrop="True">
+    <Grid Width="560">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="556*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Canvas Name="canvas1" Margin="2,2,2,2" Background="#FFEDEDED">
+
+            <ListBox  Height="500" Width="154" Canvas.Left="10" Canvas.Top="46" Background="#FFEDEDED" Name="listBox"  ></ListBox>
+            <ComboBox Height="25"  Width="154" Canvas.Left="10" Canvas.Top="14" Background="#FFEDEDED" Name="benchTypeBox"  IsEditable="False" >
+                <ComboBoxItem Content="Recommended Algos"  Name="TypeRecomm"  Selected="TypeRecomm_Selected" />
+                <ComboBoxItem Content="Concurrent  Algos"  Name="TypeConcurr" Selected="TypeConcurr_Selected"/>
+                <ComboBoxItem Content="Prime based Algos"  Name="TypePrime"   Selected="TypePrime_Selected"/>
+                <ComboBoxItem Content="Good simple Algos"  Name="TypeSimple"  Selected="TypeSimple_Selected" />
+                <ComboBoxItem Content="Clear Box        "  Name="TypeClear"   Selected="TypeClear_Selected" />
+            </ComboBox>
+
+            <CheckBox Name="algo0"  Height="16"  Width="140" Canvas.Left="20" Canvas.Top="60"  Foreground="DarkGreen" />
+            <CheckBox Name="algo1"  Height="16"  Width="140" Canvas.Left="20" Canvas.Top="80"  Foreground="DarkGreen" />
+            <CheckBox Name="algo2"  Height="16"  Width="140" Canvas.Left="20" Canvas.Top="101" Foreground="DarkGreen" />
+            <CheckBox Name="algo3"  Height="16"  Width="140" Canvas.Left="20" Canvas.Top="122" Foreground="DarkGreen" />
+            <CheckBox Name="algo4"  Height="16"  Width="140" Canvas.Left="20" Canvas.Top="143" Foreground="ForestGreen" />
+            <CheckBox Name="algo5"  Height="16"  Width="140" Canvas.Left="20" Canvas.Top="164" Foreground="ForestGreen" />
+            <CheckBox Name="algo6"  Height="16"  Width="140" Canvas.Left="20" Canvas.Top="185" Foreground="ForestGreen" />
+            <CheckBox Name="algo7"  Height="16"  Width="140" Canvas.Left="20" Canvas.Top="206" Foreground="ForestGreen" />
+            <CheckBox Name="algo8"  Height="16"  Width="140" Canvas.Left="20" Canvas.Top="227" Foreground="ForestGreen" />
+            <CheckBox Name="algo9"  Height="16"  Width="140" Canvas.Left="20" Canvas.Top="248" Foreground="ForestGreen" />
+            <CheckBox Name="algo10" Height="16"  Width="140" Canvas.Left="20" Canvas.Top="269" Foreground="ForestGreen" />
+            <CheckBox Name="algo11" Height="16"  Width="140" Canvas.Left="20" Canvas.Top="290" Foreground="DodgerBlue"/>
+            <CheckBox Name="algo12" Height="16"  Width="140" Canvas.Left="20" Canvas.Top="311" Foreground="DodgerBlue"/>
+            <CheckBox Name="algo13" Height="16"  Width="140" Canvas.Left="20" Canvas.Top="332" Foreground="DodgerBlue"/>
+            <CheckBox Name="algo14" Height="16"  Width="140" Canvas.Left="20" Canvas.Top="353" Foreground="DodgerBlue"/>
+            <CheckBox Name="algo15" Height="16"  Width="140" Canvas.Left="20" Canvas.Top="374" Foreground="DodgerBlue"/>
+            <CheckBox Name="algo16" Height="16"  Width="140" Canvas.Left="20" Canvas.Top="395"  />
+            <CheckBox Name="algo17" Height="16"  Width="140" Canvas.Left="20" Canvas.Top="416"  />
+            <CheckBox Name="algo18" Height="16"  Width="140" Canvas.Left="20" Canvas.Top="437"  />
+            <CheckBox Name="algo19" Height="16"  Width="140" Canvas.Left="20" Canvas.Top="458"  />
+            <CheckBox Name="algo20" Height="16"  Width="140" Canvas.Left="20" Canvas.Top="479"  />
+            <CheckBox Name="algo21" Height="16"  Width="140" Canvas.Left="20" Canvas.Top="500"  />
+            <CheckBox Name="algo22" Height="16"  Width="140" Canvas.Left="20" Canvas.Top="521" Foreground="Red"/>
+
+            <Label Canvas.Left="180" Canvas.Top="543" Content="Peter Luschny (C) 2011" Height="27" Width="222" FontSize="13" Foreground="#FF3B8230" Name="infoLabel" Background="#FFEDEDED"></Label>
+
+            <ProgressBar Canvas.Left="180" Canvas.Top="520" Height="20" Width="335" Name="progressBar" />
+            <TextBox Canvas.Left="180" Canvas.Top="46" Height="366" Width="350" Background="White" Name="textBox" 
+                     VerticalScrollBarVisibility="Visible" AutoWordSelection="False" Foreground="#FF3B8230" ForceCursor="True"
+                     FontFamily="Courier New" FontSize="11" BorderThickness="0" IsReadOnly="True" TextWrapping="Wrap" BorderBrush="Black" FontStretch="Normal" FontWeight="Normal" />
+
+            <Button Canvas.Left="190" Canvas.Top="17 " Height="14" Width="16" Name="button1" BorderBrush="#FF0039F7" Background="#FF9DCF99" BorderThickness="5" AllowDrop="True" ClipToBounds="True" Click="About_Click"/>
+
+            <CheckBox Canvas.Left="230" Canvas.Top="16" Content="Log To File"     Height="24" Width="90"  Name="logToFileCheckBox" IsChecked="True"  />
+            <CheckBox Canvas.Left="324" Canvas.Top="16" Content="Show Full Value" Height="24" Width="130" Name="showFullValueCheckBox"  />
+            <CheckBox Canvas.Left="454" Canvas.Top="16" Content="Verbose"         Height="24" Width="75"  Name="verboseCheckBox" IsChecked="True" />
+
+            <Button Canvas.Left="410" Canvas.Top="424" Content="Sanity Check" Height="24"  Width="105" Name="sanityCheck"  Click="SanityCheck_Click" />
+            <Button Canvas.Left="410" Canvas.Top="452" Content="Cancel"       Height="24"  Width="105" Name="cancelBenchmark" Click="Cancel_Click" IsEnabled="False" />
+            <Button Canvas.Left="410" Canvas.Top="480" Content="Benchmark!"   Height="24"  Width="105" Name="benchmarkGoButton" Click="Benchmark_Click" />
+
+            <TextBox  Canvas.Left="270" Canvas.Top="426" Height="20" Width="100" Name="startBox" Text="40000" />
+            <ComboBox Canvas.Left="270" Canvas.Top="454" Height="20" Width="100" Name="stepBox"   >
+                <ComboBoxItem Content="0.5" Name="Step05"  />
+                <ComboBoxItem Content="1.0" Name="Step10"  />
+                <ComboBoxItem Content="1.5" Name="Step15"  />
+                <ComboBoxItem Content="2.0" Name="Step20" IsSelected="True" />
+                <ComboBoxItem Content="2.5" Name="Step25" />
+                <ComboBoxItem Content="3.0" Name="Step30" />
+            </ComboBox>
+
+            <ComboBox Canvas.Left="270" Canvas.Top="482" Height="20" Width="100" Name="lengthBox"  >
+                <ComboBoxItem Content="1" Name="Len1"  />
+                <ComboBoxItem Content="2" Name="Len2"  />
+                <ComboBoxItem Content="3" Name="Len3"  />
+                <ComboBoxItem Content="4" Name="Len4"  />
+                <ComboBoxItem Content="5" Name="Len5"  />
+                <ComboBoxItem Content="6" Name="Len6" IsSelected="True" />
+                <ComboBoxItem Content="7" Name="Len7" />
+                <ComboBoxItem Content="8" Name="Len8" />
+                <ComboBoxItem Content="9" Name="Len9" />
+            </ComboBox>
+
+            <Label Canvas.Left="185" Canvas.Top="424" Content="Start"      Height="28"  Width="80" HorizontalContentAlignment="Right" Name="startLabel" />
+            <Label Canvas.Left="185" Canvas.Top="452" Content="Stepfactor" Height="28"  Width="80" HorizontalContentAlignment="Right" Name="stepLabel"  />
+            <Label Canvas.Left="185" Canvas.Top="480" Content="Length"     Height="28"  Width="80" HorizontalContentAlignment="Right" Name="lengthSpinner"/>
+   
+        </Canvas>
+    </Grid>
+</Window>
