@@ -7,7 +7,9 @@ Here you can find implementations of the most efficient algorithms to compute
 * the [double factorial](http://en.wikipedia.org/wiki/Double_factorial#Double_factorial) function,
 * the [binomial](http://en.wikipedia.org/wiki/Binomial) function.
 
-Additionally you can find
+See also this nice [introduction](http://functions.wolfram.com/GammaBetaErf/Factorial2/introductions/FactorialBinomials/ShowAll.html).
+
+Additionally you can find in this repository
 
 * a small database of factorial algorithms which let you
   quickly find the most appropriate version for your needs.
@@ -23,20 +25,31 @@ Implementation languages
 * Project JavaFactorial : Java
 
 The C# and the Java version come with a small benchmark program.
-See some [pictures](http://www.luschny.de/math/factorial/download.html).
-If you want to port the algorithms the C# version is recommended.
+Here a screenshot of the [Java](http://www.luschny.de/math/factorial/JavaFactorialBench.png) version
+and a screenshot of the [C#](http://www.luschny.de/math/factorial/FastFactorial64.JPG) version.
 
 
 Browsing the code
 -----------------
 
-To browse the code the following two pages might be more convenient: [factorials](http://www.luschny.de/math/factorial/index.html), [primes](http://www.luschny.de/math/primes/PrimeSieveForJavaAndCsharp.html).
+To browse the code the following two pages might be more convenient: [factorials](http://www.luschny.de/math/factorial/index.html), 
+[primes](http://www.luschny.de/math/primes/PrimeSieveForJavaAndCsharp.html).
+
+
+Porting
+-------
+
+If you want to port the algorithms to other languages the C# version is recommended as the point of departure.
+The benchmarks indicate that it is a good idea to start with the [swing algorithm](http://www.luschny.de/math/factorial/csharp/FactorialSwing.cs.html)
+or (more demanding to implement, but at least twice as fast) the [prime swing algorithm](http://www.luschny.de/math/factorial/csharp/FactorialPrimeSwing.cs.html).
+
+A good starting point for the binomial function is [here](http://www.luschny.de/math/factorial/FastBinomialFunction.html).
 
 
 Dependencies
 ------------
 
-To build you need for
+To build the sources you need for
 
 * the C++ version the [MPIR](http://www.mpir.org) library and the
 [boost](http://www.boost.org) library.
@@ -57,4 +70,6 @@ To do
 Contributing
 ------------
 
-Want to contribute? Great! Please contact me.
+Please notify me of any bugs. Want to contribute new algorithms? Great, please contact me. 
+If you already ported to some other language (Scala, F#, Phython, Ruby, Lisp) then please send me your
+code so I can incorporate it into this repository.
