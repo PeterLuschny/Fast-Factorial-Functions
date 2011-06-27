@@ -9,7 +9,7 @@ Here you can find implementations of the most efficient algorithms to compute
 
 Additionally you can find
 
-* a small database of factorial algorithm which let you
+* a small database of factorial algorithms which let you
   quickly find the most appropriate version for your needs.
   
 * An efficient sieve of Eratosthenes implemented in an object-oriented way.   
@@ -25,6 +25,12 @@ Implementation languages
 The C# and the Java version come with a small benchmark program.
 See some [pictures](http://www.luschny.de/math/factorial/download.html).
 If you want to port the algorithms the C# version is recommended.
+
+
+Browsing the code
+-----------------
+
+To browse the code the following two pages might be more convenient: [factorials](http://www.luschny.de/math/factorial/index.html), [primes](http://www.luschny.de/math/primes/PrimeSieveForJavaAndCsharp.html).
 
 
 Dependencies
