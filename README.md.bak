@@ -9,7 +9,7 @@ Here you can find implementations of the most efficient algorithms to compute
 
 Additionally you can find
 
-* a small database of factorial algorithm which let you
+* a small database of factorial algorithm is given which let you
   quickly find the most appropriate version for your needs.
   
 * An efficient sieve of Eratosthenes implemented in an object-oriented way.   
@@ -18,13 +18,12 @@ Additionally you can find
 Implementation languages
 ------------------------
 
-* Project MpirBasedFunctions : C++
-* Project SilverFactorial64 : C#
-* Project JavaFactorial : Java
+* Project '''MpirBasedFunctions''' : C++
+* Project '''SilverFactorial64''' : C#
+* Project '''JavaFactorial''' : Java
 
 The C# and the Java version come with a small benchmark program.
 See some [pictures](http://www.luschny.de/math/factorial/download.html).
-If you want to port the algorithms the C# version is recommended.
 
 
 Dependencies
@@ -39,7 +38,7 @@ To build you need for
 use the [MPIR](http://www.mpir.org) library (an interop is provided).
 
 * The Java version needs Mikko Tommila's [Apfloat](http://www.apfloat.org/apfloat_java) 
-library. If you want to compile the benchmark program additionally Karsten 
+library. If you want to use the benchmark program additionally Karsten 
 Lentzsch's [JGoodies](http://www.jgoodies.com/downloads/libraries.html) is needed.
 
 
