@@ -48,7 +48,7 @@ func Primes(n uint64) (s *Sieve)  {
 
 	var (
 		d1, d2, p1, p2, s1, s2 uint64 = 8, 8, 3, 7, 7, 3
-		l, c, max, inc         uint64 = 0, 1, uint64(n) / 3, 0
+		l, c, max, inc         uint64 = 0, 1, n / 3, 0
 		toggle                 bool
 	)
 

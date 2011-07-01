@@ -33,8 +33,7 @@ and a screenshot of the [C#](http://www.luschny.de/math/factorial/FastFactorial6
 Browsing the code
 -----------------
 
-To browse the code the following two pages might be more convenient: [factorials](http://www.luschny.de/math/factorial/index.html),
-[primes](http://www.luschny.de/math/primes/PrimeSieveForJavaAndCsharp.html).
+To browse the code the following two pages might be more convenient: [primes](http://www.luschny.de/math/primes/PrimeSieveForJavaAndCsharp.html) and [factorials](http://www.luschny.de/math/factorial/index.html).
 
 
 Porting
@@ -66,7 +65,7 @@ Lentzsch's [JGoodies](http://www.jgoodies.com/downloads/libraries.html) is neede
 Acknowledgement
 ---------------
 
-[Sonia Codes](http://soniacodes.wordpress.com) ported the algorithms to [Go](http://golang.org/).
+[Sonia Keys](http://soniacodes.wordpress.com) ported the algorithms to [Go](http://golang.org/).
 
 Contributing
 ------------
