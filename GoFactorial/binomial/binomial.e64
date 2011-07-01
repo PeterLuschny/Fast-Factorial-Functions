@@ -1,0 +1,10 @@
+# binomial project file
+
+TARGET = binomial
+DESTDIR = ../obj
+
+GCOPT =
+GLOPT =
+
+GOFILES = \
+	binomial.go \

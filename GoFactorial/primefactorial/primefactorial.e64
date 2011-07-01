@@ -1,0 +1,10 @@
+# primefactorial project file
+
+TARGET = primefactorial
+DESTDIR = ../obj
+
+GCOPT =
+GLOPT =
+
+GOFILES = \
+	primefactorial.go \

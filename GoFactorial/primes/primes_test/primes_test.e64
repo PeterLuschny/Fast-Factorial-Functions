@@ -1,0 +1,10 @@
+# primes_test project file
+
+TARGET = primes_test
+DESTDIR =
+
+GCOPT =
+GLOPT =
+
+GOFILES = \
+	primes_test.go \

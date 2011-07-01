@@ -1,0 +1,10 @@
+# doublefactorial project file
+
+TARGET = doublefactorial
+DESTDIR = ../obj
+
+GCOPT =
+GLOPT =
+
+GOFILES = \
+	doublefactorial.go \

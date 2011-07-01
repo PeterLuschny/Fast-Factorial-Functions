@@ -1,0 +1,10 @@
+# binomial_test project file
+
+TARGET = binomial_test
+DESTDIR =
+
+GCOPT =
+GLOPT =
+
+GOFILES = \
+	binomial_test.go \

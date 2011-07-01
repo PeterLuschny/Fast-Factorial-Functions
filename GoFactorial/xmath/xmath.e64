@@ -1,0 +1,10 @@
+# xmath project file
+
+TARGET = xmath
+DESTDIR = ../obj
+
+GCOPT =
+GLOPT =
+
+GOFILES = \
+	xmath.go \

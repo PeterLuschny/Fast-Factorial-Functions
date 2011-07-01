@@ -1,0 +1,10 @@
+# simplefactorial project file
+
+TARGET = simplefactorial
+DESTDIR = ../obj/
+
+GCOPT =
+GLOPT =
+
+GOFILES = \
+	simplefactorial.go \

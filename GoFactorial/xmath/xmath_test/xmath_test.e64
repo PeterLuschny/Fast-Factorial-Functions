@@ -1,0 +1,10 @@
+# xmath_test project file
+
+TARGET = xmath_test
+DESTDIR =
+
+GCOPT =
+GLOPT =
+
+GOFILES = \
+	xmath_test.go \

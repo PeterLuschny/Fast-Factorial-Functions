@@ -1,0 +1,10 @@
+# primefactorial_test project file
+
+TARGET = primefactorial_test
+DESTDIR =
+
+GCOPT =
+GLOPT =
+
+GOFILES = \
+	primefactorial_test.go \

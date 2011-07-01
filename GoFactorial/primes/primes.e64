@@ -1,0 +1,11 @@
+# primes project file
+
+TARGET = primes
+DESTDIR = ../obj
+
+GCOPT =
+GLOPT =
+
+GOFILES = \
+	primes.go \
+	

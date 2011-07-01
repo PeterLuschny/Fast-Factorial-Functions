@@ -1,0 +1,10 @@
+# swingfactorial project file
+
+TARGET = swingfactorial
+DESTDIR = ../obj
+
+GCOPT =
+GLOPT =
+
+GOFILES = \
+	swingfactorial.go \

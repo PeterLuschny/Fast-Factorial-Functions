@@ -1,0 +1,10 @@
+# swingfactorial_test project file
+
+TARGET = swingfactorial_test
+DESTDIR =
+
+GCOPT =
+GLOPT =
+
+GOFILES = \
+	swingfactorial_test.go \

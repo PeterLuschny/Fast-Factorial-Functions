@@ -1,0 +1,10 @@
+# doublefactorial_test project file
+
+TARGET = doublefactorial_test
+DESTDIR =
+
+GCOPT =
+GLOPT =
+
+GOFILES = \
+	doublefactorial_test.go \
