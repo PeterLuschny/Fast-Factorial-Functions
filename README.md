@@ -23,6 +23,7 @@ Implementation languages
 * Project MpirBasedFunctions : C++
 * Project SilverFactorial64 : C#
 * Project JavaFactorial : Java
+* Project GoFactorial : Go
 
 The C# and the Java version come with a small benchmark program.
 Here a screenshot of the [Java](http://www.luschny.de/math/factorial/JavaFactorialBench.png) version
@@ -40,7 +41,7 @@ Porting
 -------
 
 If you want to port the algorithms to other languages the C# version is recommended as the point of departure.
-The [benchmarks](http://www.luschny.de/math/factorial/Benchmark.html] indicate that it is a good idea to start with the [swing algorithm](http://www.luschny.de/math/factorial/csharp/FactorialSwing.cs.html)
+The [benchmarks](http://www.luschny.de/math/factorial/Benchmark.html) indicate that it is a good idea to start with the [swing algorithm](http://www.luschny.de/math/factorial/csharp/FactorialSwing.cs.html)
 or (more demanding to implement, but at least twice as fast) the [prime swing algorithm](http://www.luschny.de/math/factorial/csharp/FactorialPrimeSwing.cs.html).
 
 A good starting point for the binomial function is [here](http://www.luschny.de/math/factorial/FastBinomialFunction.html).
