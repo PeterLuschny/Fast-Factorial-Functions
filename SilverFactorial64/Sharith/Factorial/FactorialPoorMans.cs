@@ -4,7 +4,7 @@
 /// Creative Commons Attribution-ShareAlike 3.0
 /// Comments mail to: peter(at)luschny.de
 /// Created: 2010-03-01
-  
+
 // The Poor Man's Implementation of the factorial.
 // All math is on board, no additional libraries
 // are needed. Good enough to compute the factorial
@@ -41,7 +41,7 @@ namespace Sharith.Math.Factorial
                 shift += h;
                 h = n >> log2n--;
                 int len = high;
-                high = (h - 1) | 1; 
+                high = (h - 1) | 1;
                 len = (high - len) / 2;
 
                 if (len > 0)

@@ -5,15 +5,11 @@
 /// Comments mail to: peter(at)luschny.de
 /// Created: 2010-03-01
 
-#if(MPIR)
-using Xint = MpirWrapper.Xint;
-#else
-using Xint = System.Numerics.BigInteger;
-#endif
-using Sharith.Math.Primes;
-
 namespace Sharith.Math.Factorial
 {
+    using Xint = MpirWrapper.Xint;
+    using Sharith.Math.Primes;    
+    
     public sealed class FastBinomial
     {
         private FastBinomial() { }

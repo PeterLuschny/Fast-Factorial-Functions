@@ -1,23 +1,18 @@
-// -------- ToujoursEnBeta
-// Author & Copyright : Peter Luschny
-// License: LGPL version 3.0 or (at your option)
-// Creative Commons Attribution-ShareAlike 3.0
-// Comments mail to: peter(at)luschny.de
-// Created: 2010-03-01
+/// -------- ToujoursEnBeta
+/// Author & Copyright : Peter Luschny
+/// License: LGPL version 3.0 or (at your option)
+/// Creative Commons Attribution-ShareAlike 3.0
+/// Comments mail to: peter(at)luschny.de
+/// Created: 2010-03-01
 
-// Same algorithm as Split
-// but computing products using tasks.
+/// Same algorithm as Split
+/// but computing products using tasks.
 
-#if(MPIR)
-namespace SharithMP.Math.Factorial 
+namespace Sharith.Math.Factorial 
 {
-    using XInt = Sharith.Arithmetic.XInt;
-#else
-    namespace Sharith.Math.Factorial {
-    using XInt = System.Numerics.BigInteger;
-#endif
     using System;
     using System.Threading.Tasks;
+    using XInt = Sharith.Arithmetic.XInt;
     using XMath = Sharith.Math.MathUtils.XMath;
 
     public class ParallelSplit : IFactorialFunction 
@@ -93,10 +88,10 @@ namespace SharithMP.Math.Factorial
                 return Product(n, k) * Product(k + 1, m);
             }
 
-            var left = Task.Factory.StartNew<XInt>(() => Product(n, k));
+            var leftTask = Task.Factory.StartNew<XInt>(() => Product(n, k));
             var right = Product(k + 1, m);
  
-            return left.Result * right;
+            return leftTask.Result * right;
         }
     }
 }

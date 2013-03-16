@@ -26,7 +26,7 @@ namespace SilverFactorial
             selectedAlgo = new bool[noOfCandidates];
         }
 
-        public void Init(IEnumerable selCand)
+        public void Init() 
         {
             benchValues = new int[benchLength];
             double sum = 0;

@@ -1,19 +1,15 @@
-// -------- ToujoursEnBeta
-// Author & Copyright : Peter Luschny
-// License: LGPL version 3.0 or (at your option)
-// Creative Commons Attribution-ShareAlike 3.0
-// Comments mail to: peter(at)luschny.de
-// Created: 2010-03-01
+/// -------- ToujoursEnBeta
+/// Author & Copyright : Peter Luschny
+/// License: LGPL version 3.0 or (at your option)
+/// Creative Commons Attribution-ShareAlike 3.0
+/// Comments mail to: peter(at)luschny.de
+/// Created: 2010-03-01
 
 namespace Sharith.Math.MathUtils
 {
     using System;
     using System.Threading.Tasks;
-#if(MPIR)
     using XInt = Sharith.Arithmetic.XInt;
-#else
-    using XInt = System.Numerics.BigInteger;
-#endif
 
     public static class XMath
     {
@@ -200,6 +196,14 @@ namespace Sharith.Math.MathUtils
             return Exp(AsymptFactorial((double)x));
         }
 
+        public static long ExactDecimalDigitsPerMillisecond(int n, long ms)
+        {
+            double x = AsymptFactorial((double)n);
+            double l = x * 0.43429448190325176D; // x/Math.log(10);
+            double lsd = ms == 0 ? l : l / (double)ms;
+            return (long)Math.Truncate(0.5 + lsd);
+        }
+
         public static string Exp(double x)
         {
             double l = x * 0.43429448190325176D; // x/Math.log(10);
@@ -243,14 +247,11 @@ namespace Sharith.Math.MathUtils
             return new XInt(smallFactorials[n]);
         }
 
-        const int PARALLEL_THRESHOLD = 128;
+        const int PARALLEL_THRESHOLD = 1024;
 
         // <returns>a[start]*a[start+1]*...*a[start+length-1]</returns>
         public static XInt Product(int[] a, int start, int length)
         {
-            System.Diagnostics.Debug.Assert((0 <= start) & (length <= a.Length),
-            System.Reflection.MethodBase.GetCurrentMethod().Name + " failed: range not subrange of a");
-
             if (length == 0) return XInt.One;
 
             int len = (length + 1) / 2;
@@ -265,16 +266,15 @@ namespace Sharith.Math.MathUtils
 
             if (i == j) b[k++] = a[j];
 
-            System.Diagnostics.Debug.Assert(k > 0,
-            System.Reflection.MethodBase.GetCurrentMethod().Name + " failed: k <= 0 " + start + "  " + length);
-
             if (k > PARALLEL_THRESHOLD)
             {
-                var pro = Task.Factory.StartNew<XInt>(() =>
-                { return RecProduct(b, (k - 1) / 2 + 1, k - 1); });
+                var task = Task.Factory.StartNew<XInt>(() =>
+                {
+                    return RecProduct(b, (k - 1) / 2 + 1, k - 1);
+                });
 
                 var left = RecProduct(b, 0, (k - 1) / 2);
-                var right = pro.Result;
+                var right = task.Result;
                 return left * right;
             }
 
@@ -288,27 +288,28 @@ namespace Sharith.Math.MathUtils
 
         public static XInt Product(long[] a, int len)
         {
-            int n = len;
-
-            if (n > PARALLEL_THRESHOLD)
+            int n = len - 1;
+            if (len > PARALLEL_THRESHOLD)
             {
-                var pro = Task.Factory.StartNew<XInt>(() =>
-                { return RecProduct(a, (n - 1) / 2 + 1, n - 1); });
+                var task = Task.Factory.StartNew<XInt>(() =>
+                {
+                    return RecProduct(a, n / 2 + 1, n);
+                });
 
-                var left = RecProduct(a, 0, (n - 1) / 2);
-                var right = pro.Result;
+                var left = RecProduct(a, 0, n / 2);
+                var right = task.Result;
                 return left * right;
             }
 
-            return RecProduct(a, 0, n - 1);
+            return RecProduct(a, 0, n);
         }
 
-        //public static XInt Product(long[] a)
-        //{
-        //    return Product(a, a.Length);
-        //}
+        public static XInt Product(long[] a)
+        {
+            return Product(a, a.Length);
+        }
 
-        private static XInt RecProduct(long[] s, int n, int m)
+        public static XInt RecProduct(long[] s, int n, int m)
         {
             if (n > m)
             {
@@ -338,12 +339,21 @@ namespace Sharith.Math.MathUtils
             return BigRecProduct(s, n, k) * BigRecProduct(s, k + 1, m);
         }
 
-        public static XInt Product(XInt[] a, int start, int length)
+        public static XInt Product(XInt[] a, int start, int len)
         {
-            System.Diagnostics.Debug.Assert((0 <= start) & (length <= a.Length),
-            System.Reflection.MethodBase.GetCurrentMethod().Name + " failed: range not subrange of a");
+            int n = len - 1;
+            if (len > PARALLEL_THRESHOLD)
+            {
+                var task = Task.Factory.StartNew<XInt>(() =>
+                {
+                    return BigRecProduct(a, start + n / 2 + 1, start + n);
+                });
 
-            return BigRecProduct(a, start, length - 1);
+                var left = BigRecProduct(a, start, start + n / 2);
+                return left * task.Result;
+            }
+
+            return BigRecProduct(a, start, n);
         }
 
         public static XInt Product(XInt[] a)
@@ -351,8 +361,9 @@ namespace Sharith.Math.MathUtils
             return BigRecProduct(a, 0, a.Length - 1);
         }
 
-    } // endOfXMath
-} // Sharith.Math.MathUtils
+    } 
+} 
+
 
 //static public class MathFun
 //{
@@ -400,5 +411,8 @@ namespace Sharith.Math.MathUtils
 //    }
 
 //    private MathFun() { }
+
+// System.Diagnostics.Debug.Assert((0 <= start) & (length <= a.Length),
+// System.Reflection.MethodBase.GetCurrentMethod().Name + " failed: range not subrange of a");
 //}
 

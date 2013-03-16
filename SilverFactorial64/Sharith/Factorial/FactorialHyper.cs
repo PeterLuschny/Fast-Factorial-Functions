@@ -1,23 +1,18 @@
-// -------- ToujoursEnBeta
-// Author & Copyright : Peter Luschny
-// License: LGPL version 3.0 or (at your option)
-// Creative Commons Attribution-ShareAlike 3.0
-// Comments mail to: peter(at)luschny.de
-// Created: 2004-03-01
+/// -------- ToujoursEnBeta
+/// Author & Copyright : Peter Luschny
+/// License: LGPL version 3.0 or (at your option)
+/// Creative Commons Attribution-ShareAlike 3.0
+/// Comments mail to: peter(at)luschny.de
+/// Created: 2004-03-01
 
 /////////////////////////////////
 /// buggy for large values of n
 /////////////////////////////////
-
-#if(MPIR)
-    namespace SharithMP.Math.Factorial {
+namespace Sharith.Math.Factorial
+{
     using XInt = Sharith.Arithmetic.XInt;
-#else
-    namespace Sharith.Math.Factorial {
-    using XInt = System.Numerics.BigInteger;
-#endif
-    
-    public class Hyper : IFactorialFunction 
+
+    public class Hyper : IFactorialFunction
     {
         public Hyper() { }
 
@@ -59,12 +54,12 @@
             if (nostart)
             {
                 s -= k -= 4;
-                return (XInt) s;
+                return (XInt)s;
             }
             else
             {
                 nostart = true;
-                return (XInt) a;
+                return (XInt)a;
             }
         }
     }

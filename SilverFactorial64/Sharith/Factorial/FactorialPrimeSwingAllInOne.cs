@@ -1,61 +1,51 @@
-﻿// -------- ToujoursEnBeta
-// Author & Copyright : Peter Luschny
-// License: LGPL version 3.0 or (at your option)
-// Creative Commons Attribution-ShareAlike 3.0
-// Comments mail to: peter(at)luschny.de
-// Created: 2010-03-01
+﻿/// -------- ToujoursEnBeta
+/// Author & Copyright : Peter Luschny
+/// License: LGPL version 3.0 or (at your option)
+/// Creative Commons Attribution-ShareAlike 3.0
+/// Comments mail to: peter(at)luschny.de
+/// Created: 2010-03-01
 
-namespace Sharith.SilverFactorial {
-#if(MPIR)
-    using XInt = Sharith.Arithmetic.XInt;
-#else
-    using XInt = System.Numerics.BigInteger;
-#endif
-    using System;
-    using System.Collections.Generic;
+namespace Sharith.Math.Factorial
+{
     using System.Threading.Tasks;
-    using System.Linq;
+    using XInt = Sharith.Arithmetic.XInt;
 
     #region Swing
 
-    public class ParallelPrimeSwing // : IFactorialFunction 
+    // Same algorithm as PrimeSwing but an alternative
+    // more standalone implementation.
+
+    public class PrimeSwingAllInOne : IFactorialFunction
     {
-        public ParallelPrimeSwing() { }
+        public PrimeSwingAllInOne() { }
 
         public string Name
         {
-            get { return "ParallelPrimeSwing  "; }
-        }               
+            get { return "PrimeSwingAllInOne  "; }
+        }
 
         private Primes prime;
         private Factors factors;
 
-        // OEIS: A056040 Swinging factorial
-        public XInt Swing(uint n)
-        {
-            if (n >= smallOddSwing.Length)
-            {
-                prime = new Primes(n);
-                factors = new Factors(n);
-            }
-            return OddSwing(n) << (int)MathFun.BitCount(n);
-        }
+        // Swing(n) = OddSwing(n) << (int)MathFun.BitCount(n);
 
         private XInt OddSwing(uint n)
         {
-            if (n < smallOddSwing.Length) 
+            if (n < smallOddSwing.Length)
+            {
                 return new XInt(smallOddSwing[n]);
+            }
 
             uint rootN = MathFun.FloorSqrt(n);
             factors.Init();
 
             factors.SetMax(rootN);
             prime.Factorizer(3, rootN, p =>
-            {
-                uint q = n;
-                while ((q /= p) > 0)
-                    if ((q & 1) == 1) { factors.Add(p); }
-            });
+                {
+                    uint q = n;
+                    while ((q /= p) > 0)
+                        if ((q & 1) == 1) { factors.Add(p); }
+                });
 
             factors.SetMax(n / 3);
             prime.Factorizer(rootN + 1, n / 3, p =>
@@ -72,17 +62,18 @@ namespace Sharith.SilverFactorial {
             return factors.Product();
         }
 
-        #endregion
-        #region factorial
+    #endregion
+    #region factorial
 
-        // OEIS: A000142 Factorial
         public XInt Factorial(int N)
         {
             uint n = (uint)N;
             int exp2 = (int)(n - MathFun.BitCount(n));
 
             if (n < smallOddFactorial.Length)
+            {
                 return new XInt(smallOddFactorial[n]) << exp2;
+            }
 
             if (n >= smallOddSwing.Length)
             {
@@ -103,108 +94,6 @@ namespace Sharith.SilverFactorial {
             return XInt.Pow(OddFactorial(n / 2), 2) * OddSwing(n);
         }
 
-        #endregion
-        #region binomial
-
-        // OEIS: A007318 Pascal's triangle
-        public XInt Binomial(uint n, uint k)
-        {
-            if (0 > k || k > n) return XInt.Zero;
-            if (k > n / 2) { k = n - k; }
-            if (k < 3)
-            {
-                if (k == 0) return XInt.One;
-                if (k == 1) return new XInt(n);
-                if (k == 2) return new XInt(((ulong)n * (n - 1)) / 2);
-            }
-            if (n == 2 * k) { return Swing(n); }
-
-            var prime = new Primes(n);
-            var factors = new Factors(n);
-
-            uint rootN = MathFun.FloorSqrt(n);
-            factors.Init();
-
-            factors.SetMax(rootN);
-            prime.Factorizer(2, rootN, p =>
-            {
-                uint r = 0, N = n, K = k;
-                while (N > 0)
-                {
-                    r = (N % p) < (K % p + r) ? 1u : 0u;
-                    if (r == 1)
-                    {
-                        factors.Add(p);
-                    }
-                    N /= p; K /= p;
-                }
-            });
-
-            factors.SetMax(n / 2);
-            prime.Factorizer(rootN + 1, n / 2, p =>
-            {
-                if (n % p < k % p)
-                {
-                    factors.Add(p);
-                }
-            });
-
-            factors.SetMax(n);
-            prime.Factorizer(n - k + 1, n, p =>
-            {
-                factors.Add(p);
-            });
-
-            return factors.Product();
-        }
-
-        #endregion
-        #region doublefactorial
-
-        // OEIS: A006882 Double factorials n!!: a(n) = n*a(n-2).
-        public XInt DoubleFactorial(uint n)
-        {
-            XInt dblFact;
-            uint N = ((n & 1) == 0) ? n / 2 : n + 1;
-
-            if (n < smallOddDoubleFactorial.Length)
-            {
-                dblFact = new XInt(smallOddDoubleFactorial[n]);
-            }
-            else
-            {
-                if (N >= smallOddSwing.Length)
-                {
-                    prime = new Primes(N);
-                    factors = new Factors(N);
-                }
-                dblFact = OddFactorial(N, n);
-            }
-
-            if ((n & 1) == 0)
-            {
-                int exp2 = (int)(n - MathFun.BitCount(n / 2));
-                dblFact = dblFact << exp2;
-            }
-            return dblFact;
-        }
-
-        private XInt OddFactorial(uint n, uint m)
-        {
-            if (n < smallOddFactorial.Length)
-            {
-                return new XInt(smallOddFactorial[n]);
-            }
-
-            XInt oddFact = OddFactorial(n / 2, m);
-            if (n < m)
-            {
-                oddFact = XInt.Pow(oddFact, 2);
-            }
-
-            return oddFact * OddSwing(n);
-        }
-
         private static ulong[] smallOddSwing = {
   1, 1, 1, 3, 3, 15, 5, 35, 35, 315, 63, 693, 231, 3003, 429, 6435, 6435,
   109395, 12155, 230945, 46189, 969969, 88179, 2028117, 676039, 16900975,
@@ -222,29 +111,22 @@ namespace Sharith.SilverFactorial {
   42567525, 638512875, 638512875, 10854718875, 97692469875, 1856156927625,
   9280784638125, 194896477400625, 2143861251406875, 49308808782358125,
   147926426347074375, 3698160658676859375 };
-
-        private static ulong[] smallOddDoubleFactorial = {
-  1, 1, 1, 3, 1, 15, 3, 105, 3, 945, 15, 10395, 45, 135135, 315, 2027025, 315, 
-  34459425, 2835, 654729075, 14175, 13749310575, 155925, 316234143225, 467775, 
-  7905853580625, 6081075, 213458046676875, 42567525, 6190283353629375, 638512875, 
-  191898783962510625, 638512875, 6332659870762850625, 10854718875 };
     }
 
     #endregion
     #region primes
 
-    // OEIS: A000040 prime number
     public class Primes
     {
         const int bitsPerInt = 32;
         const int mask = bitsPerInt - 1;
         const int log2Int = 5;
 
-        private static uint[] PrimesOnBits = { 
+        private static uint[] PrimesOnBits = {
            1762821248u, 848611808u, 3299549660u, 2510511646u };
 
         private uint[] isComposite;
-        public delegate void Visitor(uint x);  // aka function pointer
+        public delegate void Visitor(uint x);
 
         public void Factorizer(uint min, uint max, Visitor visitor)
         {
@@ -282,7 +164,7 @@ namespace Sharith.SilverFactorial {
         /// greater than 3, so the smallest value has to be mapped to 5.
         /// Note: There is no multiplication operation in this function
         /// and *no call to a sqrt* function.
- 
+
         public Primes(uint n)
         {
             if (n < 386) { isComposite = PrimesOnBits; return; }
@@ -313,6 +195,41 @@ namespace Sharith.SilverFactorial {
                 if (toggle = !toggle) { s += d2; d1 += 16; p1 += 2; p2 += 2; s2 = p2; }
                 else { s += d1; d2 += 8; p1 += 2; p2 += 6; s2 = p1; }
             }
+        }
+
+        public XInt GetPrimorial(uint min, uint max)
+        {
+            int mem = (int)(0.63 * max / System.Math.Log(max));
+            long[] plist = new long[mem];
+            int size = 0;
+            if (min <= 2) plist[size++] = 2;
+            if (min <= 3) plist[size++] = 3;
+
+            int absPos = (int)((min + (min + 1) % 2) / 3 - 1);
+            int index = absPos / bitsPerInt;
+            int bitPos = absPos % bitsPerInt;
+            bool toggle = (bitPos & 1) == 1;
+            uint prime = (uint)(5 + 3 * (bitsPerInt * index + bitPos) - (bitPos & 1));
+
+            while (prime <= max)
+            {
+                uint bitField = isComposite[index++] >> bitPos;
+                for (; bitPos < bitsPerInt; bitPos++)
+                {
+                    if ((bitField & 1) == 0)
+                    {
+                        plist[size++] = prime;
+                    }
+                    prime += (toggle = !toggle) ? 2u : 4u;
+                    if (prime > max)
+                    {
+                        return MathFun.Product(plist, 0, size);
+                    }
+                    bitField >>= 1;
+                }
+                bitPos = 0;
+            }
+            return XInt.Zero;
         }
     }
 
@@ -365,30 +282,19 @@ namespace Sharith.SilverFactorial {
         public XInt Product()
         {
             factors[count++] = prod;
-            return MathFun.Product(factors, 0, count);   
+            return MathFun.Product(factors, 0, count);
         }
     }
 
     static public class MathFun
     {
         // Calibrate the treshhold
-        private const int THRESHOLD_PRODUCT_SERIAL = 128;
-
-        //static public XInt ProductSerial(long[] seq, int start, int len)
-        //{
-        //    var prod = new XInt(seq[start]);
-        //    for (int i = start + 1; i < start + len; i++)
-        //    {
-        //        prod *= seq[i];
-        //    }
-        //    return prod;
-        //}
+        private const int THRESHOLD_PRODUCT_SERIAL = 512;
 
         static public XInt Product(long[] seq, int start, int len)
         {
             if (len <= THRESHOLD_PRODUCT_SERIAL)
             {
-                // return ProductSerial(seq, start, len);
                 var rprod = new XInt(seq[start]);
 
                 for (int i = start + 1; i < start + len; i++)
@@ -400,21 +306,17 @@ namespace Sharith.SilverFactorial {
             else
             {
                 int halfLen = len / 2;
+                XInt rprod = XInt.Zero, lprod = XInt.Zero;
 
-                Task<XInt> task = Task.Factory.StartNew(() => Product(seq, start, halfLen));
-                var rprod = Product(seq, start + halfLen, len - halfLen);
-                return task.Result * rprod;
-
-                // rprod = XInt.Zero; XInt lprod = XInt.Zero;
-                //Parallel.Invoke(
-                //    () => { rprod = Product(seq, start, halfLen); },
-                //    () => { lprod = Product(seq, start + halfLen, len - halfLen); }
-                //);
-                //rprod = lprod * rprod;
+                Parallel.Invoke(
+                    () => { rprod = Product(seq, start, halfLen); },
+                    () => { lprod = Product(seq, start + halfLen, len - halfLen); }
+                );
+                return lprod * rprod;
             }
         }
 
-        /// Bit count,
+        /// Bit count
         /// sometimes referred to as the population count.
         public static uint BitCount(uint w)
         {
@@ -438,34 +340,6 @@ namespace Sharith.SilverFactorial {
             } while (b < a);
             return a;
         }
-
-        // private MathFun() { }
     }
-
-    #endregion
-    #region test
-
-    class Test
-    {
-        static void TestMain()
-        {
-            var combi = new ParallelPrimeSwing();
-
-            var swing = combi.Swing(1000);
-            System.Console.WriteLine("Swing: " + swing);
-
-            var fact = combi.Factorial(1000);
-            System.Console.WriteLine("Factorial: " + fact);
-
-            var dblfact = combi.DoubleFactorial(1000);
-            System.Console.WriteLine("DoubleFactorial: " + dblfact);
-
-            var pascal = combi.Binomial(1000, 333);
-            System.Console.WriteLine("Binomial: " + pascal);
-
-            System.Console.ReadLine();
-        }
-    }
-
     #endregion
 }

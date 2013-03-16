@@ -5,7 +5,6 @@
 // Comments mail to: peter(at)luschny.de
 // Created: 2010-03-01
 
-#if(MPIR)
 
 namespace Sharith.Arithmetic
 {
@@ -264,6 +263,16 @@ namespace Sharith.Arithmetic
         {
             return mpz_cmp(ref x.impl, ref y.impl) != 0;
         }
+        
+        public bool IsEven()
+        {
+            if(this.impl._mp_size == 0) return true;
+            unsafe
+            {
+                Int32* p = (Int32*)this.impl.ptr;
+                return (*p & 1) == 0;
+            }
+        }
 
         public static XInt operator ++(XInt op)
         {
@@ -514,5 +523,3 @@ namespace Sharith.Arithmetic
         }
     }
 }
-
-#endif

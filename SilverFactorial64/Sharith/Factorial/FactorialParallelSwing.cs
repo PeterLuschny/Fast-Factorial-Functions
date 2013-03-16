@@ -1,20 +1,15 @@
-// -------- ToujoursEnBeta
-// Author & Copyright : Peter Luschny
-// License: LGPL version 3.0 or (at your option)
-// Creative Commons Attribution-ShareAlike 3.0
-// Comments mail to: peter(at)luschny.de
-// Created: 2010-03-01
+/// -------- ToujoursEnBeta
+/// Author & Copyright : Peter Luschny
+/// License: LGPL version 3.0 or (at your option)
+/// Creative Commons Attribution-ShareAlike 3.0
+/// Comments mail to: peter(at)luschny.de
+/// Created: 2010-03-01
 
-#if(MPIR)
-namespace SharithMP.Math.Factorial 
+namespace Sharith.Math.Factorial 
 {
-    using XInt = Sharith.Arithmetic.XInt;
-#else
-    namespace Sharith.Math.Factorial {
-    using XInt = System.Numerics.BigInteger;
-#endif
     using System;
     using System.Threading.Tasks;
+    using XInt = Sharith.Arithmetic.XInt;
     using XMath = Sharith.Math.MathUtils.XMath;
 
     public class ParallelSwing : IFactorialFunction 
@@ -91,7 +86,7 @@ namespace SharithMP.Math.Factorial
 
         private static XInt Product(int m, int len)
         {
-            const int SEQUENTIAL_THRESHOLD = 100;
+            const int SEQUENTIAL_THRESHOLD = 1000;
 
             if (len == 1) return new XInt(m);
             if (len == 2) return new XInt((long)m * (m - 2));
@@ -103,10 +98,10 @@ namespace SharithMP.Math.Factorial
                 return Product(m - hlen * 2, len - hlen) * Product(m, hlen);
             }
 
-            var left = Task.Factory.StartNew<XInt>(() => Product(m - hlen * 2, len - hlen));
+            var leftTask = Task.Factory.StartNew<XInt>(() => Product(m - hlen * 2, len - hlen));
             var right = Product(m, hlen);
 
-            return left.Result * right;
+            return leftTask.Result * right;
         }
 
         private static XInt[] smallOddSwing = {

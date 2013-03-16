@@ -1,20 +1,15 @@
-// -------- ToujoursEnBeta
-// Author & Copyright : Peter Luschny
-// License: LGPL version 3.0 or (at your option)
-// Creative Commons Attribution-ShareAlike 3.0
-// Comments mail to: peter(at)luschny.de
-// Created: 2010-03-01
+/// -------- ToujoursEnBeta
+/// Author & Copyright : Peter Luschny
+/// License: LGPL version 3.0 or (at your option)
+/// Creative Commons Attribution-ShareAlike 3.0
+/// Comments mail to: peter(at)luschny.de
+/// Created: 2010-03-01
 
-#if(MPIR)
-namespace SharithMP.Math.Factorial 
-{
-    using XInt = Sharith.Arithmetic.XInt;
-#else
-    namespace Sharith.Math.Factorial {
-    using XInt = System.Numerics.BigInteger;
-#endif
+namespace Sharith.Math.Factorial 
+{   
     using Sharith.Math.Primes;
     using XMath = Sharith.Math.MathUtils.XMath;
+    using XInt = Sharith.Arithmetic.XInt;
 
     public class PrimeLeenstra : IFactorialFunction 
     {
@@ -100,4 +95,3 @@ namespace SharithMP.Math.Factorial
         }
     }
 } // endOfFactorialPrimeLeenstra
-

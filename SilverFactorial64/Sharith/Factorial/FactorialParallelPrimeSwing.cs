@@ -1,25 +1,20 @@
-﻿// -------- ToujoursEnBeta
-// Author & Copyright : Peter Luschny
-// License: LGPL version 3.0 or (at your option)
-// Creative Commons Attribution-ShareAlike 3.0
-// Comments mail to: peter(at)luschny.de
-// Created: 2010-03-01
+﻿/// -------- ToujoursEnBeta
+/// Author & Copyright : Peter Luschny
+/// License: LGPL version 3.0 or (at your option)
+/// Creative Commons Attribution-ShareAlike 3.0
+/// Comments mail to: peter(at)luschny.de
+/// Created: 2010-03-01
 
 // Same algorithm as PrimeSwing
-// but computes swing(n) concurrently
+// but computes swing(n) asynchronous.
 
-#if(MPIR)
-namespace SharithMP.Math.Factorial 
+namespace Sharith.Math.Factorial 
 {
-    using XInt = Sharith.Arithmetic.XInt;
-#else
-    namespace Sharith.Math.Factorial {
-    using XInt = System.Numerics.BigInteger;
-#endif
     using System;
     using System.Threading.Tasks;
     using Sharith.Math.Primes;
     using XMath = Sharith.Math.MathUtils.XMath;
+    using XInt = Sharith.Arithmetic.XInt;
 
     public class ParallelPrimeSwing : IFactorialFunction 
     {
@@ -30,7 +25,7 @@ namespace SharithMP.Math.Factorial
             get { return "ParallelPrimeSwing       "; }
         }
 
-        private const int SMALLSWING = 32;
+        private const int SMALLSWING = 65;
         private IAsyncResult[] results;
         private delegate XInt SwingDelegate(PrimeSieve sieve, int n);
         private SwingDelegate swingDelegate;
@@ -47,8 +42,7 @@ namespace SharithMP.Math.Factorial
 
             // -- It is more efficient to add the big swings
             // -- first and the small ones later!
-
-            while (N > SMALLSWING)
+            while (N >= SMALLSWING)
             {
                 results[taskCounter++] = swingDelegate.BeginInvoke(sieve, N, null, null);
                 N >>= 1;
@@ -65,7 +59,7 @@ namespace SharithMP.Math.Factorial
             XInt sqrFact = XInt.Pow(recFact, 2);
             XInt swing;
 
-            if (n <= SMALLSWING)
+            if (n < SMALLSWING)
             {
                 swing = smallOddSwing[n];
             }
@@ -121,8 +115,15 @@ namespace SharithMP.Math.Factorial
         }
 
         private static XInt[] smallOddSwing = {
-            1,1,1,3,3,15,5,35,35,315,63,693,231,3003,429,6435,6435,109395,
-            12155,230945,46189,969969,88179,2028117,676039,16900975,1300075,
-            35102025,5014575,145422675,9694845,300540195,300540195 };
+            1, 1, 1, 3, 3, 15, 5, 35, 35, 315, 63, 693, 231, 3003, 429, 6435, 6435,
+            109395, 12155, 230945, 46189, 969969, 88179, 2028117, 676039, 16900975,
+            1300075, 35102025, 5014575, 145422675, 9694845, 300540195, 300540195,
+            9917826435, 583401555, 20419054425, 2268783825, 83945001525, 4418157975,
+            172308161025, 34461632205, 1412926920405, 67282234305, 2893136075115,
+            263012370465, 11835556670925, 514589420475, 24185702762325, 8061900920775,
+            395033145117975, 15801325804719, 805867616040669, 61989816618513,
+            3285460280781189, 121683714103007, 6692604275665385, 956086325095055,
+            54496920530418135, 1879204156221315, 110873045217057585, 7391536347803839,
+            450883717216034179, 14544636039226909, 916312070471295267, 916312070471295267 };
     }
 }

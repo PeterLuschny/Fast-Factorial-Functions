@@ -15,7 +15,7 @@ namespace SilverFactorial
     /// <summary>
     /// Interaction logic for BenchmarkWindow.xaml
     /// </summary>
-    public partial class BenchmarkWindow : Window
+    public partial class BenchmarkWindow : Window  // , IDisposable
     {
         LoggedTextBox winsole; 
         TestParameters test;
@@ -27,7 +27,6 @@ namespace SilverFactorial
         public BenchmarkWindow()
         {
             InitializeComponent();
-            Candidate.SetMPArithmetic(false);
             InitAlgoBoxes();
 
             stepBox.SelectedItem = "2.0";
@@ -134,11 +133,6 @@ namespace SilverFactorial
             // benchTypeBox.IsEnabled = en;
         }
 
-        private void LogToFileCheckBox_CheckedChanged(object sender, RoutedEventArgs e)
-        {
-            winsole.LogToFile = (bool)logToFileCheckBox.IsChecked;
-        }
-
         // Set the AlgorithmCheckedListBox. 
         private void TypeSimple_Selected(object sender, RoutedEventArgs e)
         {
@@ -169,21 +163,30 @@ namespace SilverFactorial
             }
         }
 
-        // Clear the AlgorithmCheckedListBox.
-        private void TypeClear_Selected(object sender, RoutedEventArgs e)
-        {
-            foreach (CheckBox c in algos)
-            {
-                c.IsChecked = false; 
-            }
-        }
-
         private void TypeConcurr_Selected(object sender, RoutedEventArgs e)
         {
             int i = 0;
             foreach (Candidate c in Candidate.candList)
             {
                 algos[i++].IsChecked = c.IsConcurrType;
+            }
+        }
+
+        private void TypeBench_Selected(object sender, RoutedEventArgs e)
+        {
+            int i = 0;
+            foreach (Candidate c in Candidate.candList)
+            {
+                algos[i++].IsChecked = c.IsBenchable;
+            }
+        }
+
+        // Clear the AlgorithmCheckedListBox.
+        private void TypeClear_Selected(object sender, RoutedEventArgs e)
+        {
+            foreach (CheckBox c in algos)
+            {
+                c.IsChecked = false;
             }
         }
 
@@ -201,7 +204,9 @@ namespace SilverFactorial
 
         private void About_Click(object sender, RoutedEventArgs e)
         {
-            winsole.WriteLine(about);
+            BenchmarkApplication.About(winsole);
+            if( sender != null)
+            new BrowserForm(@"http://www.luschny.de/math/factorial/csharp/CsharpIndex.html").Show();
         }
 
         // Call with some predefined value (say 1000).
@@ -312,7 +317,7 @@ namespace SilverFactorial
             {
                 // The user canceled the benchmark.
                 msg = "Benchmark was canceled.";
-                winsole.WriteRedLine(msg);
+                winsole.WriteRedline(msg);
             }
             else if (eventArgs.Error != null)
             {
@@ -321,8 +326,8 @@ namespace SilverFactorial
                 MessageBox.Show(eventArgs.Error.Message, "Error in worker thread.");
 
                 winsole.WriteLine();
-                winsole.WriteRedLine("Error in worker thread.");
-                winsole.WriteRedLine(eventArgs.Error.Message);
+                winsole.WriteRedline("Error in worker thread.");
+                winsole.WriteRedline(eventArgs.Error.Message);
                 winsole.WriteLine();
             }
             else
@@ -346,20 +351,5 @@ namespace SilverFactorial
 
             progressBar.Value = 0;
         }
-
-        static string about =
-           "\n----------------------------------------"+
-           "\n    This is Sharith.SilverFactorial     "+
-           "\n      Version 2.0-Build-2011-06-16      "+
-           "\n----------------------------------------"+
-           "\n    Copyright (C) 2011 Peter Luschny    "+
-           "\n               License:                 "+
-           "\n  Creative Commons Attr.-ShareAlike 3.0 \n" +
-           "\n  http://www.luschny.de/math/factorial/  "+
-           "\n       FastFactorialFunctions.htm       \n"+
-           "\nPlease send comments and bug reports to "+
-           "\n         peter(at)luschny.de            \n"+
-           "\n      Contribute your solution!         "+
-           "\n----------------------------------------\n";
     }
 }

@@ -45,9 +45,9 @@ namespace SilverFactorial
             };
         }
 
-        private void AddToBox(string str)
+        private void AddToBox(string text)
         {
-            textBox.Dispatcher.Invoke(appendText, str);
+            textBox.Dispatcher.Invoke(appendText, text);
         }
 
         public StreamWriter GetStreamWriter() 
@@ -55,29 +55,29 @@ namespace SilverFactorial
             return streamWriter; 
         }
 
-        public void Write(string str)
+        public void Write(string text)
         {
-            if (LogToFile) streamWriter.Write(str);
-            AddToBox(str);
+            if (LogToFile) streamWriter.Write(text);
+            AddToBox(text);
         }
 
-        public void WriteFlush(string str)
+        public void WriteFlush(string text)
         {
-            if (LogToFile) streamWriter.Write(str);
-            AddToBox(str);
+            if (LogToFile) streamWriter.Write(text);
+            AddToBox(text);
         }
 
-        public void WriteLine(string str)
+        public void WriteLine(string text)
         {
-            if (LogToFile) streamWriter.WriteLine(str);
-            AddToBox(str);
+            if (LogToFile) streamWriter.WriteLine(text);
+            AddToBox(text);
         }
 
         public void WriteLine(string format, string message)
         {
-            string str = string.Format(format, message) + Environment.NewLine;
-            if (LogToFile) streamWriter.WriteLine(str);
-            AddToBox(str);
+            string text = string.Format(format, message) + Environment.NewLine;
+            if (LogToFile) streamWriter.WriteLine(text);
+            AddToBox(text);
         }
 
         public void WriteLine()
@@ -86,28 +86,28 @@ namespace SilverFactorial
             AddToBox(Environment.NewLine);
         }
 
-        public void WriteHot(string str)
+        public void WriteHot(string text)
         {
-            if (LogToFile) streamWriter.WriteLine(str);
-            AddToBox(str);
+            if (LogToFile) streamWriter.WriteLine(text);
+            AddToBox(text);
         }
 
-        public void WriteHotLine(string str)
+        public void WriteHotLine(string text)
         {
-            if (LogToFile) streamWriter.WriteLine(str);
-            AddToBox(str);
+            if (LogToFile) streamWriter.WriteLine(text);
+            AddToBox(text);
         }
 
-        public void WriteRed(string str)
+        public void WriteRed(string text)
         {
-            if (LogToFile) streamWriter.Write(str);
-            AddToBox(str);
+            if (LogToFile) streamWriter.Write(text);
+            AddToBox(text);
         }
 
-        public void WriteRedLine(string str)
+        public void WriteRedline(string text)
         {
-            if (LogToFile) streamWriter.WriteLine(str);
-            AddToBox(str);
+            if (LogToFile) streamWriter.WriteLine(text);
+            AddToBox(text);
         }
 
         public void Flush()

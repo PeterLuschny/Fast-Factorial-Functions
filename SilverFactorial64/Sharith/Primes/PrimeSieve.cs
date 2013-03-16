@@ -1,9 +1,9 @@
-// -------- ToujoursEnBeta
-// Author & Copyright : Peter Luschny
-// License: LGPL version 3.0 or (at your option)
-// Creative Commons Attribution-ShareAlike 3.0
-// Comments mail to: peter(at)luschny.de
-// Created: 2010-03-01
+/// -------- ToujoursEnBeta
+/// Author & Copyright : Peter Luschny
+/// License: LGPL version 3.0 or (at your option)
+/// Creative Commons Attribution-ShareAlike 3.0
+/// Comments mail to: peter(at)luschny.de
+/// Created: 2010-03-01
 
 namespace Sharith.Math.Primes
 {
@@ -13,11 +13,8 @@ namespace Sharith.Math.Primes
     using System.IO;
     using System.Threading;
     using Sharith.Math.MathUtils;
-#if(MPIR)
-using XInt = Sharith.Arithmetic.XInt;
-#else
-    using XInt = System.Numerics.BigInteger;
-#endif
+
+    using XInt = Sharith.Arithmetic.XInt;
     using XMath = Sharith.Math.MathUtils.XMath;
 
 /// <summary>

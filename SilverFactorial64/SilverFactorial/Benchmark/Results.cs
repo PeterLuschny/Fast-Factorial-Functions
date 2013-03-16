@@ -16,16 +16,18 @@ namespace SilverFactorial
     {
         public long ms;
         public long crc;
+        public long eddms;
         
         public Candidate cand;
         public double Rank { get; set; }
         public int AbsRank { get; set; }
 
-        public Results(Candidate cand, long msec, long check) 
+        public Results(Candidate cand, long msec, long check, long eddms) 
         {
             this.cand = cand;
             this.ms = msec;
             this.crc = check;
+            this.eddms = eddms;
         }
 
         public override string ToString()
@@ -53,6 +55,11 @@ namespace SilverFactorial
         public string GetTimeAsString2()
         {
             return string.Format("{0:0.00}", (ms / 1000.00)).PadLeft(5, ' ');
+        }
+
+        public string GetDecimalDigitsPerMillisecondAsString()
+        {
+            return string.Format("{0}", eddms);
         }
 
         public int CompareTo(Object o)
@@ -122,23 +129,32 @@ namespace SilverFactorial
                 file.WriteLine(item);
             }
 
-            for (int j = 0; j < 2; j++)
+            for (int j = 0; j < 3; j++)
             {
-                if (j == 0)
+                if (j == 2)
                 {
                     file.WriteLine("<h3 align=\"center\">");
-                    file.WriteLine("C# Factorial Benchmark - Timings (in seconds)");
+                    file.WriteLine("Timings (in seconds)");
                     file.WriteLine("</h3>");
-                    file.WriteLine("<table cellpadding=\"7\" align=\"center\" border=\"0\" " +
+                    file.WriteLine("<table cellpadding=\"4\" align=\"center\" border=\"0\" " +
                         "summary=\"benchmark results timings\">");
                 }
-                else
+                if (j == 1)
                 {
                     file.WriteLine("<br>");
-                    file.WriteLine("<h3 align=\"center\">");                  
-                    file.WriteLine("C# Factorial Benchmark - Ranking (relative to 'PrimeSwing')");
+                    file.WriteLine("<h3 align=\"center\">");
+                    file.WriteLine("Efficiency (decimal digits per millisecond)");
                     file.WriteLine("</h3>");
-                    file.WriteLine("<table cellpadding=\"7\" align=\"center\" border=\"0\" " +
+                    file.WriteLine("<table cellpadding=\"4\" align=\"center\" border=\"0\" " +
+                        "summary=\"benchmark results efficiency\">");
+                }
+                if (j == 0)
+                {
+                    file.WriteLine("<br>");
+                    file.WriteLine("<h3 align=\"center\">");
+                    file.WriteLine("Ranking (relative to 'PrimeSwing')");
+                    file.WriteLine("</h3>");
+                    file.WriteLine("<table cellpadding=\"4\" align=\"center\" border=\"0\" " +
                         "summary=\"benchmark results ranking\">");
                 }
 
@@ -169,14 +185,21 @@ namespace SilverFactorial
                     {
                         Results res = (Results)cand.results[value];
 
-                        if (j == 0)
+                        if (j == 2)
                         {
                             if (res.AbsRank == 1) file.Write("<td class=\"count1\">");
                             else if (res.AbsRank == 2) file.Write("<td class=\"count2\">");
                             else file.Write("<td class=\"count\">");
                             file.Write(res.GetTimeAsString2());
                         }
-                        else
+                        else if (j == 1)
+                        {
+                            if (res.AbsRank == 1) file.Write("<td class=\"count1\">");
+                            else if (res.AbsRank == 2) file.Write("<td class=\"count2\">");
+                            else file.Write("<td class=\"count\">");
+                            file.Write(res.GetDecimalDigitsPerMillisecondAsString());
+                        }
+                        else if (j == 0)
                         {
                             if (res.Rank < 1.05) file.Write("<td class=\"count1\">");
                             else if (res.Rank < 2.05) file.Write("<td class=\"count2\">");
@@ -192,16 +215,24 @@ namespace SilverFactorial
                 file.WriteLine("</tbody>");
                 file.WriteLine("</table>");
 
-                if (j == 0)
+                if (j == 2)
                 {
                     file.WriteLine("<h5 align=\"center\">");
-                    file.WriteLine("Timing: Red = first, blue = second.<br>");
+                    file.WriteLine("The smaller the value the better.<br>");
+                    file.WriteLine("Red = first, blue = second.<br>");
                     file.WriteLine("</h5>");
                 }
-                if (j == 1)
+                else if (j == 1)
                 {
                     file.WriteLine("<h5 align=\"center\">");
-                    file.WriteLine("Ranking: The smaller the value the better.<br>");
+                    file.WriteLine("The larger the value the better.<br>");
+                    file.WriteLine("Red = first, blue = second.<br>");
+                    file.WriteLine("</h5>");
+                }
+                else if (j == 0)
+                {
+                    file.WriteLine("<h5 align=\"center\">");
+                    file.WriteLine("The smaller the value the better.<br>");
                     file.WriteLine("Red values &lt;= 1 indicate excellent performance,<br>");
                     file.WriteLine("Blue values &lt;= 2 indicate good performance.<br>");
                     file.WriteLine("</h5>");
@@ -226,41 +257,12 @@ namespace SilverFactorial
             "td.count  { background-color : #c0d9c0; font-weight: bold }",
             "td.count1 { background-color : #c0d9c0; color : red; font-weight: bold }",
             "td.count2 { background-color : #c0d9c0; color : blue; font-weight: bold }",
-            "td.fact  { background-color: #f0e68c; text-align: right; ",
-            "font-family: Arial, Lucida Sans Typewriter; font-size:small; }",
-            "td.head  { background-color: #b0c4de; text-align: center; }",
-            "tr.count { text-align: center; }",
+            "td.fact  { background-color: #f0e68c; text-align: right; font-size:small;",
+            "font-family: Arial, Lucida Sans Typewriter;  }",
+            "td.head  { background-color: #b0c4de; color:yellow; text-align: center; }",
+            "tr.count { text-align: center; font-size:small;}",
             "</style>",
             "</head>","<body>"
        };
     }
-
-    // TODO: operation counts.
-    //public string GetOpsAsString()
-    //{
-    //    if (null == opCounts) return " * ";
-    //    var sb = new StringBuilder(80);
-    //    foreach(var opcount in opCounts)
-    //    {
-    //        sb.Append((string.Format("{0:D}|", opcount)).PadLeft(7, ' '));
-    //    }
-    //    return sb.ToString();
-    //}
-
-    //static public string[] opType = { " MUL", " mul", " DIV", " div", " Sqr", " Lsh" };
-    //static public string opBanner = "  MUL    mul    DIV    div    Sqr    Lsh ";
-
-    //public string NotZeroNopsAsString()
-    //{
-    //    if (null == opCounts) return " * ";
-    //    var sb = new StringBuilder(64);
-    //    for (int k = 0; k < opCounts.Length; k++)
-    //    {
-    //        if (opCounts[k] != 0)
-    //        {
-    //            sb.Append(string.Format("{0:D}{1}, ", opCounts[k], opType[k]));
-    //        }
-    //    }
-    //    return sb.ToString();
-    //}
 }

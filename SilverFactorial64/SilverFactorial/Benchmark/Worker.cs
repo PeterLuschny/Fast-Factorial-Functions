@@ -9,8 +9,9 @@ using System;
 using System.IO;
 using System.Text;
 using System.ComponentModel;
-using Sharith.Arithmetic;
 using Sharith.Math.MathUtils;
+
+using XInt = Sharith.Arithmetic.XInt;
 
 namespace SilverFactorial
 {
@@ -38,7 +39,7 @@ namespace SilverFactorial
             }
 
             Candidate.SetSelected(test.selectedAlgo);
-            test.Init(Candidate.Selected);
+            test.Init(); 
 
             int[] benchValues = test.benchValues;
             double workLoad = test.workLoad, workDone = 0;
@@ -102,14 +103,17 @@ namespace SilverFactorial
             watch.Stop();
 
             int checksum = nFact.GetHashCode();
-            var res = new Results(cand, watch.ElapsedMilliseconds, checksum); 
+            var ms = watch.ElapsedMilliseconds;
+            var eddms = XMath.ExactDecimalDigitsPerMillisecond(n, ms);
+            var res = new Results(cand, ms, checksum, eddms); 
             cand.results[n] = res;
 
             if (verbose)
             {
                 winsole.WriteRed(string.Format(
-                    "\nSUMMARY: Computed the factorial \n{0}! = {1}\nAlgorithm used: {2}\nCheckSum: <{3:X}>\nComputation in {4:D} ms.\n",
-                    n, XMath.AsymptFactorial(n), cand.Name, checksum, watch.ElapsedMilliseconds));
+                    // "\nSUMMARY: Computed the factorial "
+                    "\n{0}! = {1}\nAlgorithm used: {2}\nCheckSum: <{3:X}>\nComputation in {4:D} ms.\nDecimal digits per ms {5}.\n",
+                    n, XMath.AsymptFactorial(n), cand.Name, checksum, ms, eddms));
             }
 
             if (showFullValue)
@@ -123,9 +127,8 @@ namespace SilverFactorial
         {
             if (n < 1000)
             {
-                winsole.WriteLine("\nTiming too inaccurate. Result not included.\n");
-                winsole.WriteLine("Please use graeter values for n.");
-                return; 
+                winsole.WriteLine("\nTiming too inaccurate.\n");
+                winsole.WriteLine("Please use graeter values (n > 1000) if you want to benchmark.");
             }
 
             var resultList = new Results[count];
