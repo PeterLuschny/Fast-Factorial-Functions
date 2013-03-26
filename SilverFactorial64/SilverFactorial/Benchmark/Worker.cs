@@ -5,16 +5,15 @@
 // Comments mail to: peter(at)luschny.de
 // Created: 2010-03-01
 
-using System;
-using System.IO;
-using System.Text;
-using System.ComponentModel;
-using Sharith.Math.MathUtils;
-
-using XInt = Sharith.Arithmetic.XInt;
-
 namespace SilverFactorial
 {
+    using System;
+    using System.ComponentModel;
+    using System.IO;
+    using System.Text;
+    using Sharith.Math.MathUtils;
+    using XInt = Sharith.Arithmetic.XInt;
+
     internal class BenchmarkWorker
     {
         static string nl = Environment.NewLine;
@@ -34,17 +33,17 @@ namespace SilverFactorial
             if (test.sanityTest)
             {
                 winsole.WriteLine("\nSanity check is running!\n");
-                SanityCheck(500); 
+                SanityCheck(500);
                 return 1;
             }
 
-            Candidate.SetSelected(test.selectedAlgo);
-            test.Init(); 
+            Candidate.SetSelected(test.algoSelected);
+            test.Init();
 
-            int[] benchValues = test.benchValues;
+            int[] benchValues = TestParameters.testValues;
             double workLoad = test.workLoad, workDone = 0;
 
-            for (int j = 0; j < test.benchLength; j++)
+            for (int j = 0; j < test.testLength; j++)
             {
                 int n = benchValues[j];
 
@@ -66,14 +65,10 @@ namespace SilverFactorial
                     }
                 }
 
-                if (test.verbose)
-                {
-                    // TODO: OperationCount(n);
-                }
-                RelativeRanking(n, test.cardSelected);
+                RelativeRanking(n);
             }
-            UsedTime(benchValues, test.benchStart);
-            PerformanceProfile(benchValues, test.benchStart);
+            UsedTime(benchValues, test.testStart);
+            PerformanceProfile(benchValues, test.testStart);
 
             string outputDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\FactorialBenchmarks\";
             var df = new DirectoryInfo(outputDir);
@@ -83,15 +78,15 @@ namespace SilverFactorial
             }
 
             string fileName = string.Format(df.FullName + "FactorialBenchmark{0}.html", DateTime.Now.ToFileTime());
-            Results.ResultsToFile(fileName, benchValues);
+            Result.ResultsToFile(fileName, benchValues);
             winsole.WriteLine("\n\nBenchmark was saved to file \n" + fileName);
             winsole.WriteLine("\n\n");
             winsole.Flush();
 
             try { System.Diagnostics.Process.Start(fileName); }
             catch (System.ComponentModel.Win32Exception) { }
-            catch (System.Exception) { }  
-				
+            catch (System.Exception) { }
+
             return 1;
         }
 
@@ -105,8 +100,8 @@ namespace SilverFactorial
             int checksum = nFact.GetHashCode();
             var ms = watch.ElapsedMilliseconds;
             var eddms = XMath.ExactDecimalDigitsPerMillisecond(n, ms);
-            var res = new Results(cand, ms, checksum, eddms); 
-            cand.results[n] = res;
+            var res = new Result(cand, ms, checksum, eddms);
+            cand.performance[n] = res;
 
             if (verbose)
             {
@@ -123,17 +118,18 @@ namespace SilverFactorial
             }
         }
 
-        void RelativeRanking(int n, int count)
+        void RelativeRanking(int n)
         {
             if (n < 1000)
             {
                 winsole.WriteLine("\nTiming too inaccurate.\n");
                 winsole.WriteLine("Please use graeter values (n > 1000) if you want to benchmark.");
             }
+            int count = TestParameters.cardSelected;
 
-            var resultList = new Results[count];
+            var resultList = new Result[count];
 
-            Results res = (Results)Candidate.reference.results[n];
+            Result res = (Result)Candidate.reference.performance[n];
             double t = Math.Max(res.ms, double.Epsilon);
             res.Rank = 1.0;
             resultList[0] = res; // include reference in comparison            
@@ -141,20 +137,20 @@ namespace SilverFactorial
             int sortLen = 1;
             foreach (Candidate cand in Candidate.Challengers)
             {
-                res = (Results)cand.results[n];
+                res = (Result)cand.performance[n];
                 double r = Math.Max(res.ms, double.Epsilon) / t;
                 res.Rank = r;
                 resultList[sortLen++] = res;
             }
 
-            Results.Sort(resultList, sortLen);
+            Result.Sort(resultList, sortLen);
 
             // ==================================================
             // "RANKING [n=" + n + "] (rel. to PrimeSwing)"
             // ==================================================
 
             winsole.Write(string.Format(
-                nl + "{0}\nRANKING [n={1}] (rel. to PrimeSwing = 1.00)\n{2}" + nl,
+                nl + "{0}\nRANKING [n={1}] (rel. to ParallelPrimeSwing)\n{2}" + nl,
                 seperatorD, n, seperatorD));
 
             bool flag = true;
@@ -186,14 +182,14 @@ namespace SilverFactorial
             "\n\n{0}\nB E N C H M A R K - T I M I N G S (sec)\n{1}\n{2}\n",
             seperatorD, TestValuesToString(benchValues, benchStart), seperatorD));
 
-            for (int i = 0; i < Candidate.rankList.Length; i++)
+            for (int i = 0; i < Result.relRankList.Length; i++)
             {
-                Candidate cand = Candidate.candList[Candidate.rankList[i]];
+                Candidate cand = Candidate.candList[Result.relRankList[i]];
                 winsole.WriteRed(cand.Name);
 
                 for (int k = 0; k < benchValues.Length; k++)
                 {
-                    Results res = (Results)cand.results[benchValues[k]];
+                    Result res = (Result)cand.performance[benchValues[k]];
                     winsole.WriteRed(res.GetTimeAsString());
                 }
                 winsole.WriteLine();
@@ -216,14 +212,14 @@ namespace SilverFactorial
 
             int l = 0;
 
-            for(int i = 0; i < Candidate.rankList.Length; i++)
+            for (int i = 0; i < Result.relRankList.Length; i++)
             {
-                Candidate cand = Candidate.candList[Candidate.rankList[i]];
+                Candidate cand = Candidate.candList[Result.relRankList[i]];
                 winsole.WriteRed(cand.Name);
 
                 for (int k = 0; k < benchValues.Length; k++)
                 {
-                    Results res = (Results)cand.results[benchValues[k]];
+                    Result res = (Result)cand.performance[benchValues[k]];
                     winsole.WriteRed(res.GetRankAsString());
                 }
 
@@ -238,8 +234,8 @@ namespace SilverFactorial
 
         static string TestValuesToString(int[] val, int benchStart)
         {
-            int scale = (int)Math.Pow(10,(int)Math.Log10(Math.Max(100,benchStart)));
-            var sb = new StringBuilder(string.Format("n x {0:D},  n =  ",scale));
+            int scale = (int)Math.Pow(10, (int)Math.Log10(Math.Max(100, benchStart)));
+            var sb = new StringBuilder(string.Format("n x {0:D},  n =  ", scale));
             for (int i = 0; i < val.Length; i++)
             {
                 sb.Append(string.Format("{0:D}", val[i] / scale).PadLeft(5, ' '));
@@ -271,29 +267,6 @@ namespace SilverFactorial
             winsole.Write("\nWell, some values will" + (ok ? " " : " not ") +
                 "give correct results  " + (ok ? ";-)\n" : "~:(\n"));
         }
-
-        // // TODO: Operation counts.
-        //void OperationCount(int n)
-        //{
-        //    // ============================================
-        //    // "  OPERATION COUNT [n = " + n + " ]"
-        //    // "  MUL    mul    DIV    div    Sqr    Lsh  "
-        //    // ============================================
-
-        //    winsole.Write(string.Format(
-        //        "\n{0}\nOPERATION COUNT [n = {1}]\n",
-        //        seperatorD, n));
-
-        //    winsole.WriteLine(Results.opBanner);
-        //    winsole.WriteLine(seperatorD);
-
-        //    foreach (Candidate cand in Candidate.Selected)
-        //    {
-        //        Results res = (Results)cand.results[n];
-        //        winsole.WriteLine(cand.Name);
-        //        winsole.WriteLine(res.GetOpsAsString());
-        //    }
-        //}
 
         // // TODO: Save single value.
         //public void SaveToFile(int n)

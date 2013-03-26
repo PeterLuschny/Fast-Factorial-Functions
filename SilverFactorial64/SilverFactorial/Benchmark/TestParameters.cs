@@ -1,47 +1,42 @@
-﻿using System;
-using System.Collections;
-using System.Linq;
-using System.Text;
-
+﻿
 namespace SilverFactorial
 {
     internal class TestParameters
     {
-        public const int BENCH_MAX = int.MaxValue;
-
-        public bool[] selectedAlgo;
-        public int benchLength;
-        public int benchStart;
+        public const int TEST_MAX = int.MaxValue;
+        
+        public int testLength;
+        public int testStart;
         public int stepFactor;
+        public static int[] testValues;
+        public static int cardSelected;
+        public bool[] algoSelected;
         public bool showFullValue;
         public bool verbose;
         public bool sanityTest;
-
         public double workLoad;
-        public int[] benchValues;
-        public int cardSelected;
 
         public TestParameters(int noOfCandidates)
         {
-            selectedAlgo = new bool[noOfCandidates];
+            algoSelected = new bool[noOfCandidates];
         }
 
         public void Init() 
         {
-            benchValues = new int[benchLength];
+            testValues = new int[testLength];
             double sum = 0;
-            long value = benchStart;
+            long value = testStart;
 
-            for (int m = 0; m < benchLength; m++)
+            for (int m = 0; m < testLength; m++)
             {
-                if (value < BENCH_MAX)
+                if (value < TEST_MAX)
                 {
-                    benchValues[m] = (int)value;
+                    testValues[m] = (int)value;
                     sum += value;
                 }
                 else
                 {
-                    benchValues[m] = 1;
+                    testValues[m] = 1;
                 }
                 value = (long)((stepFactor * value) / 10.0);
             }

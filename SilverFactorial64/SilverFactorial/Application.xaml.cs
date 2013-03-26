@@ -5,15 +5,15 @@
 // Comments mail to: peter(at)luschny.de
 // Created: 2010-03-01
 
-using System;
-using System.Globalization;
-using System.IO;
-using System.Windows;
-using System.Diagnostics;
-using Microsoft.Win32;
-
 namespace SilverFactorial
 {
+    using Microsoft.Win32;
+    using System;
+    using System.Diagnostics;
+    using System.Globalization;
+    using System.IO;
+    using System.Windows;
+
     /// <summary>
     /// Interaction logic for Application.xaml
     /// </summary>
@@ -65,6 +65,8 @@ namespace SilverFactorial
             textBox.WriteLine("Hello {0}, \n \n   welcome to the Factorial Benchmark!", Environment.UserName);
             textBox.WriteLine("\n   For background information visit \n");
             textBox.WriteLine(@"http://www.luschny.de/math/factorial/FastFactorialFunctions.htm");
+            textBox.WriteLine();
+            textBox.WriteLine("\n   If you want to study the code and are online than click on the green button." );
             textBox.WriteLine();
             textBox.WriteLine("\n   The arithmetic used is MPIR 2.6. Make sure that the library fits your CPU!");
             // textBox.WriteLine("\n\n   Not only the timings also the relative \n   rankings can differ considerably if a \n   different arithmetic (for example \n   BigIntegers from .NET) is used!\n");

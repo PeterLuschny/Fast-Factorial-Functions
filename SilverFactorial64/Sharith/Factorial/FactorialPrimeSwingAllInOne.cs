@@ -15,9 +15,9 @@ namespace Sharith.Math.Factorial
     // Same algorithm as PrimeSwing but an alternative
     // more standalone implementation.
 
-    public class PrimeSwingAllInOne : IFactorialFunction
+    public class SplitPrimeSwing : IFactorialFunction
     {
-        public PrimeSwingAllInOne() { }
+        public SplitPrimeSwing() { }
 
         public string Name
         {
@@ -116,7 +116,7 @@ namespace Sharith.Math.Factorial
     #endregion
     #region primes
 
-    public class Primes
+    class Primes
     {
         const int bitsPerInt = 32;
         const int mask = bitsPerInt - 1;

@@ -60,7 +60,7 @@
             <Button Canvas.Left="410" Canvas.Top="452" Content="Cancel"       Height="24"  Width="105" Name="cancelBenchmark" Click="Cancel_Click" IsEnabled="False" />
             <Button Canvas.Left="410" Canvas.Top="480" Content="Benchmark!"   Height="24"  Width="105" Name="benchmarkGoButton" Click="Benchmark_Click" />
 
-            <TextBox  Canvas.Left="270" Canvas.Top="426" Height="20" Width="100" Name="startBox" Text="40000" />
+            <TextBox  Canvas.Left="270" Canvas.Top="426" Height="20" Width="100" Name="startBox" Text="160000" />
             <ComboBox Canvas.Left="270" Canvas.Top="454" Height="20" Width="100" Name="stepBox"   >
                 <ComboBoxItem Content="0.5" Name="Step05"  />
                 <ComboBoxItem Content="1.0" Name="Step10"  />

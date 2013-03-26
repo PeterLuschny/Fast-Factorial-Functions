@@ -5,13 +5,12 @@
 // Comments mail to: peter(at)luschny.de
 // Created: 2010-03-01
 
-using System;
-using System.ComponentModel;
-using System.Windows;
-using System.Windows.Controls;
-
 namespace SilverFactorial
 {
+    using System.ComponentModel;
+    using System.Windows;
+    using System.Windows.Controls;
+
     /// <summary>
     /// Interaction logic for BenchmarkWindow.xaml
     /// </summary>
@@ -65,19 +64,19 @@ namespace SilverFactorial
         private bool GetParams()
         {
             string start = startBox.Text; 
-            if (!int.TryParse(start, out test.benchStart))
+            if (!int.TryParse(start, out test.testStart))
             {
                 MessageBox.Show("start is not a valid integer.\n", "Invalid Argument Error");
                 return false;
             }
 
-            if (test.benchStart < 0)
+            if (test.testStart < 0)
             {
                 MessageBox.Show("start must be a positive integer.\n", "Invalid Argument Error");
                 return false;
             }
 
-            if (test.benchStart > TestParameters.BENCH_MAX)
+            if (test.testStart > TestParameters.TEST_MAX)
             {
                 MessageBox.Show("start must <= 9000000 because n! is huge.\n", "Invalid Argument Error");
                 return false;
@@ -94,7 +93,7 @@ namespace SilverFactorial
             else test.stepFactor = 30;
 
             string len = lengthBox.Text;
-            if (!int.TryParse(len, out test.benchLength))
+            if (!int.TryParse(len, out test.testLength))
             {
                 MessageBox.Show("Length is not a valid integer.\n", "Invalid Argument Error");
                 return false;
@@ -109,13 +108,13 @@ namespace SilverFactorial
             {
                 bool check = (bool)algos[i].IsChecked;
                 if (check) c++;
-                test.selectedAlgo[i] = check;
+                test.algoSelected[i] = check;
             }
 
             // The reference algorithm is always choosen.
             algos[Candidate.INDEX_OF_REFERENCE].IsChecked = true;
-            test.selectedAlgo[Candidate.INDEX_OF_REFERENCE] = true;
-            test.cardSelected = c;
+            test.algoSelected[Candidate.INDEX_OF_REFERENCE] = true;
+            TestParameters.cardSelected = c;
             return true;
         }
 

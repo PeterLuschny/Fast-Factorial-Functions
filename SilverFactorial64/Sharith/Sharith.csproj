@@ -89,6 +89,7 @@
   <ItemGroup>
     <Compile Include="Arithmetic\XInt.cs" />
     <Compile Include="Factorial\FactorialCrandallPomerance.cs" />
+    <Compile Include="Factorial\FactorialParallelSplitPrimeSwing.cs" />
     <Compile Include="Factorial\FactorialPrimeSwingAllInOne.cs" />
     <Compile Include="Factorial\FactorialBalkan.cs" />
     <Compile Include="Factorial\FactorialBalkanBig.cs" />

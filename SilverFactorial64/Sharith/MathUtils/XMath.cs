@@ -281,6 +281,37 @@ namespace Sharith.Math.MathUtils
             return RecProduct(b, 0, k - 1);
         }
 
+        public static XInt Product(int[] a, int start, int length, int increment)
+        {
+            if (length == 0) return XInt.One;
+
+            int len = (1 + (length + 1) / 2) / increment;
+            long[] b = new long[len];
+
+            int i, k = 0;
+            bool toggel = false;
+
+            for (i = start; i < start+length; i += increment)
+            {
+                if ((toggel = !toggel)) b[k] = a[i];
+                else b[k++] *= (long)a[i];
+            }
+       
+            if (len > PARALLEL_THRESHOLD)
+            {
+                var task = Task.Factory.StartNew<XInt>(() =>
+                {
+                    return RecProduct(b, (len - 1) / 2 + 1, len - 1);
+                });
+
+                var left = RecProduct(b, 0, (len - 1) / 2);
+                var right = task.Result;
+                return left * right;
+            }
+
+            return RecProduct(b, 0, len - 1);
+        }
+
         public static XInt Product(int[] a)
         {
             return Product(a, 0, a.Length);

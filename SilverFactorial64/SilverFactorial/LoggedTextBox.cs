@@ -5,13 +5,12 @@
 // Comments mail to: peter(at)luschny.de
 // Created: 2010-03-01
 
-using System;
-using System.IO;
-using System.Windows.Controls;
-using System.Windows.Documents;
-
 namespace SilverFactorial
 {
+    using System;
+    using System.IO;
+    using System.Windows.Controls;
+
     // This delegate enables asynchronous calls for setting
     // the text property on a TextBox control.
     delegate void AppendTextCallback(string text);
@@ -128,4 +127,3 @@ namespace SilverFactorial
         }
     }
 }   // endOfLoggedTextBox
-

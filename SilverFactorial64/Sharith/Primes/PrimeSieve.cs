@@ -172,6 +172,19 @@ public class PrimeSieve : IPrimeSieve
         // The candidate is interpreted as an one point interval!
         return (new PrimeCollection(this, cand)).IsPrime();
     }
+
+    /// <summary>
+    /// Computes the smallest prime > n. Do not use it to iterate
+    /// through the sieve; use it only for isolated values!
+    /// </summary>
+    /// <param name="cand">The number to be checked.</param>
+    /// <returns>Next prime > n.</returns>
+    public int NextPrime(int n)
+    {
+        sieveRange.ContainsOrFail(n);
+        // The candidate is interpreted as an one point interval!
+        return (new PrimeCollection(this, n)).NextPrime();
+    }
  
     /// <summary>
     /// The default collection from the full sieve.
@@ -192,7 +205,18 @@ public class PrimeSieve : IPrimeSieve
     {
         return new PrimeCollection(this, new PositiveRange(low, high));
     }
- 
+
+    /// <summary>
+    /// Gives every other prime number in the given intervall.
+    /// </summary>
+    /// <param name="low">The lower bound of the collection interval.</param>
+    /// <param name="high">The higher bound of the collection interval.</param>
+    /// <returns>The collection of the prime numbers between low and high.</returns>
+    public IPrimeCollection GetPrimeCollectionEveryOther(int low, int high)
+    {
+        return new PrimeCollection(this, new PositiveRange(low, high), 2);
+    }
+
     /// <summary>
     /// Gives the collection of the prime numbers in the given range.
     /// </summary>
@@ -231,6 +255,31 @@ public class PrimeSieve : IPrimeSieve
         }
 
         return XMath.Product(primes, start, size);
+    }
+
+    /// <summary>
+    /// Computes the Product of the prime numbers in the given sieveRange
+    /// primes[start]*primes[start+increment]*primes[start+2*increment]*...
+    /// </summary>
+    /// <param name="range">The sieveRange of the enumeration.</param>
+    /// <returns>The Product of the prime numbers in the enumeration.
+    /// </returns>
+    public XInt GetPrimorial(int low, int high, int increment)
+    {
+        if (increment == 1)
+        {
+            return GetPrimorial(new PositiveRange(low, high));
+        }
+
+        var range = new PositiveRange(low, high);
+        var pc = new PrimeCollection(this, range, increment);
+        int start, size;
+        if (pc.GetSliceParameters(out start, out size))
+        {
+            return XInt.One;
+        }
+
+        return XMath.Product(primes, start, size, increment);
     }    
  
     ////////////////////// Private Inner Class ///////////////////////
@@ -242,12 +291,13 @@ public class PrimeSieve : IPrimeSieve
     /// </summary>
     internal class PrimeCollection : IPrimeCollection
     {
-        readonly PrimeSieve sieve;
-        readonly PositiveRange enumRange;
-        readonly PositiveRange primeRange;
-        readonly int start, end;
-        readonly bool isPrime;
-        int state, next, current;
+        private readonly PrimeSieve sieve;
+        private readonly PositiveRange enumRange;
+        private readonly PositiveRange primeRange;
+        private readonly int start, end, nextPrime;
+        private readonly bool isPrime;
+        private int state, next, current;
+        private int increment;
  
         /// <summary>
         /// Initializes the prime collection for the given sieve.
@@ -261,6 +311,7 @@ public class PrimeSieve : IPrimeSieve
  
             enumRange = sieve.sieveRange;
             primeRange = sieve.primeRange;
+            increment = 1;
         }
  
         /// <summary>
@@ -290,6 +341,7 @@ public class PrimeSieve : IPrimeSieve
             {
                 primeRange = new PositiveRange(start + 1, end + 1);
             }
+            increment = 1;
         }
  
         /// <summary>
@@ -307,11 +359,46 @@ public class PrimeSieve : IPrimeSieve
  
             this.sieve = sieve;
             primeRange = enumRange = null;
- 
+
             start = IndexOf(cand - 1, 0, sieve.numberOfPrimes);
             end = sieve.primes[start] == cand ? start + 1 : start;
  
             isPrime = start < end;
+            if (isPrime)
+            {
+                start = IndexOf(cand, start, sieve.numberOfPrimes);
+            }
+            nextPrime = sieve.primes[start];
+            increment = 0;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="primeSieve"></param>
+        /// <param name="increment"></param>
+        /// <param name="enumRange"></param>
+        public PrimeCollection(PrimeSieve sieve, PositiveRange enumRange, int increment)
+        {
+            sieve.sieveRange.ContainsOrFail(enumRange);
+
+            this.sieve = sieve;
+            this.enumRange = enumRange;
+
+            int nops = sieve.numberOfPrimes;
+            start = IndexOf(enumRange.Min - 1, 0, nops - 1);
+            end = IndexOf(enumRange.Max, start, nops) - 1;
+
+            if (end < start) //--  PrimeRange is empty.
+            {
+                end = -1;
+                primeRange = new PositiveRange(0, 0);
+            }
+            else
+            {
+                primeRange = new PositiveRange(start + 1, end + 1);
+            }
+            this.increment = increment;
         }
  
         /// <summary>
@@ -322,7 +409,16 @@ public class PrimeSieve : IPrimeSieve
         {
             return isPrime;
         }
- 
+
+        /// <summary>
+        /// Computes the smallest prime >= n.
+        /// </summary>
+        /// <returns>Next prime >= n.</returns>
+        public int NextPrime()
+        {
+            return nextPrime;
+        }
+
         /// <summary>
         /// Provides an enumerator of the current prime number collection.
         /// This enumerator is thread save.
@@ -388,7 +484,9 @@ public class PrimeSieve : IPrimeSieve
             {
                 case 1:
                     if (next > end) goto case 2;
-                    current = next++; return true;
+                    current = next;
+                    next += increment;
+                    return true;
                 case 2:
                     state = 2; return false;
                 default:
@@ -463,10 +561,28 @@ public class PrimeSieve : IPrimeSieve
         /// </returns>
         public int[] ToArray()
         {
+            int[] primeList;
             int primeCard = primeRange.Size();
-            int[] primeList = new int[primeCard];
- 
-            System.Array.Copy(sieve.primes, start, primeList, 0, primeCard);
+
+            if (increment == 1)
+            {
+                primeList = new int[primeCard];
+                System.Array.Copy(sieve.primes, start, primeList, 0, primeCard);
+            }
+            else
+            {
+                int size = (primeCard + 1) / increment;
+                primeList = new int[size];
+                int j = 0, i;
+                for (i = start; j < size; i += increment)
+                {
+                    primeList[j++] = sieve.primes[i];
+                }
+                if (i == size)
+                {
+                    primeList[j] = sieve.primes[i];
+                }
+            }
  
             return primeList;
         }
@@ -568,6 +684,5 @@ public class PrimeSieve : IPrimeSieve
             file.Write(file.NewLine);
             file.Write(file.NewLine);
         }
-
-    }   // endOfPrimeCollection
+    } // endOfPrimeCollection
 } }  // endOfPrimeSieve

@@ -1,7 +1,7 @@
-﻿/// This is a template.
-/// Just replace the body of "public XInt Factorial(int n)" with your function,  
-/// compile and start benchmarking your solution. If you found a nice solution
-/// please share it and send it to me for inclusion.
+﻿// This is a template.
+// Just replace the body of "public XInt Factorial(int n)" with your function,  
+// compile and start benchmarking your solution. If you found a nice solution
+// please share it and send it to me for inclusion.
 
 namespace Sharith.Math.Factorial
 {

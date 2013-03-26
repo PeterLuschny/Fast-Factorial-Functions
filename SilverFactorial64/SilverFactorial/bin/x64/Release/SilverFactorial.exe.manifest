@@ -1,12 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
-  <asmv1:assemblyIdentity name="SilverFactorial.exe" version="2.0.0.3" publicKeyToken="0000000000000000" language="en" processorArchitecture="amd64" type="win32" />
-  <description asmv2:iconFile="silverfactorial.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
+  <asmv1:assemblyIdentity name="SilverFactorial.exe" version="2.0.0.5" publicKeyToken="0000000000000000" language="en" processorArchitecture="amd64" type="win32" />
+  <description asmv2:iconFile="silverfactorial.ico" asmv2:publisher="Peter Luschny" co.v1:suiteName="Fast Factorial Function Benchmark" asmv2:product="SilverFactorial" asmv2:supportUrl="http://www.luschny.de/math/factorial/FastFactorialFunctions.htm" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
     <assemblyIdentity name="SilverFactorial" version="2.0.0.0" language="neutral" processorArchitecture="amd64" />
     <commandLine file="SilverFactorial.exe" parameters="" />
   </entryPoint>
+  <co.v1:useManifestForTrust xmlns="urn:schemas-microsoft-com:asm.v1" />
   <trustInfo>
     <security>
       <applicationRequestMinimum>
@@ -42,26 +43,26 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Sharith.dll" size="55808">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Sharith.dll" size="60928">
       <assemblyIdentity name="Sharith" version="1.0.0.0" language="neutral" processorArchitecture="amd64" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>JvVfldJguMsEbfZF3McdOUCfVegMlRFOm5E/wPhLTq8=</dsig:DigestValue>
+        <dsig:DigestValue>PffIQB6djpSRyr81MgIoX8u79QOGA/NfhW/xOpVLyQY=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="SilverFactorial.exe" size="59392">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="SilverFactorial.exe" size="61952">
       <assemblyIdentity name="SilverFactorial" version="2.0.0.0" language="neutral" processorArchitecture="amd64" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>V+rudAaK53ozR0Q2qHVGFmvStDGofaYe3C9ZpZT710Q=</dsig:DigestValue>
+        <dsig:DigestValue>KItv5H6PrA8H4moRIdJL1r3au5OA0h65H1IQOQ3ryX4=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
