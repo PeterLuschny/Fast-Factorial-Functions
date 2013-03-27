@@ -151,7 +151,7 @@ namespace SilverFactorial
                 throw new System.ArgumentOutOfRangeException(toIndex.ToString());
         }
 
-        public static void ResultsToFile(string fileName, int[] benchValues)
+        public static void ResultsToFile(string fileName)
         {
             var file = new FileInfo(@fileName);
             StreamWriter benchReport = file.AppendText();

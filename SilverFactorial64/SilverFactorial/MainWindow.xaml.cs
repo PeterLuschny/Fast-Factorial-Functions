@@ -14,14 +14,14 @@ namespace SilverFactorial
     /// <summary>
     /// Interaction logic for BenchmarkWindow.xaml
     /// </summary>
-    public partial class BenchmarkWindow : Window  // , IDisposable
+    public partial class BenchmarkWindow : Window
     {
         LoggedTextBox winsole; 
         TestParameters test;
         BenchmarkWorker benchmark;
         BackgroundWorker backgroundWorker;
         CheckBox[] algos;
-        const int NUM_OF_CANDIDATES = 23; 
+        const int NUM_OF_CANDIDATES = 24; 
 
         public BenchmarkWindow()
         {
@@ -31,7 +31,7 @@ namespace SilverFactorial
             stepBox.SelectedItem = "2.0";
             test = new TestParameters(NUM_OF_CANDIDATES); 
 
-            winsole = new LoggedTextBox(this.textBox, "FactorialBench");
+            winsole = new LoggedTextBox(this.textBox);
             benchmark = new BenchmarkWorker(winsole);
 
             logToFileCheckBox.IsChecked = true;
@@ -46,7 +46,7 @@ namespace SilverFactorial
             algos = new CheckBox[NUM_OF_CANDIDATES] 
             {algo0,algo1,algo2,algo3,algo4,algo5,algo6,algo7,
             algo8,algo9,algo10,algo11,algo12,algo13,algo14,
-            algo15,algo16,algo17,algo18,algo19,algo20,algo21,algo22};
+            algo15,algo16,algo17,algo18,algo19,algo20,algo21,algo22,algo23};
 
             int i = 0;
             foreach (CheckBox c in algos)

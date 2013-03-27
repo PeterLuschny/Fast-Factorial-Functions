@@ -78,7 +78,7 @@ namespace Sharith.Math.Factorial
             int len = (n - 1) / 4;
             if ((n % 4) != 2) len++;
 
-            //-- if type(n,odd) then high=n; else high=n-1;
+            //-- if type(n, odd) then high = n else high = n-1.
             int high = n - ((n + 1) & 1);
 
             return Product(high, len) / oddFactNdiv4;
@@ -86,22 +86,11 @@ namespace Sharith.Math.Factorial
 
         private static XInt Product(int m, int len)
         {
-            const int SEQUENTIAL_THRESHOLD = 1000;
-
             if (len == 1) return new XInt(m);
             if (len == 2) return new XInt((long)m * (m - 2));
 
             int hlen = len >> 1;
-
-            if (hlen < SEQUENTIAL_THRESHOLD)
-            {
-                return Product(m - hlen * 2, len - hlen) * Product(m, hlen);
-            }
-
-            var leftTask = Task.Factory.StartNew<XInt>(() => Product(m - hlen * 2, len - hlen));
-            var right = Product(m, hlen);
-
-            return leftTask.Result * right;
+            return Product(m - hlen * 2, len - hlen) * Product(m, hlen);
         }
 
         private static XInt[] smallOddSwing = {

@@ -78,7 +78,7 @@ namespace SilverFactorial
             }
 
             string fileName = string.Format(df.FullName + "FactorialBenchmark{0}.html", DateTime.Now.ToFileTime());
-            Result.ResultsToFile(fileName, benchValues);
+            Result.ResultsToFile(fileName);
             winsole.WriteLine("\n\nBenchmark was saved to file \n" + fileName);
             winsole.WriteLine("\n\n");
             winsole.Flush();

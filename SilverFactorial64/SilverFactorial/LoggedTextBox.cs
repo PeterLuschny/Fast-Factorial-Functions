@@ -22,7 +22,7 @@ namespace SilverFactorial
         TextBox textBox;
         AppendTextCallback appendText;
 
-        public LoggedTextBox(TextBox textBox, string name)
+        public LoggedTextBox(TextBox textBox)
         {
             string outputDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\BenchmarkApplication\";
             DirectoryInfo df = new DirectoryInfo(outputDir);
@@ -83,18 +83,6 @@ namespace SilverFactorial
         {
             if (LogToFile) streamWriter.Write(streamWriter.NewLine);
             AddToBox(Environment.NewLine);
-        }
-
-        public void WriteHot(string text)
-        {
-            if (LogToFile) streamWriter.WriteLine(text);
-            AddToBox(text);
-        }
-
-        public void WriteHotLine(string text)
-        {
-            if (LogToFile) streamWriter.WriteLine(text);
-            AddToBox(text);
         }
 
         public void WriteRed(string text)
