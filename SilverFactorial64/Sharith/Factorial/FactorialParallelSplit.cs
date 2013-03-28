@@ -66,8 +66,6 @@ namespace Sharith.Math.Factorial
  
         private static XInt Product(int n, int m)
         {
-            const int SEQUENTIAL_THRESHOLD = 100;
- 
             n = n | 1;       // Round n up to the next odd number
             m = (m - 1) | 1; // Round m down to the next odd number
  
@@ -82,16 +80,7 @@ namespace Sharith.Math.Factorial
             }
  
             int k = (n + m) >> 1;
-
-            if ((m - n) < SEQUENTIAL_THRESHOLD)
-            {
-                return Product(n, k) * Product(k + 1, m);
-            }
-
-            var leftTask = Task.Factory.StartNew<XInt>(() => Product(n, k));
-            var right = Product(k + 1, m);
- 
-            return leftTask.Result * right;
+            return Product(n, k) * Product(k + 1, m);
         }
     }
 }

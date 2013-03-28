@@ -14,7 +14,7 @@ namespace SilverFactorial
 
     internal static Candidate[] candList = new Candidate[] 
     {                             
-                                                                                        // index,benchable,primeType,recommend,simple,concurr
+                                                                                        // index,bench,primeType,recommend,simple,concurr
         new Candidate(new Sharith.Math.Factorial.ParallelPrimeSwing(), "ParallelSplitPrimeSwing",  0, true, true, true, false,true,1), 
         new Candidate(new Sharith.Math.Factorial.ParallelPrimeSwing(), "ParallelPrimeSwing ",  1, true, true, true, false,true,1), 
         new Candidate(new Sharith.Math.Factorial.ParallelPrimeSplit(), "ParallelPrimeSplit ",  2, true, true, false,false,true,1), 
@@ -26,27 +26,27 @@ namespace SilverFactorial
         new Candidate(new Sharith.Math.Factorial.PrimeVardi(),         "PrimeVardi         ",  8, false,true, false,false,false,2), 
         new Candidate(new Sharith.Math.Factorial.PrimeLeenstra(),      "PrimeLeenstra      ",  9, false,true, false,false,false,2),
         new Candidate(new Sharith.Math.Factorial.ParallelSwing(),      "ParallelSwing     ",  10, true, false,true, true, true,6),
-        new Candidate(new Sharith.Math.Factorial.Swing(),              "Swing              ", 11, true, false,true, true, false,8), 
-        new Candidate(new Sharith.Math.Factorial.Balkan(),             "Balkan             ", 12, true, false,false,true, false,9),
-        new Candidate(new Sharith.Math.Factorial.SquaredDiffProd(),    "SquaredDiffProd    ", 13, true, false,false,true, false,9), 
-        new Candidate(new Sharith.Math.Factorial.Split(),              "Split              ", 14, true, false,false,true, false,11), 
-        new Candidate(new Sharith.Math.Factorial.SwingRationalDouble(),"SwingRationalDbl   ", 15, false,false,false,false,false,11),
-        new Candidate(new Sharith.Math.Factorial.CrandallPomerance(),  "CrandallPomerance  ", 16, false,false,false,false,true,13), 
-        new Candidate(new Sharith.Math.Factorial.ProductRecursive(),   "ProductRecursive   ", 17, false,false,false,false,false,12),
-        new Candidate(new Sharith.Math.Factorial.SwingRational(),      "SwingRational      ", 18, false,false,false,false,false,13),
-        new Candidate(new Sharith.Math.Factorial.SwingDouble(),        "SwingDouble        ", 19, false,false,false,false,false,130),
-        new Candidate(new Sharith.Math.Factorial.SwingSimple(),        "SwingSimple        ", 20, false,false,false,false,false,260),
-        new Candidate(new Sharith.Math.Factorial.BoitenSplit(),        "BoitenSplit        ", 21, false,false,false,false,false,460),
-        new Candidate(new Sharith.Math.Factorial.ProductNaive(),       "ProductNaive       ", 22, false,false,false,false,false,1000),
+        new Candidate(new Sharith.Math.Factorial.ParallelSplit(),      "ParallelSplit     ",  11, true,false,false,true, true,7),
+        new Candidate(new Sharith.Math.Factorial.Swing(),              "Swing              ", 12, true, false,true, true, false,8), 
+        new Candidate(new Sharith.Math.Factorial.Balkan(),             "Balkan             ", 13, true, false,false,true, false,9),
+        new Candidate(new Sharith.Math.Factorial.SquaredDiffProd(),    "SquaredDiffProd    ", 14, true, false,false,true, false,9), 
+        new Candidate(new Sharith.Math.Factorial.Split(),              "Split              ", 15, true, false,false,true, false,11), 
+        new Candidate(new Sharith.Math.Factorial.SwingRationalDouble(),"SwingRationalDbl   ", 16, false,false,false,false,false,11),
+        new Candidate(new Sharith.Math.Factorial.CrandallPomerance(),  "CrandallPomerance  ", 17, false,false,false,false,true,13), 
+        new Candidate(new Sharith.Math.Factorial.ProductRecursive(),   "ProductRecursive   ", 18, false,false,false,false,false,12),
+        new Candidate(new Sharith.Math.Factorial.SwingRational(),      "SwingRational      ", 19, false,false,false,false,false,13),
+        new Candidate(new Sharith.Math.Factorial.SwingDouble(),        "SwingDouble        ", 20, false,false,false,false,false,130),
+        new Candidate(new Sharith.Math.Factorial.SwingSimple(),        "SwingSimple        ", 21, false,false,false,false,false,260),
+        new Candidate(new Sharith.Math.Factorial.BoitenSplit(),        "BoitenSplit        ", 22, false,false,false,false,false,460),
         new Candidate(new Sharith.Math.Factorial.MyFactorial(),        "MyFactorial        ", 23, false,false,false,false,false,20) 
     };
 
-    //  new Candidate(new Sharith.Math.Factorial.ParallelSplit(),    "ParallelSplit     ", false,false,false,false,true,10),
     //  new Candidate(new Sharith.Math.Factorial.PrimeBorwein(),     "PrimeBorwein      ", false,true, false,false,false,4),
     //  new Candidate(new Sharith.Math.Factorial.Difference(),       "Difference        ", false,false,false,false,false,21), 
     //  new Candidate(new Sharith.Math.Factorial.AdditiveSwing(),    "AdditiveSwing     ", false,false,false,false,false,40), 
     //  new Candidate(new Sharith.Math.Factorial.AdditiveMoessner(), "AdditiveMoessner  ", false,false,false,false,false,80)  
     //  new Candidate(new Sharith.Math.Factorial.SquaredDifference(),"SquaredDiff       ", false,false,false,false,false,860),
+    //  new Candidate(new Sharith.Math.Factorial.ProductNaive(),     "ProductNaive      ", false,false,false,false,false,1000),
     
      internal Hashtable performance;
      // -- the reference algorithm is set by this constant, which is an index in the array above.

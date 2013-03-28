@@ -30,11 +30,11 @@
             <CheckBox Name="algo8"  Height="16"  Width="140" Canvas.Left="20" Canvas.Top="227" Foreground="ForestGreen"  />
             <CheckBox Name="algo9"  Height="16"  Width="140" Canvas.Left="20" Canvas.Top="248" Foreground="ForestGreen"  />
             <CheckBox Name="algo10" Height="16"  Width="140" Canvas.Left="20" Canvas.Top="269" Foreground="Brown"  />
-            <CheckBox Name="algo11" Height="16"  Width="140" Canvas.Left="20" Canvas.Top="290" Foreground="DodgerBlue"  />
+            <CheckBox Name="algo11" Height="16"  Width="140" Canvas.Left="20" Canvas.Top="290" Foreground="Brown"  />
             <CheckBox Name="algo12" Height="16"  Width="140" Canvas.Left="20" Canvas.Top="311" Foreground="DodgerBlue"  />
             <CheckBox Name="algo13" Height="16"  Width="140" Canvas.Left="20" Canvas.Top="332" Foreground="DodgerBlue"  />
             <CheckBox Name="algo14" Height="16"  Width="140" Canvas.Left="20" Canvas.Top="353" Foreground="DodgerBlue"  />
-            <CheckBox Name="algo15" Height="16"  Width="140" Canvas.Left="20" Canvas.Top="374"  />
+            <CheckBox Name="algo15" Height="16"  Width="140" Canvas.Left="20" Canvas.Top="374" Foreground="DodgerBlue"  />
             <CheckBox Name="algo16" Height="16"  Width="140" Canvas.Left="20" Canvas.Top="395"  />
             <CheckBox Name="algo17" Height="16"  Width="140" Canvas.Left="20" Canvas.Top="416"  />
             <CheckBox Name="algo18" Height="16"  Width="140" Canvas.Left="20" Canvas.Top="437"  />

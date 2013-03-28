@@ -43,14 +43,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Sharith.dll" size="60928">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Sharith.dll" size="60416">
       <assemblyIdentity name="Sharith" version="1.0.0.0" language="neutral" processorArchitecture="amd64" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>BqpDhFTlgctp0GGArMqJ2Z/DlDc4uFMO3Sf52LcANTI=</dsig:DigestValue>
+        <dsig:DigestValue>rE5FROy9BXg6bZcf1rOG0//U80lzr4nfhgBxJfvyedQ=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -62,7 +62,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>PuVNV1xZ2WXCl8URVt/p+nzmMTC55LiPRPX6K2GWh+o=</dsig:DigestValue>
+        <dsig:DigestValue>wjdjHuRjjwdbUgMOv9SHyealTctybb5P65MwQNJ68WU=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
