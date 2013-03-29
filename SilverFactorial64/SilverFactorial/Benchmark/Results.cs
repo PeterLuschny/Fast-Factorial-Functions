@@ -87,20 +87,30 @@ namespace SilverFactorial
             int[] testValues = TestParameters.testValues;
             int i = 0;
 
-            foreach (Candidate cand in Candidate.Selected)
+            if (testValues.Length == 1)
             {
-                int sum = 0; bool first = true;
-
-                foreach (var value in testValues)
+                foreach (Candidate cand in Candidate.Selected)
                 {
-                    if (first) { first = false; continue; }
-                    Result res = (Result)cand.performance[value];
-                    var eddms = (int) res.eddms;
-                    sum += eddms;
+                    Result res = (Result)cand.performance[testValues[0]];
+                    EffCand[i++] = new Tuple<int, int>((int)res.eddms, cand.Index);
                 }
-                var anz = (testValues.Length - 1);
-                var val = (anz == 0) ? sum : sum / anz;
-                EffCand[i++] = new Tuple<int, int>(val, cand.Index);
+            }
+            else
+            {
+                foreach (Candidate cand in Candidate.Selected)
+                {
+                    int sum = 0; bool first = true;
+
+                    foreach (var value in testValues)
+                    {
+                        if (first) { first = false; continue; }
+                        Result res = (Result)cand.performance[value];
+                        var eddms = (int)res.eddms;
+                        sum += eddms;
+                    }
+                    var val = sum / (testValues.Length - 1);
+                    EffCand[i++] = new Tuple<int, int>(val, cand.Index);
+                }
             }
             Array.Sort(EffCand, Compare);
         }
