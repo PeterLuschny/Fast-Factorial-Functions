@@ -5,15 +5,14 @@
 
 // Based on:
 // P. Goetgheluck, Computing Binomial Coefficients,
-// American Math. Monthly 94 (1987), 360-365. 
-// However, I software patent would describe  
-// a list of additional features.
+// American Math. Monthly 94 (1987), 360-365.
+// with some additional features.
 
 #include <assert.h>
 #include "binomial.h"
 #include "xmath.h"
 
-void Binomial::ParallelBinomial(Xint binom, ulong n, ulong k)
+void Binomial::PrimeBinomial(Xint binom, ulong n, ulong k)
 {
     assert(k <= n);  // TODO: Error handling
 
@@ -27,7 +26,7 @@ void Binomial::ParallelBinomial(Xint binom, ulong n, ulong k)
     ulong* primes;
     ulong piN = Xmath::PrimeSieve(&primes, n);
 
-    for(ulong i = 0; i < piN; i++) 
+    for(ulong i = 0; i < piN; i++)
     {
         ulong prime = primes[i];
 
@@ -63,9 +62,10 @@ void Binomial::ParallelBinomial(Xint binom, ulong n, ulong k)
             N /= prime;
             K /= prime;
         }
-        primes[fi++] = p; 
+        primes[fi++] = p;
     }
 
-    Xmath::ParallelProduct(binom, primes, 0, fi);
-	lmp::FreeUi(primes, piN);
+    Xmath::Product(binom, primes, 0, fi);
+    lmp::FreeUi(primes, piN);
 }
+

@@ -47,11 +47,11 @@ void Schoenhage::ParallelFactorial(Xint result, ulong n)
     for (; iterLen >= 0; iterLen--)
     {
         ulong count = 0;
-        for (ulong m = 1; m < piN ; m++)
+        for (ulong k = 1; k < piN ; k++)
         {
-            if (((exponents[m] >> iterLen) & 1) == 1)
+            if (((exponents[k] >> iterLen) & 1) == 1)
             {
-                factors[count++] = primes[m];
+                factors[count++] = primes[k];
             }
         }
 
@@ -70,3 +70,4 @@ void Schoenhage::ParallelFactorial(Xint result, ulong n)
     lmp::FreeUi(exponents, piN);
     lmp::Clear(prod);
 }
+

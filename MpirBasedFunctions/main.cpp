@@ -20,12 +20,14 @@ static void FactTest()
 {
     Test::FactorialSanityCheck(1000);
 
-    for(ulong n = 1000000; n < 64000001; n = n*2)
+  //for(ulong n = 1000000; n < 64000001; n = n*2)
+    for(ulong n = 1000000; n < 1000000000; n = n*2)
     {
        Test::FactorialBenchmark(n);
     }
 
-    Test::FactorialBenchmark(100000000);
+ //Test::FactorialBenchmark(100000000);
+   Test::FactorialBenchmark(1000000000);
 }
 
 static void DoubleFactTest()
@@ -51,16 +53,16 @@ static void BinomialTest()
 
 int main()
 {
-	char yes; 
+   char yes; 
 
-	std::cout << std::endl << "Factorial Test? (y/n)" << std::endl;
-	std::cin >> yes; if(yes == 'y' || yes == 'Y') FactTest();
+   std::cout << std::endl << "Factorial Test? (y/n)" << std::endl;
+   std::cin >> yes; if(yes == 'y' || yes == 'Y') FactTest();
 
-	std::cout << std::endl << "Binomial Test? (y/n)" << std::endl;
-	std::cin >> yes; if(yes == 'y' || yes == 'Y') BinomialTest();
+   std::cout << std::endl << "Binomial Test? (y/n)" << std::endl;
+   std::cin >> yes; if(yes == 'y' || yes == 'Y') BinomialTest();
 
-	std::cout << std::endl << "Double Factorial Test? (y/n)" << std::endl;
-	std::cin >> yes; if(yes == 'y' || yes == 'Y') DoubleFactTest();
+   std::cout << std::endl << "Double Factorial Test? (y/n)" << std::endl;
+   std::cin >> yes; if(yes == 'y' || yes == 'Y') DoubleFactTest();
 
     std::cout << std::endl << "Done." << std::endl;  std::cin.get();
     return 0;

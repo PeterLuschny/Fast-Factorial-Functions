@@ -3,18 +3,15 @@
 // License: LGPL version 2.1 or (at your option)
 // Creative Commons Attribution-ShareAlike 3.0
 
-// Computes double factorial.
-
 #include <string.h>
 #include "primeswing.h"
 #include "xmath.h"
 
-void PrimeSwing::ParallelDoubleFactorial(Xint fact, ulong d)
+void PrimeSwing::Factorial(Xint fact, ulong n)
 {
-    if (d < THRESHOLD) { Xmath::NaiveDoubleFactorial(fact, d); return; }
+    if (n < THRESHOLD) { Xmath::NaiveFactorial(fact, n); return; }
     lmp::SetUi(fact, 1);
 
-    int n = ((d & 1) == 0) ? d / 2 : d;
     ulong* primes;
     ulong piN = Xmath::PrimeSieve(&primes, n);
     ulong* factors = lmp::MallocUi(piN);
@@ -33,22 +30,16 @@ void PrimeSwing::ParallelDoubleFactorial(Xint fact, ulong d)
         lim[i] = iter[i] < SOSLEN / 2 ?  0 :
         GetIndexOf(primes, iter[i], lim[i-1], piN);
 
-    boost::thread pow2fact;
-
     for (i = 1; i < iterLen; i++)
     {
         ulong N = iter[i];
-        bool norm = (((d & 1) == 0) || (i < iterLen - 1));
 
         if (N < SOSLEN)
         {
-            if(norm) lmp::Pow2(fact, fact);
             lmp::SetUi(swing, smallOddSwing[N]);
         }
         else
         {
-            if(norm) pow2fact = boost::thread(lmp::Pow2, fact, fact);
-
             ulong prime = 3;
             slong pi = 2, fi = 0;
             ulong max = Xmath::Sqrt(N);
@@ -61,7 +52,10 @@ void PrimeSwing::ParallelDoubleFactorial(Xint fact, ulong d)
                     if ((q & 1) == 1) { p *= prime; }
                 }
 
-                if (p > 1) { factors[fi++] = p; }
+                if (p > 1)
+            {
+               factors[fi++] = p;
+            }
                 prime = primes[pi++];
             }
 
@@ -75,20 +69,19 @@ void PrimeSwing::ParallelDoubleFactorial(Xint fact, ulong d)
                 prime = primes[pi++];
             }
 
+            // for(int k=lim[i-1]; k<lim[i]; k++) {factors[fi++]=primes[k];}
+
             pi = lim[i] - lim[i-1];
             memcpy(factors + fi, primes + lim[i-1], pi * sizeof(ulong));
 
             Xmath::Product(swing, factors, 0, fi + pi);
-            if(norm) pow2fact.join();
         }
 
+        lmp::Pow2(fact, fact);
         lmp::Mul(fact, fact, swing);
     }
 
-    if((d & 1) == 0)
-    {
-        lmp::Mul2Exp(fact, fact, d - Xmath::BitCount(n));
-    }
+    lmp::Mul2Exp(fact, fact, n - Xmath::BitCount(n));
 
     lmp::Clear(swing);
     lmp::Clear(primorial);

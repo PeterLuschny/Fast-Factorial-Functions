@@ -19,3 +19,4 @@ public:
 };
 
 #endif // SCHOENHAGE_H_
+

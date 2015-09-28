@@ -7,7 +7,7 @@
 #include "primeswing.h"
 #include "xmath.h"
 
-void PrimeSwing::Factorial(Xint fact, ulong n)
+void PrimeSwing::ParallelFactorial(Xint fact, ulong n)
 {
     if (n < THRESHOLD) { Xmath::NaiveFactorial(fact, n); return; }
     lmp::SetUi(fact, 1);
@@ -36,10 +36,13 @@ void PrimeSwing::Factorial(Xint fact, ulong n)
 
         if (N < SOSLEN)
         {
+            lmp::Pow2(fact, fact);
             lmp::SetUi(swing, smallOddSwing[N]);
         }
         else
         {
+            std::thread pow(lmp::Pow2, fact, fact);
+
             ulong prime = 3;
             slong pi = 2, fi = 0;
             ulong max = Xmath::Sqrt(N);
@@ -52,10 +55,7 @@ void PrimeSwing::Factorial(Xint fact, ulong n)
                     if ((q & 1) == 1) { p *= prime; }
                 }
 
-                if (p > 1) 
-				{ 
-					factors[fi++] = p; 
-				}
+                if (p > 1) { factors[fi++] = p; }
                 prime = primes[pi++];
             }
 
@@ -69,15 +69,13 @@ void PrimeSwing::Factorial(Xint fact, ulong n)
                 prime = primes[pi++];
             }
 
-            // for(int k=lim[i-1]; k<lim[i]; k++) {factors[fi++]=primes[k];}
-
             pi = lim[i] - lim[i-1];
             memcpy(factors + fi, primes + lim[i-1], pi * sizeof(ulong));
 
             Xmath::Product(swing, factors, 0, fi + pi);
+            pow.join();
         }
 
-        lmp::Pow2(fact, fact);
         lmp::Mul(fact, fact, swing);
     }
 
@@ -90,3 +88,4 @@ void PrimeSwing::Factorial(Xint fact, ulong n)
     lmp::FreeUi(iter, iterLen);
     lmp::FreeUi(lim, iterLen);
 }
+

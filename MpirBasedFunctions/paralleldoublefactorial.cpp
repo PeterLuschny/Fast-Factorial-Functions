@@ -3,15 +3,18 @@
 // License: LGPL version 2.1 or (at your option)
 // Creative Commons Attribution-ShareAlike 3.0
 
+// Computes double factorial.
+
 #include <string.h>
 #include "primeswing.h"
 #include "xmath.h"
 
-void PrimeSwing::ParallelFactorial(Xint fact, ulong n)
+void PrimeSwing::ParallelDoubleFactorial(Xint fact, ulong d)
 {
-    if (n < THRESHOLD) { Xmath::NaiveFactorial(fact, n); return; }
+    if (d < THRESHOLD) { Xmath::NaiveDoubleFactorial(fact, d); return; }
     lmp::SetUi(fact, 1);
 
+    int n = ((d & 1) == 0) ? d / 2 : d;
     ulong* primes;
     ulong piN = Xmath::PrimeSieve(&primes, n);
     ulong* factors = lmp::MallocUi(piN);
@@ -30,18 +33,21 @@ void PrimeSwing::ParallelFactorial(Xint fact, ulong n)
         lim[i] = iter[i] < SOSLEN / 2 ?  0 :
         GetIndexOf(primes, iter[i], lim[i-1], piN);
 
+    std::thread pow2fact;
+
     for (i = 1; i < iterLen; i++)
     {
         ulong N = iter[i];
+        bool norm = (((d & 1) == 0) || (i < iterLen - 1));
 
         if (N < SOSLEN)
         {
-            lmp::Pow2(fact, fact);
+            if(norm) lmp::Pow2(fact, fact);
             lmp::SetUi(swing, smallOddSwing[N]);
         }
         else
         {
-            boost::thread pow(lmp::Pow2, fact, fact);
+            if(norm) pow2fact = std::thread(lmp::Pow2, fact, fact);
 
             ulong prime = 3;
             slong pi = 2, fi = 0;
@@ -73,13 +79,16 @@ void PrimeSwing::ParallelFactorial(Xint fact, ulong n)
             memcpy(factors + fi, primes + lim[i-1], pi * sizeof(ulong));
 
             Xmath::Product(swing, factors, 0, fi + pi);
-            pow.join();
+            if(norm) pow2fact.join();
         }
 
         lmp::Mul(fact, fact, swing);
     }
 
-    lmp::Mul2Exp(fact, fact, n - Xmath::BitCount(n));
+    if((d & 1) == 0)
+    {
+        lmp::Mul2Exp(fact, fact, d - Xmath::BitCount(n));
+    }
 
     lmp::Clear(swing);
     lmp::Clear(primorial);
@@ -88,3 +97,4 @@ void PrimeSwing::ParallelFactorial(Xint fact, ulong n)
     lmp::FreeUi(iter, iterLen);
     lmp::FreeUi(lim, iterLen);
 }
+

@@ -7,7 +7,7 @@
 #define XMATH_H_
 
 #include <assert.h>
-#include <boost/thread.hpp>
+#include <thread>
 #include "lmp.h"
 #include "primeswing.h"
 
@@ -46,7 +46,7 @@ public:
             return;
         }
 
-        slong threadCnt = (slong) boost::thread::hardware_concurrency();
+        slong threadCnt = (slong) std::thread::hardware_concurrency();
 
         if(threadCnt < 2)
         {
@@ -57,7 +57,7 @@ public:
         slong halfLen = len / 2;
         Xint temp1; lmp::Init(temp1);
 
-        boost::thread prod(Xmath::Product, temp1, a, start, halfLen);
+        std::thread prod(Xmath::Product, temp1, a, start, halfLen);
         Xmath::Product(result, a, start + halfLen, len - halfLen);
         prod.join();
         lmp::Mul(result, result, temp1);
@@ -77,30 +77,30 @@ public:
 *  found without allocating a prime list.
 */
 
-#define IS_PRIME(P) ((isComposite[(P) >> 5] & pow2[(P) & (bitsPerInt - 1)]) == 0) 
-#define SET_COMPOSITE(C) (isComposite[(C) >> 5] |= pow2[(C) & (bitsPerInt - 1)])  
+#define IS_PRIME(P) ((isComposite[(P) >> 5] & pow2[(P) & (bitsPerInt - 1)]) == 0)
+#define SET_COMPOSITE(C) (isComposite[(C) >> 5] |= pow2[(C) & (bitsPerInt - 1)])
 
 static slong xPrimeSieve(ulong** Primes, ulong n, int plist)
 {
-    const int bitsPerInt = 32; 
+    const int bitsPerInt = 32;
     int toggle = 0, i, t, bitFieldLength;
     ulong *isComposite; ulong *primes;
     ulong d1 = 8, d2 = 8, p1 = 3, p2 = 7, s = 7, s2 = 3;
-    ulong p = 0, k = 1, max = n / 3, piN, inc; 
+    ulong p = 0, k = 1, max = n / 3, piN, inc;
     ulong pow2[bitsPerInt];
 
     /* precondition n > 2 */
     assert(n > 2);
 
     bitFieldLength = (n / (3 * bitsPerInt)) + 1;
-    isComposite = lmp::MallocUi(bitFieldLength); 
+    isComposite = lmp::MallocUi(bitFieldLength);
     for (i = 0; i < bitFieldLength; i++) isComposite[i] = 0;
 
     /* bitfield powers of 2 */
     pow2[0] = 1; for (i = 1; i < bitsPerInt; i++) pow2[i] = k <<= 1;
 
     while (s < max)  /* --  scan the sieve */
-    {   
+    {
         if (IS_PRIME(p))   /* --  if a prime is found */
         {
             inc = p1 + p2;   /* --  then cancel its multiples */
@@ -208,7 +208,7 @@ static slong NumberOfPrimes(ulong n)
     {
         Xint temp1; lmp::Init(temp1);
         Xint temp2; lmp::Init(temp2);
-        
+
         PrimeSwing::Factorial(result, n);
         PrimeSwing::Factorial(temp1, k);
         PrimeSwing::Factorial(temp2, n - k);

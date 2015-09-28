@@ -6,14 +6,13 @@
 // Based on:
 // P. Goetgheluck, Computing Binomial Coefficients,
 // American Math. Monthly 94 (1987), 360-365. 
-// However, I software patent would describe  
-// a list of additional features.
+// with some additional features.
 
 #include <assert.h>
 #include "binomial.h"
 #include "xmath.h"
 
-void Binomial::PrimeBinomial(Xint binom, ulong n, ulong k)
+void Binomial::ParallelBinomial(Xint binom, ulong n, ulong k)
 {
     assert(k <= n);  // TODO: Error handling
 
@@ -66,6 +65,6 @@ void Binomial::PrimeBinomial(Xint binom, ulong n, ulong k)
         primes[fi++] = p; 
     }
 
-    Xmath::Product(binom, primes, 0, fi);
-    lmp::FreeUi(primes, piN);
+    Xmath::ParallelProduct(binom, primes, 0, fi);
+   lmp::FreeUi(primes, piN);
 }

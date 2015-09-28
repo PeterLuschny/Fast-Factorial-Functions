@@ -16,7 +16,7 @@
 
 static ulong MemoryConsumption(ulong n, int type)
 {
-    ulong mem;
+    ulong mem = 0;
 
     if(type == 0)  // -- case swing
     {
@@ -38,7 +38,7 @@ static ulong MemoryConsumption(ulong n, int type)
 class Test {
 public:
 
-    static void Test::FactorialSanityCheck(ulong limit)
+    static void FactorialSanityCheck(ulong limit)
     {
         Xint swing, paraswing, schoen, paraschoen, fact;
         lmp::InitSetUi(swing, 1);
@@ -85,7 +85,7 @@ public:
         lmp::Clear(fact);
     }
 
-    static void Test::FactorialBenchmark(ulong n)
+    static void FactorialBenchmark(ulong n)
     {
         Xint swing, paraswing, schoen, paraschoen, fact;
 
@@ -143,7 +143,7 @@ public:
         for (ulong n = 0; n < limit; n++)
         {
             std::cout << n << "," ;
-			Xmath::NaiveDoubleFactorial(dblfact, n);
+         Xmath::NaiveDoubleFactorial(dblfact, n);
 
             PrimeSwing::ParallelDoubleFactorial(paraswing, n);
             if (lmp::Cmp(dblfact, paraswing) != 0) {
@@ -213,9 +213,9 @@ public:
         for (ulong n = 0; n < limit; n++)
         for (ulong k = 0; k <= n; k++)
         {
-			Xmath::NaiveBinomial(naivebinom, n, k);
+         Xmath::NaiveBinomial(naivebinom, n, k);
             std::cout << n << "," << k  << " " ;
-            mpz_out_str(stdout, 10, naivebinom); 
+            mpz_out_str(stdout, 10, naivebinom);
             std::cout << std::endl;
 
             Binomial::ParallelBinomial(parabinom, n, k);
@@ -245,15 +245,15 @@ public:
     static void BinomialBenchmark(ulong n, ulong k)
     {
         Xint binom, parabinom, libbinom, naivebinom;
-        
+
         std::cout << std::endl << "Testing binomial: "
             << n << "," << k  << std::endl;
 
         lmp::Init(naivebinom);
-		Xmath::NaiveBinomial(naivebinom, n, k);
+      Xmath::NaiveBinomial(naivebinom, n, k);
 
         std::cout << "ParallelBinomial: ";
-        {              
+        {
             lmp::Init(parabinom); StopWatch::Start();
             Binomial::ParallelBinomial(parabinom, n, k);
             StopWatch::ElapsedTime(); std::cout << std::endl;
@@ -263,7 +263,7 @@ public:
             lmp::Clear(parabinom);
         }
         std::cout << "PrimeBinomial:    ";
-        {            
+        {
             lmp::Init(binom); StopWatch::Start();
             Binomial::PrimeBinomial(binom, n, k);
             StopWatch::ElapsedTime(); std::cout << std::endl;
@@ -273,7 +273,7 @@ public:
             lmp::Clear(binom);
         }
         std::cout << "LibraryBinomial:  ";
-        {            
+        {
             lmp::Init(libbinom); StopWatch::Start();
             lmp::BinomialUiUi(libbinom, n, k);
             StopWatch::ElapsedTime(); std::cout << std::endl;

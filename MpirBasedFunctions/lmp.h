@@ -10,7 +10,9 @@
 
 #include <stdlib.h>
 
+#ifndef __GMP_H__
 #include "mpir.h"
+#endif
 
 typedef mpz_t Xint;
 typedef long int slong;
