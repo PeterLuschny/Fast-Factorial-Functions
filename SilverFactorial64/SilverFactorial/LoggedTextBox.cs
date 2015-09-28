@@ -25,18 +25,18 @@ namespace SilverFactorial
         public LoggedTextBox(TextBox textBox)
         {
             string outputDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\BenchmarkApplication\";
-            DirectoryInfo df = new DirectoryInfo(outputDir);
+            var df = new DirectoryInfo(outputDir);
             if (! df.Exists) 
             {
                 df = Directory.CreateDirectory(df.FullName);
             }
 
             string fileName = string.Format(df.FullName + "BenchmarkApplication{0}.log", DateTime.Now.ToFileTime());
-            FileStream logFile = new FileStream(fileName, FileMode.Append, FileAccess.Write, FileShare.None);
-            streamWriter = new StreamWriter(logFile);
+            var logFile = new FileStream(fileName, FileMode.Append, FileAccess.Write, FileShare.None);
+            this.streamWriter = new StreamWriter(logFile);
             this.textBox = textBox;
 
-            appendText = delegate(string text) 
+            this.appendText = delegate(string text) 
             {
                 textBox.AppendText(text);
                 textBox.ScrollToEnd();

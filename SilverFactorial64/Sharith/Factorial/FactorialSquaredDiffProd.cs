@@ -1,45 +1,39 @@
-/// -------- ToujoursEnBeta
-/// Author & Copyright : Peter Luschny
-/// License: LGPL version 3.0 or (at your option)
-/// Creative Commons Attribution-ShareAlike 3.0
-/// Comments mail to: peter(at)luschny.de
-/// Created: 2010-03-01
+// -------- ToujoursEnBeta
+// Author & Copyright : Peter Luschny
+// License: LGPL version 3.0 or (at your option)
+// Creative Commons Attribution-ShareAlike 3.0
+// Comments mail to: peter(at)luschny.de
+// Created: 2010-03-01
 
-namespace Sharith.Math.Factorial 
+namespace Sharith.Factorial 
 {
-    using System.Threading.Tasks;
-    using XInt = Sharith.Arithmetic.XInt;
-    using XMath = Sharith.Math.MathUtils.XMath;
+    using XInt = Arithmetic.XInt;
+    using XMath = MathUtils.XMath;
 
     public class SquaredDiffProd : IFactorialFunction 
     {
-        public SquaredDiffProd() { }
-
-        public string Name
-        {
-            get { return "SquaredDiffProduct  "; }
-        }                
+        public string Name => "SquaredDiffProduct  ";
 
         public XInt Factorial(int n)
         {
             if (n < 0)
             {
-                throw new System.ArgumentOutOfRangeException("n",
-                    Name + ": n >= 0 required, but was " + n);
+                throw new System.ArgumentOutOfRangeException(
+                          this.Name + ": " + nameof(n) + " >= 0 required, but was " + n);
             }
 
             if (n < 7)
             {
-                return (XInt)(new int[] { 1, 1, 2, 6, 24, 120, 720 })[n];
+                return (XInt)(new[] { 1, 1, 2, 6, 24, 120, 720 })[n];
             }
 
             long h = n / 2;
-            long q = h * h;
+            var q = h * h;
             var f = new long[(int)h];
             f[0] = (n & 1) == 1 ? 2 * q * n : 2 * q;
-            int i = 1;
+            var i = 1;
 
-            for (int d = 1; d < n - 2; d += 2)
+            for (var d = 1; d < n - 2; d += 2)
             {
                 f[i++] = q -= d;
             }
@@ -47,4 +41,4 @@ namespace Sharith.Math.Factorial
             return XMath.Product(f, f.Length);
         }
     }
-} //endOfFactorialSquaredDiffProd
+} // endOfFactorialSquaredDiffProd

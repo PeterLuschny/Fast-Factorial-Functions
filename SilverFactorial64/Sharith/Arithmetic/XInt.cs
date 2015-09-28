@@ -15,7 +15,7 @@ namespace Sharith.Arithmetic
     /// Wrapper for MPIR's mpz_t type.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    internal struct mpz_t
+    internal struct MpzT
     {
         internal Int32 _mp_alloc;
         internal Int32 _mp_size;
@@ -27,7 +27,7 @@ namespace Sharith.Arithmetic
     /// </summary>
     public class XInt
     {
-        private mpz_t impl;
+        private MpzT impl;
 
         public static readonly XInt One = new XInt(1);
         public static readonly XInt Zero = new XInt(0);
@@ -79,7 +79,7 @@ namespace Sharith.Arithmetic
             }
             else // value < 0
             {
-                Int64 absValue = (Int64)(-value);
+                var absValue = (Int64)(-value);
 
                 if (absValue <= UInt32.MaxValue)
                 {
@@ -269,7 +269,7 @@ namespace Sharith.Arithmetic
             if(this.impl._mp_size == 0) return true;
             unsafe
             {
-                Int32* p = (Int32*)this.impl.ptr;
+                var p = (Int32*)this.impl.ptr;
                 return (*p & 1) == 0;
             }
         }
@@ -292,7 +292,7 @@ namespace Sharith.Arithmetic
 
             unsafe
             {
-                Int32* p = (Int32*)this.impl.ptr;
+                var p = (Int32*)this.impl.ptr;
 
                 while (count-- > 0)
                 {
@@ -308,8 +308,8 @@ namespace Sharith.Arithmetic
         {
             if (object.ReferenceEquals(obj, null)) return false;
             if (this.GetType() != obj.GetType()) return false;
-            XInt IntObj = (XInt)obj; 
-            return mpz_cmp(ref IntObj.impl, ref this.impl) == 0;
+            var intObj = (XInt)obj; 
+            return mpz_cmp(ref intObj.impl, ref this.impl) == 0;
         }
 
         public static XInt Sqrt(XInt i)
@@ -335,7 +335,7 @@ namespace Sharith.Arithmetic
         {
             if (exp == 2) return bas * bas;
             if (exp >= 0) return Pow(bas, (UInt32)exp);
-            throw new ArgumentOutOfRangeException("exp");
+            throw new ArgumentOutOfRangeException(nameof(exp));
         }
 
         public static XInt Pow(UInt32 bas, UInt32 exp)
@@ -396,128 +396,128 @@ namespace Sharith.Arithmetic
 
         public static XInt Factorial(Int32 x)
         {
-            XInt z = new XInt();
+            var z = new XInt();
             mpz_fac_ui(ref z.impl, (UInt32)x);
             return z;
         }
         
         #region DLL imports
 
-        private const string mpir = "mpir.dll";
+        private const string Mpir = "mpir.dll";
 
-        [DllImport(mpir, EntryPoint = "__gmpz_init")]
-        private static extern void mpz_init(ref mpz_t value);
+        [DllImport(Mpir, EntryPoint = "__gmpz_init")]
+        private static extern void mpz_init(ref MpzT value);
 
-        [DllImport(mpir, EntryPoint = "__gmpz_init_set_si")]
-        private static extern void mpz_init_set_si(ref mpz_t value, Int32 v);
+        [DllImport(Mpir, EntryPoint = "__gmpz_init_set_si")]
+        private static extern void mpz_init_set_si(ref MpzT value, Int32 v);
 
-        [DllImport(mpir, EntryPoint = "__gmpz_init_set_ui")]
-        private static extern void mpz_init_set_ui(ref mpz_t rop, UInt32 v);
+        [DllImport(Mpir, EntryPoint = "__gmpz_init_set_ui")]
+        private static extern void mpz_init_set_ui(ref MpzT rop, UInt32 v);
 
-        [DllImport(mpir, EntryPoint = "__gmpz_init_set_str")]
-        private static extern Int32 mpz_init_set_str(ref mpz_t rop, IntPtr s, Int32 basis);
+        [DllImport(Mpir, EntryPoint = "__gmpz_init_set_str")]
+        private static extern Int32 mpz_init_set_str(ref MpzT rop, IntPtr s, Int32 basis);
 
-        [DllImport(mpir, EntryPoint = "__gmpz_clear")]
-        private static extern void mpz_clear(ref mpz_t src);
+        [DllImport(Mpir, EntryPoint = "__gmpz_clear")]
+        private static extern void mpz_clear(ref MpzT src);
 
-        [DllImport(mpir, EntryPoint = "__gmpz_mul_si")]
-        private static extern void mpz_mul_si(ref mpz_t dest, ref mpz_t src, Int32 val);
+        [DllImport(Mpir, EntryPoint = "__gmpz_mul_si")]
+        private static extern void mpz_mul_si(ref MpzT dest, ref MpzT src, Int32 val);
 
-        [DllImport(mpir, EntryPoint = "__gmpz_mul_ui")]
-        private static extern void mpz_mul_ui(ref mpz_t dest, ref mpz_t src, UInt32 val);
+        [DllImport(Mpir, EntryPoint = "__gmpz_mul_ui")]
+        private static extern void mpz_mul_ui(ref MpzT dest, ref MpzT src, UInt32 val);
 
-        [DllImport(mpir, EntryPoint = "__gmpz_mul")]
-        private static extern void mpz_mul(ref mpz_t dest, ref mpz_t x, ref mpz_t y);
+        [DllImport(Mpir, EntryPoint = "__gmpz_mul")]
+        private static extern void mpz_mul(ref MpzT dest, ref MpzT x, ref MpzT y);
 
-        [DllImport(mpir, EntryPoint = "__gmpz_add")]
-        private static extern void mpz_add(ref mpz_t dest, ref mpz_t src, ref mpz_t src2);
+        [DllImport(Mpir, EntryPoint = "__gmpz_add")]
+        private static extern void mpz_add(ref MpzT dest, ref MpzT src, ref MpzT src2);
 
-        [DllImport(mpir, EntryPoint = "__gmpz_add_ui")]
-        private static extern void mpz_add_ui(ref mpz_t dest, ref mpz_t src, UInt32 val);
+        [DllImport(Mpir, EntryPoint = "__gmpz_add_ui")]
+        private static extern void mpz_add_ui(ref MpzT dest, ref MpzT src, UInt32 val);
 
-        [DllImport(mpir, EntryPoint = "__gmpz_tdiv_q")]
-        private static extern void mpz_tdiv_q(ref mpz_t dest, ref mpz_t src, ref mpz_t src2);
+        [DllImport(Mpir, EntryPoint = "__gmpz_tdiv_q")]
+        private static extern void mpz_tdiv_q(ref MpzT dest, ref MpzT src, ref MpzT src2);
 
-        [DllImport(mpir, EntryPoint = "__gmpz_set")]
-        private static extern void mpz_set(ref mpz_t dest, ref mpz_t src);
+        [DllImport(Mpir, EntryPoint = "__gmpz_set")]
+        private static extern void mpz_set(ref MpzT dest, ref MpzT src);
 
-        [DllImport(mpir, EntryPoint = "__gmpz_set_si")]
-        private static extern void mpz_set_si(ref mpz_t src, Int32 value);
+        [DllImport(Mpir, EntryPoint = "__gmpz_set_si")]
+        private static extern void mpz_set_si(ref MpzT src, Int32 value);
 
-        [DllImport(mpir, EntryPoint = "__gmpz_set_str")]
-        private static extern Int32 mpz_set_str(ref mpz_t rop, IntPtr s, Int32 sbase);
+        [DllImport(Mpir, EntryPoint = "__gmpz_set_str")]
+        private static extern Int32 mpz_set_str(ref MpzT rop, IntPtr s, Int32 sbase);
 
-        [DllImport(mpir, EntryPoint = "__gmpz_get_si")]
-        private static extern Int32 mpz_get_si(ref mpz_t src);
+        [DllImport(Mpir, EntryPoint = "__gmpz_get_si")]
+        private static extern Int32 mpz_get_si(ref MpzT src);
 
-        [DllImport(mpir, EntryPoint = "__gmpz_get_d")]
-        private static extern double mpz_get_d(ref mpz_t src);
+        [DllImport(Mpir, EntryPoint = "__gmpz_get_d")]
+        private static extern double mpz_get_d(ref MpzT src);
 
-        [DllImport(mpir, EntryPoint = "__gmpz_get_str", CharSet = CharSet.Ansi)]
-        private static extern IntPtr mpz_get_str(IntPtr out_string, Int32 _base, ref mpz_t src);
+        [DllImport(Mpir, EntryPoint = "__gmpz_get_str", CharSet = CharSet.Ansi)]
+        private static extern IntPtr mpz_get_str(IntPtr outString, Int32 _base, ref MpzT src);
 
-        [DllImport(mpir, EntryPoint = "__gmpz_sizeinbase")]
-        internal static extern Int32 mpz_sizeinbase(ref mpz_t src, Int32 _base);
+        [DllImport(Mpir, EntryPoint = "__gmpz_sizeinbase")]
+        internal static extern Int32 mpz_sizeinbase(ref MpzT src, Int32 _base);
 
-        [DllImport(mpir, EntryPoint = "__gmpz_cmp")]
-        private static extern Int32 mpz_cmp(ref mpz_t x, ref mpz_t y);
+        [DllImport(Mpir, EntryPoint = "__gmpz_cmp")]
+        private static extern Int32 mpz_cmp(ref MpzT x, ref MpzT y);
 
-        [DllImport(mpir, EntryPoint = "__gmpz_cmp_d")]
-        private static extern Int32 mpz_cmp_d(ref mpz_t x, double y);
+        [DllImport(Mpir, EntryPoint = "__gmpz_cmp_d")]
+        private static extern Int32 mpz_cmp_d(ref MpzT x, double y);
 
-        [DllImport(mpir, EntryPoint = "__gmpz_cmp_si")]
-        private static extern Int32 mpz_cmp_si(ref mpz_t x, Int32 y);
+        [DllImport(Mpir, EntryPoint = "__gmpz_cmp_si")]
+        private static extern Int32 mpz_cmp_si(ref MpzT x, Int32 y);
 
-        [DllImport(mpir, EntryPoint = "__gmpz_sub")]
-        private static extern void mpz_sub(ref mpz_t rop, ref mpz_t x, ref mpz_t y);
+        [DllImport(Mpir, EntryPoint = "__gmpz_sub")]
+        private static extern void mpz_sub(ref MpzT rop, ref MpzT x, ref MpzT y);
 
-        [DllImport(mpir, EntryPoint = "__gmpz_sqrt")]
-        private static extern void mpz_sqrt(ref mpz_t rop, ref mpz_t op);
+        [DllImport(Mpir, EntryPoint = "__gmpz_sqrt")]
+        private static extern void mpz_sqrt(ref MpzT rop, ref MpzT op);
 
-        [DllImport(mpir, EntryPoint = "__gmpz_pow_ui")]
-        private static extern void mpz_pow_ui(ref mpz_t rop, ref mpz_t op, UInt32 exp);
+        [DllImport(Mpir, EntryPoint = "__gmpz_pow_ui")]
+        private static extern void mpz_pow_ui(ref MpzT rop, ref MpzT op, UInt32 exp);
 
-        [DllImport(mpir, EntryPoint = "__gmpz_powm")]
-        private static extern void mpz_powm(ref mpz_t rop, ref mpz_t bas, ref mpz_t exp, ref mpz_t mod);
+        [DllImport(Mpir, EntryPoint = "__gmpz_powm")]
+        private static extern void mpz_powm(ref MpzT rop, ref MpzT bas, ref MpzT exp, ref MpzT mod);
 
-        [DllImport(mpir, EntryPoint = "__gmpz_mod")]
-        private static extern void mpz_mod(ref mpz_t rop, ref mpz_t x, ref mpz_t mod);
+        [DllImport(Mpir, EntryPoint = "__gmpz_mod")]
+        private static extern void mpz_mod(ref MpzT rop, ref MpzT x, ref MpzT mod);
 
-        [DllImport(mpir, EntryPoint = "__gmpz_gcd")]
-        private static extern void mpz_gcd(ref mpz_t rop, ref mpz_t op1, ref mpz_t op2);
+        [DllImport(Mpir, EntryPoint = "__gmpz_gcd")]
+        private static extern void mpz_gcd(ref MpzT rop, ref MpzT op1, ref MpzT op2);
 
-        [DllImport(mpir, EntryPoint = "__gmpz_ui_pow_ui")]
-        private static extern void mpz_ui_pow_ui(ref mpz_t rop, UInt32 bas, UInt32 exp);
+        [DllImport(Mpir, EntryPoint = "__gmpz_ui_pow_ui")]
+        private static extern void mpz_ui_pow_ui(ref MpzT rop, UInt32 bas, UInt32 exp);
 
-        [DllImport(mpir, EntryPoint = "__gmpz_invert")]
-        private static extern Int32 mpz_invert(ref mpz_t rop, ref mpz_t x, ref mpz_t y);
+        [DllImport(Mpir, EntryPoint = "__gmpz_invert")]
+        private static extern Int32 mpz_invert(ref MpzT rop, ref MpzT x, ref MpzT y);
 
-        [DllImport(mpir, EntryPoint = "__gmpz_mul_2exp")]
-        private static extern Int32 mpz_mul_2exp(ref mpz_t rop, ref mpz_t x, UInt32 shift);
+        [DllImport(Mpir, EntryPoint = "__gmpz_mul_2exp")]
+        private static extern Int32 mpz_mul_2exp(ref MpzT rop, ref MpzT x, UInt32 shift);
 
-        [DllImport(mpir, EntryPoint = "__gmpz_fac_ui")]
-        private static extern void mpz_fac_ui(ref mpz_t rop, UInt32 op);
+        [DllImport(Mpir, EntryPoint = "__gmpz_fac_ui")]
+        private static extern void mpz_fac_ui(ref MpzT rop, UInt32 op);
 
         #endregion
 
-        private const string ffflib = "FastFactorialLibrary.dll";
+        private const string Ffflib = "FastFactorialLibrary.dll";
 
-        [DllImport(ffflib, EntryPoint = "PrimeSwing::ParallelFactorial")]
-        private static extern void _PrimeSwingParallelFactorial(ref mpz_t fact, ulong n);
+        [DllImport(Ffflib, EntryPoint = "PrimeSwing::ParallelFactorial")]
+        private static extern void _PrimeSwingParallelFactorial(ref MpzT fact, ulong n);
 
-        [DllImport(ffflib, EntryPoint = "Schoenhage::ParallelFactorial")]
-        private static extern void _SchoenhageParallelFactorial(ref mpz_t fact, ulong n);
+        [DllImport(Ffflib, EntryPoint = "Schoenhage::ParallelFactorial")]
+        private static extern void _SchoenhageParallelFactorial(ref MpzT fact, ulong n);
 
         public static XInt PrimeSwingParallelFactorial(Int32 x)
         {
-            XInt z = new XInt();
+            var z = new XInt();
             _PrimeSwingParallelFactorial(ref z.impl, (UInt32)x);
             return z;
         }
 
         public static XInt SchoenhageParallelFactorial(Int32 x)
         {
-            XInt z = new XInt();
+            var z = new XInt();
             _SchoenhageParallelFactorial(ref z.impl, (UInt32)x);
             return z;
         }

@@ -1,65 +1,61 @@
-﻿/// -------- ToujoursEnBeta
-/// Author & Copyright : Peter Luschny
-/// License: LGPL version 3.0 or (at your option)
-/// Creative Commons Attribution-ShareAlike 3.0
-/// Comments mail to: peter(at)luschny.de
-/// Created: 2010-03-01
+﻿// -------- ToujoursEnBeta
+// Author & Copyright : Peter Luschny
+// License: LGPL version 3.0 or (at your option)
+// Creative Commons Attribution-ShareAlike 3.0
+// Comments mail to: peter(at)luschny.de
+// Created: 2010-03-01
 
-namespace Sharith.Math.Factorial
+namespace Sharith.Factorial
 {
     using System.Threading.Tasks;
-    using XInt = Sharith.Arithmetic.XInt;
+
+    using XInt = Arithmetic.XInt;
 
     #region Swing
 
-    // Same algorithm as PrimeSwing but an alternative
-    // more standalone implementation.
+    //// Same algorithm as PrimeSwing but an alternative
+    //// more standalone implementation.
 
     public class SplitPrimeSwing : IFactorialFunction
     {
-        public SplitPrimeSwing() { }
-
-        public string Name
-        {
-            get { return "PrimeSwingAllInOne  "; }
-        }
+        public string Name => "PrimeSwingAllInOne  ";
 
         private Primes prime;
         private Factors factors;
 
-        // Swing(n) = OddSwing(n) << (int)MathFun.BitCount(n);
+        //// Swing(n) = OddSwing(n) << (int)MathFun.BitCount(n);
 
         private XInt OddSwing(uint n)
         {
-            if (n < smallOddSwing.Length)
+            if (n < SmallOddSwing.Length)
             {
-                return new XInt(smallOddSwing[n]);
+                return new XInt(SmallOddSwing[n]);
             }
 
-            uint rootN = MathFun.FloorSqrt(n);
-            factors.Init();
+            var rootN = MathFun.FloorSqrt(n);
+            this.factors.Init();
 
-            factors.SetMax(rootN);
-            prime.Factorizer(3, rootN, p =>
+            this.factors.SetMax(rootN);
+            this.prime.Factorizer(3, rootN, p =>
                 {
-                    uint q = n;
+                    var q = n;
                     while ((q /= p) > 0)
-                        if ((q & 1) == 1) { factors.Add(p); }
+                        if ((q & 1) == 1) { this.factors.Add(p); }
                 });
 
-            factors.SetMax(n / 3);
-            prime.Factorizer(rootN + 1, n / 3, p =>
+            this.factors.SetMax(n / 3);
+            this.prime.Factorizer(rootN + 1, n / 3, p =>
             {
-                if (((n / p) & 1) == 1) { factors.Add(p); }
+                if (((n / p) & 1) == 1) { this.factors.Add(p); }
             });
 
-            factors.SetMax(n);
-            prime.Factorizer(n / 2 + 1, n, p =>
+            this.factors.SetMax(n);
+            this.prime.Factorizer(n / 2 + 1, n, p =>
             {
-                factors.Add(p);
+                this.factors.Add(p);
             });
 
-            return factors.Product();
+            return this.factors.Product();
         }
 
     #endregion
@@ -67,34 +63,34 @@ namespace Sharith.Math.Factorial
 
         public XInt Factorial(int N)
         {
-            uint n = (uint)N;
-            int exp2 = (int)(n - MathFun.BitCount(n));
+            var n = (uint)N;
+            var exp2 = (int)(n - MathFun.BitCount(n));
 
-            if (n < smallOddFactorial.Length)
+            if (n < SmallOddFactorial.Length)
             {
-                return new XInt(smallOddFactorial[n]) << exp2;
+                return new XInt(SmallOddFactorial[n]) << exp2;
             }
 
-            if (n >= smallOddSwing.Length)
+            if (n >= SmallOddSwing.Length)
             {
-                prime = new Primes(n);
-                factors = new Factors(n);
+                this.prime = new Primes(n);
+                this.factors = new Factors(n);
             }
 
-            return OddFactorial(n) << exp2;
+            return this.OddFactorial(n) << exp2;
         }
 
         private XInt OddFactorial(uint n)
         {
-            if (n < smallOddFactorial.Length)
+            if (n < SmallOddFactorial.Length)
             {
-                return new XInt(smallOddFactorial[n]);
+                return new XInt(SmallOddFactorial[n]);
             }
 
-            return XInt.Pow(OddFactorial(n / 2), 2) * OddSwing(n);
+            return XInt.Pow(this.OddFactorial(n / 2), 2) * this.OddSwing(n);
         }
 
-        private static ulong[] smallOddSwing = {
+        static readonly ulong[] SmallOddSwing = {
   1, 1, 1, 3, 3, 15, 5, 35, 35, 315, 63, 693, 231, 3003, 429, 6435, 6435,
   109395, 12155, 230945, 46189, 969969, 88179, 2028117, 676039, 16900975,
   1300075, 35102025, 5014575, 145422675, 9694845, 300540195, 300540195,
@@ -106,7 +102,7 @@ namespace Sharith.Math.Factorial
   54496920530418135, 1879204156221315, 110873045217057585, 7391536347803839,
   450883717216034179, 14544636039226909, 916312070471295267, 916312070471295267 };
 
-        private static ulong[] smallOddFactorial = {
+        static readonly ulong[] SmallOddFactorial = {
   1, 1, 1, 3, 3, 15, 45, 315, 315, 2835, 14175, 155925, 467775, 6081075,
   42567525, 638512875, 638512875, 10854718875, 97692469875, 1856156927625,
   9280784638125, 194896477400625, 2143861251406875, 49308808782358125,
@@ -118,14 +114,14 @@ namespace Sharith.Math.Factorial
 
     class Primes
     {
-        const int bitsPerInt = 32;
-        const int mask = bitsPerInt - 1;
-        const int log2Int = 5;
+        const int BitsPerInt = 32;
+        const int Mask = BitsPerInt - 1;
+        const int Log2Int = 5;
 
-        private static uint[] PrimesOnBits = {
+        private static readonly uint[] PrimesOnBits = {
            1762821248u, 848611808u, 3299549660u, 2510511646u };
 
-        private uint[] isComposite;
+        private readonly uint[] isComposite;
         public delegate void Visitor(uint x);
 
         public void Factorizer(uint min, uint max, Visitor visitor)
@@ -136,16 +132,16 @@ namespace Sharith.Math.Factorial
             if (min <= 2) visitor(2);
             if (min <= 3) visitor(3);
 
-            int absPos = (int)((min + (min + 1) % 2) / 3 - 1);
-            int index = absPos / bitsPerInt;
-            int bitPos = absPos % bitsPerInt;
+            var absPos = (int)((min + (min + 1) % 2) / 3 - 1);
+            var index = absPos / BitsPerInt;
+            var bitPos = absPos % BitsPerInt;
             bool toggle = (bitPos & 1) == 1;
-            uint prime = (uint)(5 + 3 * (bitsPerInt * index + bitPos) - (bitPos & 1));
+            var prime = (uint)(5 + 3 * (BitsPerInt * index + bitPos) - (bitPos & 1));
 
             while (prime <= max)
             {
-                uint bitField = isComposite[index++] >> bitPos;
-                for (; bitPos < bitsPerInt; bitPos++)
+                uint bitField = this.isComposite[index++] >> bitPos;
+                for (; bitPos < BitsPerInt; bitPos++)
                 {
                     if ((bitField & 1) == 0)
                     {
@@ -167,28 +163,28 @@ namespace Sharith.Math.Factorial
 
         public Primes(uint n)
         {
-            if (n < 386) { isComposite = PrimesOnBits; return; }
+            if (n < 386) { this.isComposite = PrimesOnBits; return; }
 
-            isComposite = new uint[(n / (3 * bitsPerInt)) + 1];
+            this.isComposite = new uint[(n / (3 * BitsPerInt)) + 1];
             int d1 = 8, d2 = 8, p1 = 3, p2 = 7, s = 7, s2 = 3;
-            int l = 0, c = 1, max = (int)n / 3, inc;
+            int l = 0, c = 1, max = (int)n / 3;
             bool toggle = false;
 
             while (s < max)  // --  scan the sieve
             {
                 // --  if a prime is found ...
-                if ((isComposite[l >> log2Int] & (1u << (l++ & mask))) == 0)
+                if ((this.isComposite[l >> Log2Int] & (1u << (l++ & Mask))) == 0)
                 {
-                    inc = p1 + p2;  // --  ... cancel its multiples
+                    var inc = p1 + p2;  // --  ... cancel its multiples
 
                     for (c = s; c < max; c += inc)
                     {               // --  ... set c as composite
-                        isComposite[c >> log2Int] |= 1u << (c & mask);
+                        this.isComposite[c >> Log2Int] |= 1u << (c & Mask);
                     }
 
                     for (c = s + s2; c < max; c += inc)
                     {
-                        isComposite[c >> log2Int] |= 1u << (c & mask);
+                        this.isComposite[c >> Log2Int] |= 1u << (c & Mask);
                     }
                 }
 
@@ -199,22 +195,22 @@ namespace Sharith.Math.Factorial
 
         public XInt GetPrimorial(uint min, uint max)
         {
-            int mem = (int)(0.63 * max / System.Math.Log(max));
-            long[] plist = new long[mem];
-            int size = 0;
+            var mem = (int)(0.63 * max / System.Math.Log(max));
+            var plist = new long[mem];
+            var size = 0;
             if (min <= 2) plist[size++] = 2;
             if (min <= 3) plist[size++] = 3;
 
-            int absPos = (int)((min + (min + 1) % 2) / 3 - 1);
-            int index = absPos / bitsPerInt;
-            int bitPos = absPos % bitsPerInt;
+            var absPos = (int)((min + (min + 1) % 2) / 3 - 1);
+            var index = absPos / BitsPerInt;
+            var bitPos = absPos % BitsPerInt;
             bool toggle = (bitPos & 1) == 1;
-            uint prime = (uint)(5 + 3 * (bitsPerInt * index + bitPos) - (bitPos & 1));
+            var prime = (uint)(5 + 3 * (BitsPerInt * index + bitPos) - (bitPos & 1));
 
             while (prime <= max)
             {
-                uint bitField = isComposite[index++] >> bitPos;
-                for (; bitPos < bitsPerInt; bitPos++)
+                var bitField = this.isComposite[index++] >> bitPos;
+                for (; bitPos < BitsPerInt; bitPos++)
                 {
                     if ((bitField & 1) == 0)
                     {
@@ -238,66 +234,66 @@ namespace Sharith.Math.Factorial
 
     class Factors
     {
-        private long[] factors;
+        private readonly long[] factors;
         private long maxProd, prod;
         private int count;
 
         public Factors(uint n)
         {
-            int mem = (int)(0.63 * n / System.Math.Log(n));
-            factors = new long[mem];
+            var mem = (int)(0.63 * n / System.Math.Log(n));
+            this.factors = new long[mem];
         }
 
         public void Init()
         {
-            maxProd = 1;
-            prod = 1;
-            count = 0;
+            this.maxProd = 1;
+            this.prod = 1;
+            this.count = 0;
         }
 
         public void SetMax(long max)
         {
-            maxProd = long.MaxValue / max;
+            this.maxProd = long.MaxValue / max;
 
-            if (prod >= maxProd)
+            if (this.prod >= this.maxProd)
             {
-                factors[count++] = prod;
-                prod = 1;
+                this.factors[this.count++] = this.prod;
+                this.prod = 1;
             }
         }
 
         public void Add(long prime)
         {
-            if (prod < maxProd)
+            if (this.prod < this.maxProd)
             {
-                prod *= prime;
+                this.prod *= prime;
             }
             else
             {
-                factors[count++] = prod;
-                prod = prime;
+                this.factors[this.count++] = this.prod;
+                this.prod = prime;
             }
         }
 
         public XInt Product()
         {
-            factors[count++] = prod;
-            return MathFun.Product(factors, 0, count);
+            this.factors[this.count++] = this.prod;
+            return MathFun.Product(this.factors, 0, this.count);
         }
     }
 
     static public class MathFun
     {
         // Calibrate the treshhold
-        private const int THRESHOLD_PRODUCT_SERIAL = 512;
+        private const int ThresholdProductSerial = 512;
 
         static public XInt Product(long[] seq, int start, int len)
         {
-            if (len <= THRESHOLD_PRODUCT_SERIAL)
+            if (len <= ThresholdProductSerial)
             {
                 var rprod = new XInt(seq[start]);
 
-                for (int i = start + 1; i < start + len; i++)
+                for (var i = start + 1; i < start + len; i++)
                 {
                     rprod *= seq[i];
                 }
@@ -305,8 +301,9 @@ namespace Sharith.Math.Factorial
             }
             else
             {
-                int halfLen = len / 2;
-                XInt rprod = XInt.Zero, lprod = XInt.Zero;
+                var halfLen = len / 2;
+                var rprod = XInt.Zero;
+                var lprod = XInt.Zero;
 
                 Parallel.Invoke(
                     () => { rprod = Product(seq, start, halfLen); },

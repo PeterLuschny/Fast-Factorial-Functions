@@ -1,39 +1,35 @@
-/// -------- ToujoursEnBeta
-/// Author & Copyright : Peter Luschny
-/// License: LGPL version 3.0 or (at your option)
-/// Creative Commons Attribution-ShareAlike 3.0
-/// Comments mail to: peter(at)luschny.de
-/// Created: 2010-03-01
+// -------- ToujoursEnBeta
+// Author & Copyright : Peter Luschny
+// License: LGPL version 3.0 or (at your option)
+// Creative Commons Attribution-ShareAlike 3.0
+// Comments mail to: peter(at)luschny.de
+// Created: 2010-03-01
 
-namespace Sharith.Math.Factorial 
+namespace Sharith.Factorial 
 {
-    using XInt = Sharith.Arithmetic.XInt;
+    using XInt = Arithmetic.XInt;
 
     public class SwingSimple : IFactorialFunction  
     {
-        public SwingSimple() { }
-        
-        public string Name
-        {
-            get { return "SwingSimple         "; }
-        }
+       
+        public string Name => "SwingSimple         ";
 
         public XInt Factorial(int n)
         {
             if (n < 0)
             {
-                throw new System.ArgumentOutOfRangeException("n",
-                Name + ": n >= 0 required, but was " + n);
+                throw new System.ArgumentOutOfRangeException(
+                          this.Name + ": " + nameof(n) + " >= 0 required, but was " + n);
             }
 
-            return RecFactorial(n);
+            return this.RecFactorial(n);
         }
 
         private XInt RecFactorial(int n)
         {
             if (n < 2) return XInt.One;
 
-            return XInt.Pow(RecFactorial(n / 2), 2) * Swing(n);
+            return XInt.Pow(this.RecFactorial(n / 2), 2) * Swing(n);
         }
 
         private static XInt Swing(int n)
@@ -51,7 +47,7 @@ namespace Sharith.Math.Factorial
             var b = new XInt(z);
             z = 2 * (n - ((n + 1) & 1));
 
-            for (int i = 1; i <= n / 4; i++, z -= 4)
+            for (var i = 1; i <= n / 4; i++, z -= 4)
             {
                 b = (b * z) / i;
             }

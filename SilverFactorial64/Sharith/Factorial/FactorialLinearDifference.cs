@@ -1,29 +1,24 @@
-/// -------- ToujoursEnBeta
-/// Author & Copyright : Peter Luschny
-/// License: LGPL version 3.0 or (at your option)
-/// Creative Commons Attribution-ShareAlike 3.0
-/// Comments mail to: peter(at)luschny.de
-/// Created: 2010-03-01
+// -------- ToujoursEnBeta
+// Author & Copyright : Peter Luschny
+// License: LGPL version 3.0 or (at your option)
+// Creative Commons Attribution-ShareAlike 3.0
+// Comments mail to: peter(at)luschny.de
+// Created: 2010-03-01
 
-namespace Sharith.Math.Factorial 
+namespace Sharith.Factorial 
 {
-    using XInt = Sharith.Arithmetic.XInt;
+    using XInt = Arithmetic.XInt;
 
     public class LinearDifference : IFactorialFunction 
     {
-        public LinearDifference() { }
-
-        public string Name
-        {
-            get { return "LinearDifference    "; }
-        }               
+        public string Name => "LinearDifference    ";
 
         public XInt Factorial(int n)
         {
             if (n < 0)
             {
-                throw new System.ArgumentOutOfRangeException("n",
-                      Name + ": n >= 0 required, but was " + n);
+                throw new System.ArgumentOutOfRangeException(
+                    this.Name + ": " + nameof(n) + " >= 0 required, but was " + n);
             }
 
             if (n < 2) return XInt.One;
@@ -43,7 +38,7 @@ namespace Sharith.Math.Factorial
             long diff2 = 8544;
             long diff3 = 13056;
 
-            int i = n / 4;
+            var i = n / 4;
             while (i-- > 0)
             {
                 f = f * prod; 

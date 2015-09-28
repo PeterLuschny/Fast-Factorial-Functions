@@ -11,72 +11,77 @@ namespace SilverFactorial
     using System.Windows;
     using System.Windows.Controls;
 
+    using SilverFactorial.Benchmark;
+
     /// <summary>
     /// Interaction logic for BenchmarkWindow.xaml
     /// </summary>
     public partial class BenchmarkWindow : Window
     {
-        LoggedTextBox winsole; 
-        TestParameters test;
-        BenchmarkWorker benchmark;
-        BackgroundWorker backgroundWorker;
-        CheckBox[] algos;
-        const int NUM_OF_CANDIDATES = 24; 
+        private LoggedTextBox winsole; 
+        private TestParameters test;
+        private BenchmarkWorker benchmark;
+        private BackgroundWorker backgroundWorker;
+        private CheckBox[] algos;
+        private const int NumOfCandidates = 24; 
 
         public BenchmarkWindow()
         {
-            InitializeComponent();
-            InitAlgoBoxes();
+            this.InitializeComponent();
+            this.InitAlgoBoxes();
 
-            stepBox.SelectedItem = "2.0";
-            test = new TestParameters(NUM_OF_CANDIDATES); 
+            this.StepBox.SelectedItem = "2.0";
+            this.test = new TestParameters(NumOfCandidates);
 
-            winsole = new LoggedTextBox(this.textBox);
-            benchmark = new BenchmarkWorker(winsole);
+            this.winsole = new LoggedTextBox(this.TextBox);
+            this.benchmark = new BenchmarkWorker(this.winsole);
 
-            logToFileCheckBox.IsChecked = true;
-            winsole.LogToFile = true;
+            this.LogToFileCheckBox.IsChecked = true;
+            this.winsole.LogToFile = true;
 
-            BenchmarkApplication.PrintAppAndSysProps(winsole);
-            InitializeBackgoundWorker();
+            BenchmarkApplication.PrintAppAndSysProps(this.winsole);
+            this.InitializeBackgoundWorker();
         }
 
-        private void InitAlgoBoxes()
+        void InitAlgoBoxes()
         {
-            algos = new CheckBox[NUM_OF_CANDIDATES] 
-            {algo0,algo1,algo2,algo3,algo4,algo5,algo6,algo7,
-            algo8,algo9,algo10,algo11,algo12,algo13,algo14,
-            algo15,algo16,algo17,algo18,algo19,algo20,algo21,algo22,algo23};
+            this.algos = new CheckBox[NumOfCandidates]
+                        {
+                            this.Algo0, this.Algo1, this.Algo2, this.Algo3, this.Algo4, this.Algo5, this.Algo6, this.Algo7,
+                            this.Algo8, this.Algo9, this.Algo10, this.Algo11, this.Algo12, this.Algo13, this.Algo14,
+                            this.Algo15, this.Algo16, this.Algo17, this.Algo18, this.Algo19, this.Algo20, this.Algo21,
+                            this.Algo22, this.Algo23
+                        };
 
             int i = 0;
-            foreach (CheckBox c in algos)
+            foreach (var c in this.algos)
             {
-                c.Content = Candidate.candList[i++].Name;
+                c.Content = Candidate.CandList[i++].Name;
             }
 
-            TypeRecomm.IsSelected = true;
+            this.TypeRecomm.IsSelected = true;
         }
 
         // Get the list of selected algorithms.
         // Get: stepfactor and benchmark-length
         // No validation is necessary for: benchStart and stepfactor.
 
-        private bool GetParams()
+        bool GetParams()
         {
-            string start = startBox.Text; 
-            if (!int.TryParse(start, out test.testStart))
+            var start = this.StartBox.Text;
+            if (!int.TryParse(start, out this.test.TestStart))
             {
                 MessageBox.Show("start is not a valid integer.\n", "Invalid Argument Error");
                 return false;
             }
 
-            if (test.testStart < 0)
+            if (this.test.TestStart < 0)
             {
                 MessageBox.Show("start must be a positive integer.\n", "Invalid Argument Error");
                 return false;
             }
 
-            if (test.testStart > TestParameters.TEST_MAX)
+            if (this.test.TestStart > TestParameters.TestMax)
             {
                 MessageBox.Show("start must <= 9000000 because n! is huge.\n", "Invalid Argument Error");
                 return false;
@@ -84,47 +89,51 @@ namespace SilverFactorial
 
             // If the conversion fails, the return value is false and
             // the results parameter is set to zero.
-            string step = stepBox.Text;
-                 if (step == "0.5") test.stepFactor = 5;
-            else if (step == "1.0") test.stepFactor = 10;
-            else if (step == "1.5") test.stepFactor = 15;
-            else if (step == "2.0") test.stepFactor = 20;
-            else if (step == "2.5") test.stepFactor = 25;
-            else test.stepFactor = 30;
+            string step = this.StepBox.Text;
+            if (step == "0.5") test.StepFactor = 5;
+            else if (step == "1.0") test.StepFactor = 10;
+            else if (step == "1.5") test.StepFactor = 15;
+            else if (step == "2.0") test.StepFactor = 20;
+            else if (step == "2.5") test.StepFactor = 25;
+            else test.StepFactor = 30;
 
-            string len = lengthBox.Text;
-            if (!int.TryParse(len, out test.testLength))
+            var len = this.LengthBox.Text;
+            if (!int.TryParse(len, out test.TestLength))
             {
                 MessageBox.Show("Length is not a valid integer.\n", "Invalid Argument Error");
                 return false;
             }
 
-            winsole.LogToFile = (bool)logToFileCheckBox.IsChecked;
-            test.showFullValue = (bool)showFullValueCheckBox.IsChecked;
-            test.verbose = (bool)verboseCheckBox.IsChecked;
+            this.winsole.LogToFile = (bool)this.LogToFileCheckBox.IsChecked;
+            this.test.ShowFullValue = (bool)this.ShowFullValueCheckBox.IsChecked;
+            this.test.Verbose = (bool)this.VerboseCheckBox.IsChecked;
 
             int c = 0;
-            for (int i = 0; i < algos.Length; i++)
+            for (var i = 0; i < this.algos.Length; i++)
             {
-                bool check = (bool)algos[i].IsChecked;
-                if (check) c++;
-                test.algoSelected[i] = check;
+                var check = (bool)this.algos[i].IsChecked;
+                if (check)
+                {
+                    c++;
+                }
+
+                this.test.AlgoSelected[i] = check;
             }
 
             // The reference algorithm is always choosen.
-            algos[Candidate.INDEX_OF_REFERENCE].IsChecked = true;
-            test.algoSelected[Candidate.INDEX_OF_REFERENCE] = true;
-            TestParameters.cardSelected = c;
+            this.algos[Candidate.IndexOfReference].IsChecked = true;
+            this.test.AlgoSelected[Candidate.IndexOfReference] = true;
+            TestParameters.CardSelected = c;
             return true;
         }
 
         // Disable some input controls until the asynchronous benchmark is workDone.
         private void EnableControls(bool en)
         {
-            lengthBox.IsEnabled = en;
-            startBox.IsEnabled = en;
-            stepBox.IsEnabled = en;
-            sanityCheck.IsEnabled = en;
+            this.LengthBox.IsEnabled = en;
+            this.StartBox.IsEnabled = en;
+            this.StepBox.IsEnabled = en;
+            this.SanityCheck.IsEnabled = en;
 
             // verboseCheckBox.IsEnabled = en;
             // logToFileCheckBox.IsEnabled = en;
@@ -133,57 +142,57 @@ namespace SilverFactorial
         }
 
         // Set the AlgorithmCheckedListBox. 
-        private void TypeSimple_Selected(object sender, RoutedEventArgs e)
+        private void TypeSimpleSelected(object sender, RoutedEventArgs e)
         {
-            int i = 0;
-            foreach (Candidate c in Candidate.candList)
+            var i = 0;
+            foreach (var c in Candidate.CandList)
             {
-                algos[i++].IsChecked = c.IsSimpleType;
+                this.algos[i++].IsChecked = c.IsSimpleType;
             }
         }
 
         // Set the AlgorithmCheckedListBox.
-        private void TypePrime_Selected(object sender, RoutedEventArgs e)
+        private void TypePrimeSelected(object sender, RoutedEventArgs e)
         {
-            int i = 0;
-            foreach (Candidate c in Candidate.candList)
+            var i = 0;
+            foreach (var c in Candidate.CandList)
             {
-                algos[i++].IsChecked = c.IsPrimeType;
+                this.algos[i++].IsChecked = c.IsPrimeType;
             }
         }
 
         // Set the AlgorithmCheckedListBox.
-        private void TypeRecomm_Selected(object sender, RoutedEventArgs e)
+        private void TypeRecommSelected(object sender, RoutedEventArgs e)
         {
-            int i = 0;
-            foreach (Candidate c in Candidate.candList)
+            var i = 0;
+            foreach (var c in Candidate.CandList)
             {
-                algos[i++].IsChecked = c.IsRecommended;
+                this.algos[i++].IsChecked = c.IsRecommended;
             }
         }
 
-        private void TypeConcurr_Selected(object sender, RoutedEventArgs e)
+        private void TypeConcurrSelected(object sender, RoutedEventArgs e)
         {
-            int i = 0;
-            foreach (Candidate c in Candidate.candList)
+            var i = 0;
+            foreach (var c in Candidate.CandList)
             {
-                algos[i++].IsChecked = c.IsConcurrType;
+                this.algos[i++].IsChecked = c.IsConcurrType;
             }
         }
 
-        private void TypeBench_Selected(object sender, RoutedEventArgs e)
+        private void TypeBenchSelected(object sender, RoutedEventArgs e)
         {
-            int i = 0;
-            foreach (Candidate c in Candidate.candList)
+            var i = 0;
+            foreach (var c in Candidate.CandList)
             {
-                algos[i++].IsChecked = c.IsBenchable;
+                this.algos[i++].IsChecked = c.IsBenchable;
             }
         }
 
         // Clear the AlgorithmCheckedListBox.
-        private void TypeClear_Selected(object sender, RoutedEventArgs e)
+        private void TypeClearSelected(object sender, RoutedEventArgs e)
         {
-            foreach (CheckBox c in algos)
+            foreach (var c in this.algos)
             {
                 c.IsChecked = false;
             }
@@ -191,43 +200,45 @@ namespace SilverFactorial
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            if (backgroundWorker.IsBusy)
+            if (this.backgroundWorker.IsBusy)
             {
-                backgroundWorker.CancelAsync();
+                this.backgroundWorker.CancelAsync();
             }
-            About_Click(null, null);
-            backgroundWorker.Dispose();
-            winsole.Dispose();
+            this.AboutClick(null, null);
+            this.backgroundWorker.Dispose();
+            this.winsole.Dispose();
             base.OnClosing(e);
         }
 
-        private void About_Click(object sender, RoutedEventArgs e)
+        private void AboutClick(object sender, RoutedEventArgs e)
         {
-            BenchmarkApplication.About(winsole);
-            if( sender != null)
-            new BrowserForm(@"http://www.luschny.de/math/factorial/csharp/CsharpIndex.html").Show();
+            BenchmarkApplication.About(this.winsole);
+            if (sender != null)
+            {
+                new BrowserForm(@"http://www.luschny.de/math/factorial/csharp/CsharpIndex.html").Show();
+            }
         }
 
         // Call with some predefined value (say 1000).
-        private void SanityCheck_Click(object sender, RoutedEventArgs e)
+        private void SanityCheckClick(object sender, RoutedEventArgs e)
         {
-            DoTheBenchmark("sanity");
+            this.DoTheBenchmark("sanity");
         }
 
-        private void Benchmark_Click(object sender, RoutedEventArgs e)
+        private void BenchmarkClick(object sender, RoutedEventArgs e)
         {
-            DoTheBenchmark("full");
+            this.DoTheBenchmark("full");
         }
 
-        private void Cancel_Click(object sender, RoutedEventArgs e)
+        private void CancelClick(object sender, RoutedEventArgs e)
         {
-            infoLabel.Content = "Cancelation is in progress!";
+            this.InfoLabel.Content = "Cancelation is in progress!";
 
             // Cancel the asynchronous operation.
-            backgroundWorker.CancelAsync();
+            this.backgroundWorker.CancelAsync();
 
             // Disable the Cancel button.
-            cancelBenchmark.IsEnabled = false;
+            this.CancelBenchmark.IsEnabled = false;
         }
 
         //////////////////////////////////////////////////////////////////
@@ -235,88 +246,91 @@ namespace SilverFactorial
         //////////////////////////////////////////////////////////////////
 
         // Set up the BackgroundWorker object by attaching event handlers. 
-        private void InitializeBackgoundWorker()
+        void InitializeBackgoundWorker()
         {
-            backgroundWorker = new BackgroundWorker();
-            backgroundWorker.WorkerReportsProgress = true;
-            backgroundWorker.WorkerSupportsCancellation = true;
-            backgroundWorker.DoWork += new DoWorkEventHandler(BackgroundWorker_DoWork);
-            backgroundWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(BackgroundWorker_RunWorkerCompleted);
-            backgroundWorker.ProgressChanged += new ProgressChangedEventHandler(BackgroundWorker_ProgressChanged);
+            this.backgroundWorker = new BackgroundWorker
+            {
+                WorkerReportsProgress = true,
+                WorkerSupportsCancellation = true
+            };
+            this.backgroundWorker.DoWork += this.BackgroundWorkerDoWork;
+            this.backgroundWorker.RunWorkerCompleted += this.BackgroundWorkerRunWorkerCompleted;
+            this.backgroundWorker.ProgressChanged += this.BackgroundWorkerProgressChanged;
         }
 
         // The central click: The BenchmarkWorker starts.
         // From BenchLength to StartWert by Startwert*Stepfactor
         // loop over all selected algorithms.
-        private void DoTheBenchmark(string type)
+        void DoTheBenchmark(string type)
         {
-            EnableControls(false);
+            this.EnableControls(false);
 
-            test.sanityTest = type == "sanity";
+            this.test.SanityTest = type == "sanity";
 
             // Get the values from the form. If they are valid ...
-            if (test.sanityTest || GetParams())
+            if (this.test.SanityTest || this.GetParams())
             {
-                textBox.Clear();
+                this.TextBox.Clear();
 
                 // Reset the text in the results label.
-                infoLabel.Content = string.Empty;
+                this.InfoLabel.Content = string.Empty;
 
                 // Disable the start button until 
                 // the benchmark is workDone.
-                benchmarkGoButton.IsEnabled = false;
+                this.BenchmarkGoButton.IsEnabled = false;
 
                 // Enable the Cancel button while 
                 // the benchmark runs.
-                cancelBenchmark.IsEnabled = true;
+                this.CancelBenchmark.IsEnabled = true;
 
-                infoLabel.Content = "Benchmark is running!";
+                this.InfoLabel.Content = "Benchmark is running!";
 
                 // start the asynchronous benchmark.
-                backgroundWorker.RunWorkerAsync(test);
+                this.backgroundWorker.RunWorkerAsync(this.test);
             }
             else
             {
-                EnableControls(true);
+                this.EnableControls(true);
             }
         }
 
         // This event handler updates the progress bar.
-        private void BackgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        void BackgroundWorkerProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            progressBar.Value = e.ProgressPercentage;
+            this.ProgressBar.Value = e.ProgressPercentage;
         }
 
         // This event handler is where the actual,
         // time-consuming benchmark is called.
-        private void BackgroundWorker_DoWork(object sender, DoWorkEventArgs eventArgs)
+        void BackgroundWorkerDoWork(object sender, DoWorkEventArgs eventArgs)
         {
             // MessageBox.Show("BackgroundWorker-DoWork was called.");
             // Get the BackgroundWorker that raised this event.
-            BackgroundWorker bgWorker = sender as BackgroundWorker;
-
-            if (bgWorker.CancellationPending)
+            using (var worker = sender as BackgroundWorker)
             {
-                eventArgs.Cancel = true;
-            }
-            else
-            {
-                // Assign the results of the computation to the Result 
-                // property of the DoWorkEventArgs object. This will 
-                // be available to the RunWorkerCompleted eventhandler.
-                eventArgs.Result = benchmark.DoTheBenchmark(bgWorker, eventArgs, test);
+                if (worker.CancellationPending)
+                {
+                    eventArgs.Cancel = true;
+                }
+                else
+                {
+                    // Assign the results of the computation to the Result 
+                    // property of the DoWorkEventArgs object. This will 
+                    // be available to the RunWorkerCompleted eventhandler.
+                    eventArgs.Result = this.benchmark.DoTheBenchmark(worker, eventArgs, this.test);
+                }
             }
         }
 
         // This event handler deals with the results of the benchmark.
-        private void BackgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs eventArgs)
+        void BackgroundWorkerRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs eventArgs)
         {
             string msg;
             if (eventArgs.Cancelled)
             {
                 // The user canceled the benchmark.
                 msg = "Benchmark was canceled.";
-                winsole.WriteRedline(msg);
+                this.winsole.WriteRedline(msg);
             }
             else if (eventArgs.Error != null)
             {
@@ -324,10 +338,10 @@ namespace SilverFactorial
                 msg = "An error occurred.";
                 MessageBox.Show(eventArgs.Error.Message, "Error in worker thread.");
 
-                winsole.WriteLine();
-                winsole.WriteRedline("Error in worker thread.");
-                winsole.WriteRedline(eventArgs.Error.Message);
-                winsole.WriteLine();
+                this.winsole.WriteLine();
+                this.winsole.WriteRedline("Error in worker thread.");
+                this.winsole.WriteRedline(eventArgs.Error.Message);
+                this.winsole.WriteLine();
             }
             else
             {
@@ -336,19 +350,19 @@ namespace SilverFactorial
             }
 
             // MessageBox.Show(msg);
-            infoLabel.Content = msg;
+            this.InfoLabel.Content = msg;
 
-            EnableControls(true);
+            this.EnableControls(true);
 
             // Enable the start button.
-            benchmarkGoButton.IsEnabled = true;
+            this.BenchmarkGoButton.IsEnabled = true;
 
             // Disable the Cancel button.
-            cancelBenchmark.IsEnabled = false;
+            this.CancelBenchmark.IsEnabled = false;
 
-            test.sanityTest = false;
+            this.test.SanityTest = false;
 
-            progressBar.Value = 0;
+            this.ProgressBar.Value = 0;
         }
     }
 }

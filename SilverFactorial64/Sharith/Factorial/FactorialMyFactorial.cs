@@ -3,18 +3,13 @@
 // compile and start benchmarking your solution. If you found a nice solution
 // please share it and send it to me for inclusion.
 
-namespace Sharith.Math.Factorial
+namespace Sharith.Factorial
 {
     using XInt = Sharith.Arithmetic.XInt;
 
     public class MyFactorial : IFactorialFunction
     {
-        public MyFactorial() { }
-
-        public string Name
-        {
-            get { return "MyFactorial        "; }
-        }
+        public string Name => "MyFactorial        ";
 
         // --- Implement this function! ---
         public XInt Factorial(int n)
@@ -22,4 +17,4 @@ namespace Sharith.Math.Factorial
             return new ParallelPrimeSwing().Factorial(n);
         }
     }
-}   // endOfMyFactorial
+} // endOfMyFactorial

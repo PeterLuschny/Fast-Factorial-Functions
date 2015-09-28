@@ -1,14 +1,15 @@
-/// -------- ToujoursEnBeta
-/// Author & Copyright : Peter Luschny
-/// License: LGPL version 3.0 or (at your option)
-/// Creative Commons Attribution-ShareAlike 3.0
-/// Comments mail to: peter(at)luschny.de
-/// Created: 2010-03-01
+// -------- ToujoursEnBeta
+// Author & Copyright : Peter Luschny
+// License: LGPL version 3.0 or (at your option)
+// Creative Commons Attribution-ShareAlike 3.0
+// Comments mail to: peter(at)luschny.de
+// Created: 2010-03-01
 
-namespace Sharith.Math.MathUtils
+namespace Sharith.MathUtils
 {
     using System;
     using System.Threading.Tasks;
+
     using XInt = Sharith.Arithmetic.XInt;
 
     public static class XMath
@@ -74,11 +75,8 @@ namespace Sharith.Math.MathUtils
             {
                 return 6;
             }
-            else
-            {
-                return (int)System.Math.Floor(((double)n)
-                    / (System.Math.Log(n) - 1.5));
-            }
+            return (int)System.Math.Floor(((double)n)
+                                          / (System.Math.Log(n) - 1.5));
         }
 
         /// <summary>
@@ -110,7 +108,7 @@ namespace Sharith.Math.MathUtils
         {
             if (n <= 0)
             {
-                throw new System.ArgumentOutOfRangeException("n >= 0 required");
+                throw new ArgumentOutOfRangeException(nameof(n) + " >= 0 required");
             }
             return BitLength(n) - 1;
         }
@@ -124,7 +122,7 @@ namespace Sharith.Math.MathUtils
         {
             if (n < 0)
             {
-                throw new System.ArgumentOutOfRangeException("n >= 0 required");
+                throw new System.ArgumentOutOfRangeException(nameof(n) + " >= 0 required");
             }
             return (int)System.Math.Floor(System.Math.Sqrt(n));
         }
@@ -150,7 +148,7 @@ namespace Sharith.Math.MathUtils
         {
             if (n < 0)
             {
-                throw new System.ArgumentOutOfRangeException("n >= 0 required");
+                throw new System.ArgumentOutOfRangeException(nameof(n) + " >= 0 required");
             }
 
             if (n == 0) return 0;
@@ -174,11 +172,8 @@ namespace Sharith.Math.MathUtils
             {
                 return 6;
             }
-            else
-            {
-                return (int)System.Math.Floor(System.Math.Sqrt(n)
-                        + (double)n / (Log2(n) - 1));
-            }
+            return (int)System.Math.Floor(System.Math.Sqrt(n)
+                                          + (double)n / (Log2(n) - 1));
         }
 
         public static double AsymptFactorial(double x)
@@ -241,13 +236,13 @@ namespace Sharith.Math.MathUtils
             }
             if (n < 0)
             {
-                throw new System.ArgumentOutOfRangeException("min n is 0");
+                throw new System.ArgumentOutOfRangeException("min " + nameof(n) + " is 0");
             }
 
             return new XInt(smallFactorials[n]);
         }
 
-        const int PARALLEL_THRESHOLD = 1024;
+        const int ParallelThreshold = 1024;
 
         // <returns>a[start]*a[start+1]*...*a[start+length-1]</returns>
         public static XInt Product(int[] a, int start, int length)
@@ -266,7 +261,7 @@ namespace Sharith.Math.MathUtils
 
             if (i == j) b[k++] = a[j];
 
-            if (k > PARALLEL_THRESHOLD)
+            if (k > ParallelThreshold)
             {
                 var task = Task.Factory.StartNew<XInt>(() =>
                 {
@@ -297,7 +292,7 @@ namespace Sharith.Math.MathUtils
                 else b[k++] *= (long)a[i];
             }
        
-            if (len > PARALLEL_THRESHOLD)
+            if (len > ParallelThreshold)
             {
                 var task = Task.Factory.StartNew<XInt>(() =>
                 {
@@ -320,7 +315,7 @@ namespace Sharith.Math.MathUtils
         public static XInt Product(long[] a, int len)
         {
             int n = len - 1;
-            if (len > PARALLEL_THRESHOLD)
+            if (len > ParallelThreshold)
             {
                 var task = Task.Factory.StartNew<XInt>(() =>
                 {
@@ -373,7 +368,7 @@ namespace Sharith.Math.MathUtils
         public static XInt Product(XInt[] a, int start, int len)
         {
             int n = len - 1;
-            if (len > PARALLEL_THRESHOLD)
+            if (len > ParallelThreshold)
             {
                 var task = Task.Factory.StartNew<XInt>(() =>
                 {

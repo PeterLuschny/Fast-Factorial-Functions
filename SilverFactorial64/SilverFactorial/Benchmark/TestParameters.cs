@@ -1,52 +1,52 @@
 ﻿
-namespace SilverFactorial
+namespace SilverFactorial.Benchmark
 {
     internal class TestParameters
     {
-        public const int TEST_MAX = int.MaxValue;
+        public const int TestMax = int.MaxValue;
         
-        public int testLength;
-        public int testStart;
-        public int stepFactor;
-        public static int[] testValues;
-        public static int cardSelected;
-        public bool[] algoSelected;
-        public bool showFullValue;
-        public bool verbose;
-        public bool sanityTest;
-        public double workLoad;
+        public int TestLength;
+        public int TestStart;
+        public int StepFactor;
+        public static int[] TestValues;
+        public static int CardSelected;
+        public bool[] AlgoSelected;
+        public bool ShowFullValue;
+        public bool Verbose;
+        public bool SanityTest;
+        public double WorkLoad;
 
         public TestParameters(int noOfCandidates)
         {
-            algoSelected = new bool[noOfCandidates];
+            this.AlgoSelected = new bool[noOfCandidates];
         }
 
         public void Init() 
         {
-            testValues = new int[testLength];
+            TestValues = new int[this.TestLength];
             double sum = 0;
-            long value = testStart;
+            long value = this.TestStart;
 
-            for (int m = 0; m < testLength; m++)
+            for (int m = 0; m < this.TestLength; m++)
             {
-                if (value < TEST_MAX)
+                if (value < TestMax)
                 {
-                    testValues[m] = (int)value;
+                    TestValues[m] = (int)value;
                     sum += value;
                 }
                 else
                 {
-                    testValues[m] = 1;
+                    TestValues[m] = 1;
                 }
-                value = (long)((stepFactor * value) / 10.0);
+                value = (long)((this.StepFactor * value) / 10.0);
             }
 
-            cardSelected = 0; workLoad = 0;
+            CardSelected = 0; this.WorkLoad = 0;
 
             foreach (Candidate cand in Candidate.Selected)
             {
-                cardSelected++;
-                workLoad += cand.WorkLoad * sum;
+                CardSelected++;
+                this.WorkLoad += cand.WorkLoad * sum;
             }
         }
     }

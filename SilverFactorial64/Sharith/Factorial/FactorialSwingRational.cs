@@ -1,74 +1,69 @@
-/// -------- ToujoursEnBeta
-/// Author & Copyright : Peter Luschny
-/// License: LGPL version 3.0 or (at your option)
-/// Creative Commons Attribution-ShareAlike 3.0
-/// Comments mail to: peter(at)luschny.de
-/// Created: 2010-03-01
+// -------- ToujoursEnBeta
+// Author & Copyright : Peter Luschny
+// License: LGPL version 3.0 or (at your option)
+// Creative Commons Attribution-ShareAlike 3.0
+// Comments mail to: peter(at)luschny.de
+// Created: 2010-03-01
 
-namespace Sharith.Math.Factorial 
+namespace Sharith.Factorial 
 {
-    using XInt = Sharith.Arithmetic.XInt;
+    using XInt = Arithmetic.XInt;
 
     public class SwingRational : IFactorialFunction 
     {
-        public SwingRational() { }
-        
-        public string Name
-        {
-            get { return "SwingRational       "; }
-        }
+        public string Name => "SwingRational       ";
 
-        private long den, num, h;
-        private int i;
+        long den, num, h;
+        int i;
 
         public XInt Factorial(int n)
         {
             if (n < 0)
             {
-                throw new System.ArgumentOutOfRangeException("n",
-                Name + ": n >= 0 required, but was " + n);
+                throw new System.ArgumentOutOfRangeException(
+                    this.Name + ": " + nameof(n) + " >= 0 required, but was " + n);
             }
-            return RecFactorial(n);
+            return this.RecFactorial(n);
         }
 
         private XInt RecFactorial(int n)
         {
             if (n < 2) return XInt.One;
 
-            return XInt.Pow(RecFactorial(n / 2), 2) * Swing(n);
+            return XInt.Pow(this.RecFactorial(n / 2), 2) * this.Swing(n);
         }
 
         private XInt Swing(int n)
         {
             switch (n % 4)
             {
-                case 1: h = n / 2 + 1; break;
-                case 2: h = 2; break;
-                case 3: h = 2 * (n / 2 + 2); break;
-                default: h = 1; break;
+                case 1: this.h = n / 2 + 1; break;
+                case 2: this.h = 2; break;
+                case 3: this.h = 2 * (n / 2 + 2); break;
+                default: this.h = 1; break;
             }
 
-            num = 2 * (n + 2 - ((n + 1) & 1));
-            den = 1;
-            i = n / 4;
+            this.num = 2 * (n + 2 - ((n + 1) & 1));
+            this.den = 1;
+            this.i = n / 4;
 
-            return Product(i + 1).Numerator;
+            return this.Product(this.i + 1).Numerator;
         }
 
         private Rational Product(int l)
         {
             if (l > 1)
             {
-                int m = l / 2;
-                return Product(m) * Product(l - m);
+                var m = l / 2;
+                return this.Product(m) * this.Product(l - m);
             }
 
-            if (i-- > 0)
+            if (this.i-- > 0)
             {
-                return new Rational(num -= 4, den++);
+                return new Rational(this.num -= 4, this.den++);
             }
 
-            return new Rational(h, 1);
+            return new Rational(this.h, 1);
         }
 
         //-------------------------------------------------------------
@@ -79,23 +74,23 @@ namespace Sharith.Math.Factorial
         //-------------------------------------------------------------
         private class Rational
         {
-            private XInt num; // Numerator
-            private XInt den; // Denominator
+            readonly XInt num; // Numerator
+            readonly XInt den; // Denominator
 
             public XInt Numerator
             {
                 get
                 {
-                    XInt cd = XInt.GreatestCommonDivisor(num, den);
-                    return num / cd;
+                    var cd = XInt.GreatestCommonDivisor(this.num, this.den);
+                    return this.num / cd;
                 }
             }
 
             public Rational(long _num, long _den)
             {
                 long cd = Gcd(_den, _num);
-                num = new XInt(_num / cd);
-                den = new XInt(_den / cd);
+                this.num = new XInt(_num / cd);
+                this.den = new XInt(_den / cd);
             }
 
             public Rational(XInt _num, XInt _den)
@@ -105,8 +100,8 @@ namespace Sharith.Math.Factorial
                 // XInt cd = XInt.Gcd(_num, _den);
                 // num = new XInt(_num / cd);
                 // den = new XInt(_den / cd);
-                num = _num;
-                den = _den;
+                this.num = _num;
+                this.den = _den;
             }
 
             public static Rational operator *(Rational a, Rational r)

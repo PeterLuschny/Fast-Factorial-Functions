@@ -1,40 +1,37 @@
-/// -------- ToujoursEnBeta
-/// Author & Copyright : Peter Luschny
-/// License: LGPL version 3.0 or (at your option)
-/// Creative Commons Attribution-ShareAlike 3.0
-/// Comments mail to: peter(at)luschny.de
-/// Created: 2010-03-01
+// -------- ToujoursEnBeta
+// Author & Copyright : Peter Luschny
+// License: LGPL version 3.0 or (at your option)
+// Creative Commons Attribution-ShareAlike 3.0
+// Comments mail to: peter(at)luschny.de
+// Created: 2010-03-01
 
-namespace Sharith.Math.Factorial 
+namespace Sharith.Factorial 
 {
     using System;
+    using System.Linq;
     using System.Threading.Tasks;
-    using Sharith.Math.Primes;
-    using XMath = Sharith.Math.MathUtils.XMath;
-    using XInt = Sharith.Arithmetic.XInt;
+    using Sharith.Primes;
+
+    using XInt = Arithmetic.XInt;
+    using XMath = MathUtils.XMath;
     
     public class ParallelPrimeSplit : IFactorialFunction 
     {
-        public ParallelPrimeSplit() { }
-        
-        private PrimeSieve sieve;
+        PrimeSieve sieve;
  
-        public string Name
-        {
-            get { return "ParallelPrimeSplit  "; }
-        }    
+        public string Name => "ParallelPrimeSplit  ";
 
-        private delegate XInt SwingDelegate(int n);
+        delegate XInt SwingDelegate(int n);
  
         public XInt Factorial(int n)
         {
             if (n < 20) { return XMath.Factorial(n); }
  
-            sieve = new PrimeSieve(n);
-            int log2n = XMath.FloorLog2(n);
+            this.sieve = new PrimeSieve(n);
+            var log2N = XMath.FloorLog2(n);
 
-            SwingDelegate swingDelegate = Swing;
-            var results = new IAsyncResult[log2n];
+            SwingDelegate swingDelegate = this.Swing;
+            var results = new IAsyncResult[log2N];
  
             int h = 0, shift = 0, taskCounter = 0;
  
@@ -43,7 +40,7 @@ namespace Sharith.Math.Factorial
             while (h != n)
             {
                 shift += h;
-                h = n >> log2n--;
+                h = n >> log2N--;
                 if (h > 2)
                 {
                     results[taskCounter++] = swingDelegate.BeginInvoke(h, null, null);
@@ -52,7 +49,7 @@ namespace Sharith.Math.Factorial
  
             XInt p = XInt.One, r = XInt.One, rl = XInt.One;
  
-            for (int i = 0; i < taskCounter; i++)
+            for (var i = 0; i < taskCounter; i++)
             {
                 var t = rl * swingDelegate.EndInvoke(results[i]);
                 p = p * t;
@@ -65,21 +62,17 @@ namespace Sharith.Math.Factorial
  
         private XInt Swing(int n)
         {
-            if (n < 33) return smallOddSwing[n];
+            if (n < 33) return SmallOddSwing[n];
 
-            var primorial = Task.Factory.StartNew<XInt>(() =>
-            { 
-                return sieve.GetPrimorial(n / 2 + 1, n); 
-            });
- 
-            int count = 0, rootN = XMath.FloorSqrt(n);
- 
-            var aPrimes = sieve.GetPrimeCollection(3, rootN);
-            var bPrimes = sieve.GetPrimeCollection(rootN + 1, n / 3);
-            int piN = aPrimes.NumberOfPrimes + bPrimes.NumberOfPrimes;
+            var primorial = Task.Factory.StartNew(() => this.sieve.GetPrimorial(n / 2 + 1, n));
+            var count = 0; 
+            var rootN = XMath.FloorSqrt(n);
+            var aPrimes = this.sieve.GetPrimeCollection(3, rootN);
+            var bPrimes = this.sieve.GetPrimeCollection(rootN + 1, n / 3);
+            var piN = aPrimes.NumberOfPrimes + bPrimes.NumberOfPrimes;
             var primeList = new int[piN];
  
-            foreach (int prime in aPrimes)
+            foreach (var prime in aPrimes)
             {
                 int q = n, p = 1;
  
@@ -97,19 +90,16 @@ namespace Sharith.Math.Factorial
                 }
             }
  
-            foreach (int prime in bPrimes)
+            foreach (var prime in bPrimes.Where(prime => ((n / prime) & 1) == 1))
             {
-                if (((n / prime) & 1) == 1)
-                {
-                    primeList[count++] = prime;
-                }
+                primeList[count++] = prime;
             }
  
-            XInt primeProduct = XMath.Product(primeList, 0, count);
+            var primeProduct = XMath.Product(primeList, 0, count);
             return primeProduct * primorial.Result;
         }
 
-        private static XInt[] smallOddSwing = {
+        static readonly XInt[] SmallOddSwing = {
             1,1,1,3,3,15,5,35,35,315,63,693,231,3003,429,6435,6435,109395,
             12155,230945,46189,969969,88179,2028117,676039,16900975,1300075,
             35102025,5014575,145422675,9694845,300540195,300540195 };

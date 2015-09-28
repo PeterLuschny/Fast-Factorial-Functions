@@ -1,13 +1,15 @@
-/// -------- ToujoursEnBeta
-/// Author & Copyright : Peter Luschny
-/// License: LGPL version 3.0 or (at your option)
-/// Creative Commons Attribution-ShareAlike 3.0
-/// Comments mail to: peter(at)luschny.de
-/// Created: 2010-03-01
+// -------- ToujoursEnBeta
+// Author & Copyright : Peter Luschny
+// License: LGPL version 3.0 or (at your option)
+// Creative Commons Attribution-ShareAlike 3.0
+// Comments mail to: peter(at)luschny.de
+// Created: 2010-03-01
 
-namespace Sharith.Math.Factorial 
+namespace Sharith.Factorial 
 {
-    using XInt = Sharith.Arithmetic.XInt;
+    using System.Diagnostics.CodeAnalysis;
+
+    using XInt = Arithmetic.XInt;
 
     /// <summary> An interface for the factorial function
     /// n! = 1*2*3*...*n
@@ -16,7 +18,7 @@ namespace Sharith.Math.Factorial
     public interface IFactorialFunction
     {
         string Name { get; }
+
         XInt Factorial(int n);
     }
-
 } // endOfIFactorialFunction

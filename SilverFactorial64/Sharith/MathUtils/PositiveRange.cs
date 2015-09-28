@@ -5,12 +5,12 @@
 // Comments mail to: peter(at)luschny.de
 // Created: 2010-03-01
 
-namespace Sharith.Math.MathUtils
+namespace Sharith.MathUtils
 {
     using System;
 
     /// <summary>
-    /// a PositiveRange is an intervall of integers,
+    /// a PositiveRange is an interval of integers,
     /// given by a lower bound Min and an upper bound Max,
     /// such that 0 &lt;= Min and Min &lt;= Max.
     /// a PositiveRange is immutable.
@@ -29,23 +29,23 @@ namespace Sharith.Math.MathUtils
             if (!((0 <= low) && (low <= high)))
             {
                 throw new ArgumentOutOfRangeException(
-                String.Format("[{0},{1}]", low, high),
+                $"[{low},{high}]",
                 "The order 0 <= low <= high is false.");
             }
             
             this.Min = low;
             this.Max = high;
         }
- 
+
         /// <summary>
         /// Gets the lower bound (Min) of the interval.
         /// </summary>
-        public int Min { get; private set; } // C#3.0 
- 
+        public readonly int Min; // { get; } 
+
         /// <summary>
         /// Gets upper bound (Max) of the interval.
         /// </summary>
-        public int Max { get; private set; } // C#3.0
+        public readonly int Max; // { get; } 
  
         /// <summary>
         /// Represents the range as a string, formatted as "[Min,Max]".
@@ -53,7 +53,7 @@ namespace Sharith.Math.MathUtils
         /// <returns>a string representation of the range.</returns>
         public override string ToString()
         {
-            return String.Format("[{0},{1}]", this.Min, this.Max);
+            return $"[{this.Min},{this.Max}]";
         }
  
         /// <summary>
@@ -65,7 +65,7 @@ namespace Sharith.Math.MathUtils
         /// false otherwise.</returns>
         public bool Contains(int value)
         {
-            return (Min <= value) && (value <= Max);
+            return (this.Min <= value) && (value <= this.Max);
         }
  
         /// <summary>
@@ -99,7 +99,7 @@ namespace Sharith.Math.MathUtils
         /// of this range, false otherwise.</returns>
         public bool Contains(PositiveRange range)
         {
-            return (Min <= range.Min) && (range.Max <= Max);
+            return (this.Min <= range.Min) && (range.Max <= this.Max);
         }
  
         /// <summary>
@@ -156,7 +156,7 @@ namespace Sharith.Math.MathUtils
             }
  
             // If parameter cannot be cast to PositiveRange return false.
-            PositiveRange that = obj as PositiveRange;
+            var that = obj as PositiveRange;
             if ((object)that == null)
             {
                 return false;

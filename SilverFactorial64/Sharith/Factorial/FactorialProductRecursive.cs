@@ -1,34 +1,29 @@
-/// -------- ToujoursEnBeta
-/// Author & Copyright : Peter Luschny
-/// License: LGPL version 3.0 or (at your option)
-/// Creative Commons Attribution-ShareAlike 3.0
-/// Comments mail to: peter(at)luschny.de
-/// Created: 2010-03-01
+// -------- ToujoursEnBeta
+// Author & Copyright : Peter Luschny
+// License: LGPL version 3.0 or (at your option)
+// Creative Commons Attribution-ShareAlike 3.0
+// Comments mail to: peter(at)luschny.de
+// Created: 2010-03-01
 
-namespace Sharith.Math.Factorial 
+namespace Sharith.Factorial 
 {
-    using XInt = Sharith.Arithmetic.XInt;
+    using XInt = Arithmetic.XInt;
 
     public class ProductRecursive : IFactorialFunction 
     {
-        public ProductRecursive() { }
-
-        public string Name
-        {
-            get { return "ProductRecursive    "; }
-        }
+        public string Name => "ProductRecursive    ";
 
         public XInt Factorial(int n)
         {
             if (n < 0)
             {
-                throw new System.ArgumentOutOfRangeException("n",
-                Name + ": n >= 0 required, but was " + n);
+                throw new System.ArgumentOutOfRangeException(
+                    this.Name + ": " + nameof(n) + " >= 0 required, but was " + n);
             }
 
             if (1 < n)
             {
-                return RecProduct(1, n);
+                return this.RecProduct(1, n);
             }
 
             return XInt.One;
@@ -38,11 +33,11 @@ namespace Sharith.Math.Factorial
         {
             if (1 < len)
             {
-                int l = len >> 1;
-                return RecProduct(n, l) * RecProduct(n + l, len - l);
+                var l = len >> 1;
+                return this.RecProduct(n, l) * this.RecProduct(n + l, len - l);
             }
 
             return new XInt(n);
         }
     }
-}   // endOfFactorialProductRecursive
+} // endOfFactorialProductRecursive

@@ -5,61 +5,59 @@
 // Comments mail to: peter(at)luschny.de
 // Created: 2010-03-01
 
-namespace SilverFactorial
+namespace SilverFactorial.Benchmark
 {
     using System;
-    using System.Collections.Generic;
     using System.Globalization;
     using System.IO;
 
     class Result : IComparable
     {
-        public Candidate cand;
-
-        public long ms;
-        public long crc;
-        public long eddms;
+        public readonly Candidate Cand;
+        public readonly long Ms;
+        public readonly long Crc;
+        public readonly long Eddms;
 
         public double Rank { get; set; }
         public int AbsRank { get; set; }
 
-        public static int[] relRankList;
+        public static int[] RelRankList;
         // Item1 = average efficiency, Item2 = index of candidate
-        private static Tuple<int, int>[] EffCand;
+        private static Tuple<int, int>[] effCand;
         
         public Result(Candidate cand, long msec, long check, long eddms)
         {
-            this.cand = cand;
-            this.ms = msec;
-            this.crc = check;
-            this.eddms = eddms;
+            this.Cand = cand;
+            this.Ms = msec;
+            this.Crc = check;
+            this.Eddms = eddms;
         }
 
         public override string ToString()
         {
-            return string.Format(" {0:D} ms  <{1:X}>", ms, crc);
+            return $" {this.Ms:D} ms  <{this.Crc:X}>";
         }
 
         public string GetRankAsString()
         {
-            if (double.IsInfinity(Rank) || double.IsNaN(Rank)) Rank = 0;
-            return string.Format(" {0:F1}", Rank).PadLeft(5, ' ');
+            if (double.IsInfinity(this.Rank) || double.IsNaN(this.Rank)) this.Rank = 0;
+            return $" {this.Rank:F1}".PadLeft(5, ' ');
         }
 
         public string GetRankAsString2()
         {
-            if (double.IsInfinity(Rank) || double.IsNaN(Rank)) Rank = 0;
-            return string.Format(" {0:0.00}", Rank).PadLeft(5, ' ');
+            if (double.IsInfinity(this.Rank) || double.IsNaN(this.Rank)) this.Rank = 0;
+            return $" {this.Rank:0.00}".PadLeft(5, ' ');
         }
 
         public string GetTimeAsString()
         {
-            return string.Format("{0:0.0}", (ms / 1000.00)).PadLeft(5, ' ');
+            return $"{(this.Ms / 1000.00):0.0}".PadLeft(5, ' ');
         }
 
         public string GetTimeAsString2()
         {
-            return string.Format("{0:0.00}", (ms / 1000.00)).PadLeft(5, ' ');
+            return $"{(this.Ms / 1000.00):0.00}".PadLeft(5, ' ');
         }
 
         private static string DateTimeString()
@@ -71,7 +69,7 @@ namespace SilverFactorial
 
         public string GetDecimalDigitsPerMillisecondAsString()
         {
-            return string.Format("{0}", eddms);
+            return $"{this.Eddms}";
         }
 
         private static int Compare(Tuple<int, int> x, Tuple<int, int> y)
@@ -83,16 +81,16 @@ namespace SilverFactorial
 
         private static void AverageEfficiency()
         {
-            EffCand = new Tuple<int, int>[TestParameters.cardSelected];
-            int[] testValues = TestParameters.testValues;
-            int i = 0;
+            effCand = new Tuple<int, int>[TestParameters.CardSelected];
+            var testValues = TestParameters.TestValues;
+            var i = 0;
 
             if (testValues.Length == 1)
             {
                 foreach (Candidate cand in Candidate.Selected)
                 {
-                    Result res = (Result)cand.performance[testValues[0]];
-                    EffCand[i++] = new Tuple<int, int>((int)res.eddms, cand.Index);
+                    var res = (Result)cand.Performance[testValues[0]];
+                    effCand[i++] = new Tuple<int, int>((int)res.Eddms, cand.Index);
                 }
             }
             else
@@ -104,34 +102,34 @@ namespace SilverFactorial
                     foreach (var value in testValues)
                     {
                         if (first) { first = false; continue; }
-                        Result res = (Result)cand.performance[value];
-                        var eddms = (int)res.eddms;
+                        var res = (Result)cand.Performance[value];
+                        var eddms = (int)res.Eddms;
                         sum += eddms;
                     }
                     var val = sum / (testValues.Length - 1);
-                    EffCand[i++] = new Tuple<int, int>(val, cand.Index);
+                    effCand[i++] = new Tuple<int, int>(val, cand.Index);
                 }
             }
-            Array.Sort(EffCand, Compare);
+            Array.Sort(effCand, Compare);
         }
 
         // IComparable member.
         public int CompareTo(Object o)
         {
             double or = ((Result)o).Rank;
-            if (or == Rank) return 0;
-            if (or < Rank) return 1;
+            if (or == this.Rank) return 0;
+            if (or < this.Rank) return 1;
             return -1;
         }
 
         // Uses CompareTo.
         private static void InsertSort(Result[] r, int low, int high)
         {
-            for (int i = low; i < high; i++)
+            for (var i = low; i < high; i++)
             {
-                for (int j = i; j > low && (r[j - 1]).CompareTo(r[j]) > 0; j--)
+                for (var j = i; j > low && (r[j - 1]).CompareTo(r[j]) > 0; j--)
                 {
-                    Result t = r[j]; r[j] = r[j - 1]; r[j - 1] = t;
+                    var t = r[j]; r[j] = r[j - 1]; r[j - 1] = t;
                 }
             }
             return;
@@ -142,18 +140,18 @@ namespace SilverFactorial
             CheckRange(a.Length, 0, toIndex);
             InsertSort(a, 0, toIndex);
 
-            relRankList = new int[toIndex];
+            RelRankList = new int[toIndex];
             for (int i = 0; i < toIndex; i++)
             {
                 a[i].AbsRank = i + 1;
-                relRankList[i] = a[i].cand.Index;
+                RelRankList[i] = a[i].Cand.Index;
             }
         }
 
         private static void CheckRange(int arrayLen, int fromIndex, int toIndex)
         {
             if (fromIndex > toIndex)
-                throw new System.ArgumentOutOfRangeException("n", "fromIndex("
+                throw new System.ArgumentOutOfRangeException(" fromIndex("
                     + fromIndex + ") > toIndex(" + toIndex + ")");
             if (fromIndex < 0)
                 throw new System.ArgumentOutOfRangeException(fromIndex.ToString());
@@ -164,7 +162,7 @@ namespace SilverFactorial
         public static void ResultsToFile(string fileName)
         {
             var file = new FileInfo(@fileName);
-            StreamWriter benchReport = file.AppendText();
+            var benchReport = file.AppendText();
             AverageEfficiency();
             WriteResults(benchReport);
             benchReport.Close();
@@ -172,9 +170,9 @@ namespace SilverFactorial
 
         static void WriteResults(StreamWriter file)
         {
-            int[] testValues = TestParameters.testValues;
+            var testValues = TestParameters.TestValues;
 
-            foreach (var item in htmlHeader)
+            foreach (var item in HtmlHeader)
             {
                 file.WriteLine(item);
             }
@@ -219,9 +217,9 @@ namespace SilverFactorial
 
                 file.WriteLine("</tr>");
 
-                for (int i = 0; i < TestParameters.cardSelected; i++)
+                for (var i = 0; i < TestParameters.CardSelected; i++)
                 {
-                    Candidate cand = Candidate.candList[EffCand[i].Item2];
+                    var cand = Candidate.CandList[effCand[i].Item2];
 
                     file.WriteLine("<tr class=\"count\">");
 
@@ -231,7 +229,7 @@ namespace SilverFactorial
 
                     foreach (var value in testValues)
                     {
-                        Result res = (Result)cand.performance[value];
+                        var res = (Result)cand.Performance[value];
 
                         if (j == 0)
                         {
@@ -303,9 +301,9 @@ namespace SilverFactorial
             file.WriteLine("</td>");
             file.WriteLine("</tr>");
 
-            for (var k = 0; k < TestParameters.cardSelected; k++)
+            for (var k = 0; k < TestParameters.CardSelected; k++)
             {
-                Candidate cand = Candidate.candList[EffCand[k].Item2];
+                var cand = Candidate.CandList[effCand[k].Item2];
                 file.WriteLine("<tr>");
                 if (k == 0) file.Write("<td class=\"fact1\">");
                 else if (k == 1) file.Write("<td class=\"fact2\">");
@@ -316,7 +314,7 @@ namespace SilverFactorial
                 if (k == 0) file.Write("<td class=\"count1\">");
                 else if (k == 1) file.Write("<td class=\"count2\">");
                 else file.Write("<td class=\"count\">");
-                file.Write(EffCand[k].Item1.ToString());
+                file.Write(effCand[k].Item1.ToString());
                 file.WriteLine("</td>");
                 file.WriteLine("</tr>");
             }
@@ -334,12 +332,12 @@ namespace SilverFactorial
             file.WriteLine("</html>");
         }
 
-        private static string[] htmlHeader = {
+        static readonly string[] HtmlHeader = {
             "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">",
             "<html>","<head>",
             "<meta name=\"GENERATOR\" content=\"Factorial.exe\">",
             "<title>","Factorial Benchmark","</title>",
-            "<style type=\"text/css\">", 
+            "<style type=\"text/css\">",
             "body { background-color:white; color: black; ",
             "font-family: Monospace, Sans-Serif, Arial, Helvetica, Verdana; }",
             "td.count  { background-color : #c0d9c0; font-weight: bold; text-align: center; }",
@@ -347,7 +345,7 @@ namespace SilverFactorial
             "td.count2 { background-color : #c0d9c0; color : blue; font-weight: bold; text-align: center; }",
             "td.fact  { background-color: #f0e68c; text-align: right; font-size:small;",
             "font-family: Arial, Lucida Sans Typewriter;  }",
-            "td.fact1  { background-color: #f0e68c; color : red; text-align: right; font-size:small;", 
+            "td.fact1  { background-color: #f0e68c; color : red; text-align: right; font-size:small;",
             "font-family: Arial, Lucida Sans Typewriter;  }",
             "td.fact2  { background-color: #f0e68c; color : blue; text-align: right; font-size:small;",
             "font-family: Arial, Lucida Sans Typewriter;  }",

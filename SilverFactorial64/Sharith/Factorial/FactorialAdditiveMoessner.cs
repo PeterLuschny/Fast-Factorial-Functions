@@ -1,40 +1,35 @@
-/// -------- ToujoursEnBeta
-/// Author & Copyright : Peter Luschny
-/// License: LGPL version 3.0 or (at your option)
-/// Creative Commons Attribution-ShareAlike 3.0
-/// Comments mail to: peter(at)luschny.de
-/// Created: 2010-03-01
+// -------- ToujoursEnBeta
+// Author & Copyright : Peter Luschny
+// License: LGPL version 3.0 or (at your option)
+// Creative Commons Attribution-ShareAlike 3.0
+// Comments mail to: peter(at)luschny.de
+// Created: 2010-03-01
 
-namespace Sharith.Math.Factorial 
+namespace Sharith.Factorial 
 {
-    using XInt = Sharith.Arithmetic.XInt;
+    using XInt = Arithmetic.XInt;
 
     public class AdditiveMoessner : IFactorialFunction 
     {
-        public AdditiveMoessner() { }
-
-        public string Name
-        {
-            get { return "AdditiveMoessner    "; }
-        }
+        public string Name => "AdditiveMoessner    ";
 
         public XInt Factorial(int n)
         {
             if (n < 0)
             {
-                throw new System.ArgumentOutOfRangeException("n",
-                Name + ": n >= 0 required, but was " + n);
+                throw new System.ArgumentOutOfRangeException(
+                    this.Name + ": " + nameof(n) + " >= 0 required, but was " + n);
             }
 
-            XInt[] s = new XInt[n + 1];
+            var s = new XInt[n + 1];
             s[0] = XInt.One;
 
-            for (int m = 1; m <= n; m++)
+            for (var m = 1; m <= n; m++)
             {
                 s[m] = XInt.Zero;
-                for (int k = m; k >= 1; k--)
+                for (var k = m; k >= 1; k--)
                 {
-                    for (int i = 1; i <= k; i++)
+                    for (var i = 1; i <= k; i++)
                     {
                         s[i] += s[i - 1];
                     }

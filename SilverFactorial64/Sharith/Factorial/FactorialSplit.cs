@@ -1,54 +1,49 @@
-/// -------- ToujoursEnBeta
-/// Author & Copyright : Peter Luschny
-/// License: LGPL version 3.0 or (at your option)
-/// Creative Commons Attribution-ShareAlike 3.0
-/// Comments mail to: peter(at)luschny.de
-/// Created: 2010-03-01
+// -------- ToujoursEnBeta
+// Author & Copyright : Peter Luschny
+// License: LGPL version 3.0 or (at your option)
+// Creative Commons Attribution-ShareAlike 3.0
+// Comments mail to: peter(at)luschny.de
+// Created: 2010-03-01
 
-namespace Sharith.Math.Factorial 
+namespace Sharith.Factorial 
 {
-    using XInt = Sharith.Arithmetic.XInt;
-    using XMath = Sharith.Math.MathUtils.XMath;
+    using XInt = Arithmetic.XInt;
+    using XMath = MathUtils.XMath;
 
     public class Split : IFactorialFunction 
     {
-        public Split() { }
+        public string Name => "Split               ";
 
-        public string Name
-        {
-            get { return "Split               "; }
-        }
-
-        private XInt currentN;
+        XInt currentN;
 
         public XInt Factorial(int n)
         {
             if (n < 0)
             {
-                throw new System.ArgumentOutOfRangeException("n",
-                Name + ": n >= 0 required, but was " + n);
+                throw new System.ArgumentOutOfRangeException(
+                    this.Name + ": " + nameof(n) + " >= 0 required, but was " + n);
             }
 
             if (n < 2) return XInt.One;
 
-            XInt p = XInt.One;
-            XInt r = XInt.One;
-            currentN = XInt.One;
+            var p = XInt.One;
+            var r = XInt.One;
+            this.currentN = XInt.One;
 
             int h = 0, shift = 0, high = 1;
-            int log2n = XMath.FloorLog2(n);
+            var log2N = XMath.FloorLog2(n);
 
             while (h != n)
             {
                 shift += h;
-                h = n >> log2n--;
-                int len = high;
+                h = n >> log2N--;
+                var len = high;
                 high = (h - 1) | 1;
                 len = (high - len) / 2;
 
                 if (len > 0)
                 {
-                    p *= Product(len);
+                    p *= this.Product(len);
                     r *= p;
                 }
             }
@@ -58,10 +53,10 @@ namespace Sharith.Math.Factorial
 
         private XInt Product(int n)
         {
-            int m = n / 2;
-            if (m == 0) return currentN += 2;
-            if (n == 2) return (currentN += 2) * (currentN += 2);
-            return Product(n - m) * Product(m);
+            var m = n / 2;
+            if (m == 0) return this.currentN += 2;
+            if (n == 2) return (this.currentN += 2) * (this.currentN += 2);
+            return this.Product(n - m) * this.Product(m);
         }
     }
 } // endOfFactorialBinSplit

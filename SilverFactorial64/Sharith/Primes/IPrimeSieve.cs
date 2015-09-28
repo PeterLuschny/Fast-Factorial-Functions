@@ -1,14 +1,14 @@
-/// -------- ToujoursEnBeta
-/// Author & Copyright : Peter Luschny
-/// License: LGPL version 3.0 or (at your option)
-/// Creative Commons Attribution-ShareAlike 3.0
-/// Comments mail to: peter(at)luschny.de
-/// Created: 2010-03-01
+// -------- ToujoursEnBeta
+// Author & Copyright : Peter Luschny
+// License: LGPL version 3.0 or (at your option)
+// Creative Commons Attribution-ShareAlike 3.0
+// Comments mail to: peter(at)luschny.de
+// Created: 2010-03-01
   
-namespace Sharith.Math.Primes
+namespace Sharith.Primes
 {
-    using Sharith.Math.MathUtils;
- 
+    using Sharith.MathUtils;
+
     /// <summary>
     ///  The interface for a prime number sieve.
     ///  Much of its functionality is given through PrimeCollections.
@@ -49,7 +49,7 @@ namespace Sharith.Math.Primes
         /// Note: If the range [low, high] is not included in the range 
         /// of the sieve, this function might throw an ArgumentOutOfRangeException.
         /// </summary>
-        /// <param name="low">The low limit of the enumaration interval.</param>
+        /// <param name="low">The low limit of the enumeration interval.</param>
         /// <param name="high">The high limit of the enumeration interval.</param>
         /// <returns>The enumeration of the prime numbers between
         /// low and high.</returns>

@@ -43,26 +43,26 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Sharith.dll" size="60416">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Sharith.dll" size="58880">
       <assemblyIdentity name="Sharith" version="1.0.0.0" language="neutral" processorArchitecture="amd64" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>rE5FROy9BXg6bZcf1rOG0//U80lzr4nfhgBxJfvyedQ=</dsig:DigestValue>
+        <dsig:DigestValue>8QJ+SnUf4fOafION0xKvhERik1XedfzfErhpTK46kUo=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="SilverFactorial.exe" size="61952">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="SilverFactorial.exe" size="59392">
       <assemblyIdentity name="SilverFactorial" version="2.0.0.0" language="neutral" processorArchitecture="amd64" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>wjdjHuRjjwdbUgMOv9SHyealTctybb5P65MwQNJ68WU=</dsig:DigestValue>
+        <dsig:DigestValue>qsyp66cIbZ4TCcI7VnEBtZV1XQaiiiXCnj5wWrVWKN4=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

@@ -1,16 +1,17 @@
-/// -------- ToujoursEnBeta
-/// Author & Copyright : Peter Luschny
-/// License: LGPL version 3.0 or (at your option)
-/// Creative Commons Attribution-ShareAlike 3.0
-/// Comments mail to: peter(at)luschny.de
-/// Created: 2010-03-01
+// -------- ToujoursEnBeta
+// Author & Copyright : Peter Luschny
+// License: LGPL version 3.0 or (at your option)
+// Creative Commons Attribution-ShareAlike 3.0
+// Comments mail to: peter(at)luschny.de
+// Created: 2010-03-01
 
-using System.Collections.Generic;
-using Sharith.Math.MathUtils;
- 
-namespace Sharith.Math.Primes
+namespace Sharith.Primes
 {
-     /// <summary>
+    using System.Collections.Generic;
+
+    using Sharith.MathUtils;
+
+    /// <summary>
      ///  An interface for enumerating a prime number sieve.
      ///
      ///  An IPrimeCollection is both IEnumerable&lt;int&gt;

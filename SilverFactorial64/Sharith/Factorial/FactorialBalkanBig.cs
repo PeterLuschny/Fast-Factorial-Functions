@@ -1,30 +1,27 @@
-﻿/// -------- ToujoursEnBeta
-/// Author & Copyright : Peter Luschny
-/// License: LGPL version 3.0 or (at your option)
-/// Creative Commons Attribution-ShareAlike 3.0
-/// Comments mail to: peter(at)luschny.de
-/// Created: 2013-02-18
+﻿// -------- ToujoursEnBeta
+// Author & Copyright : Peter Luschny
+// License: LGPL version 3.0 or (at your option)
+// Creative Commons Attribution-ShareAlike 3.0
+// Comments mail to: peter(at)luschny.de
+// Created: 2013-02-18
 
-namespace Sharith.Math.Factorial
+namespace Sharith.Factorial
 {
-    using XInt = Sharith.Arithmetic.XInt;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
+
+    using XInt = Arithmetic.XInt;
 
     public class BalkanBig : IFactorialFunction
     {
-        public BalkanBig() { }
-
-        public string Name
-        {
-            get { return "BalkanBig           "; }
-        }
+        public string Name => "BalkanBig           ";
 
         public XInt Factorial(int n)
         {
             if (n < 0)
             {
                 throw new System.ArgumentOutOfRangeException(
-                    "n", Name + ": n >= 0 required, but was " + n);
+                    this.Name + ": " + nameof(n) + " >= 0 required, but was " + n);
             }
 
             if (n < 7)
@@ -43,7 +40,7 @@ namespace Sharith.Math.Factorial
 
             XInt s = loop, t;
 
-            for (int inc = loop - 1; inc > 0; inc--)
+            for (var inc = loop - 1; inc > 0; inc--)
             {
                 s += inc;
                 t = s;
@@ -60,9 +57,9 @@ namespace Sharith.Math.Factorial
             return SplitProduct(f) << loop;
         }
 
-        private static XInt SplitProduct(XInt[] f)
+        static XInt SplitProduct(IReadOnlyList<XInt> f)
         {
-            int last = f.Length - 1;
+            var last = f.Count - 1;
 
             var leftTask = Task.Factory.StartNew<XInt>(() => RecMul(f, 0, last / 2));
             var right = RecMul(f, last / 2 + 1, last);
@@ -70,7 +67,7 @@ namespace Sharith.Math.Factorial
             return leftTask.Result * right;
         }
 
-        private static XInt RecMul(XInt[] f, int n, int m)
+        static XInt RecMul(IReadOnlyList<XInt> f, int n, int m)
         {
             if (m == n + 1)
             {
