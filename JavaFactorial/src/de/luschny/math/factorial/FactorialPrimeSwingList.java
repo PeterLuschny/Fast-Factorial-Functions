@@ -28,7 +28,7 @@ public class FactorialPrimeSwingList implements IFactorialFunction {
     public Xint factorial(int n) {
         // For very small n the 'NaiveFactorial' is OK.
         if (n < 20) {
-            return Xmath.Factorial(n);
+            return Xmath.smallFactorial(n);
         }
 
         // log2n = floor(log2(n));
@@ -56,6 +56,8 @@ public class FactorialPrimeSwingList implements IFactorialFunction {
     }
 
     private Xint iterQuad() {
+        
+        // Initializations in in function 'factorial'!
         int init = listLength[0] == 0 ? 1 : 3;
         Xint fact = Xint.valueOf(init);
 

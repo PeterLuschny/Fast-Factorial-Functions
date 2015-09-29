@@ -12,16 +12,20 @@ import java.util.NoSuchElementException;
 
 public class Candidate {
 
-    IFactorialFunction fun;
-    Hashtable<Integer, Results> results;
-    String name;
-    Character id;
-    public int workLoad;
-    boolean benchmark, primeType, topFive, simple, concur;
+    final IFactorialFunction fun;
+    final Hashtable<Integer, Results> results;
+    private final String name;
+    private final Character id;
+    public final int workLoad;
+    private boolean benchmark;
+    private final boolean primeType;
+    private final boolean topFive;
+    private final boolean simple;
+    private final boolean concur;
 
-    public Candidate(IFactorialFunction f, String name, boolean b, boolean p,
-            boolean t, boolean s, boolean c, int w, char hotkey) {
-        results = new Hashtable<Integer, Results>();
+    private Candidate(IFactorialFunction f, String name, boolean b, boolean p,
+                      boolean t, boolean s, boolean c, int w, char hotkey) {
+        results = new Hashtable<>();
 
         fun = f;
         this.name = name;
@@ -57,7 +61,7 @@ public class Candidate {
     public boolean isSimple() {
         return simple;
     }
-    static final Candidate[] candArray = new Candidate[]{
+    private static final Candidate[] candArray = new Candidate[]{
         // notlame,primeType,recommended,simple,concur
         new Candidate(new FactorialParallelPrimeSwing(), "ParallelPrimeSwing", true, true, true, false, true, 1, 'u'), // 0
         new Candidate(new FactorialParallelPrimeSplit(), "ParallelPrimeSplit", true, true, false, false, true, 1, 't'), // 1
@@ -65,8 +69,8 @@ public class Candidate {
         new Candidate(new FactorialParallelSplit(), "ParallelSplit     ", true, false, true, false, true, 1, 's'), // 3
         new Candidate(new FactorialPrimeSwing(), "PrimeSwing        ", true, true, true, false, false, 1, 'b'), // 4
         new Candidate(new FactorialPrimeSchoenhage(), "PrimeShoenhage    ", true, true, false, false, false, 1, 'a'), // 5
-        new Candidate(new FactorialXPrimeSchoenhage(), "XPrimeShoenhage   ", true, true, false, false, false, 1, 'c'), // 5
-        //new Candidate(new FactorialPrimeSwingList(), "PrimeSwingList    ", true, true, false, false, false, 1, 'c'), // 6
+        //new Candidate(new FactorialXPrimeSchoenhage(), "XPrimeShoenhage   ", true, true, false, false, false, 1, 'c'), // 5
+        new Candidate(new FactorialPrimeSwingList(), "PrimeSwingList    ", true, true, false, false, false, 1, 'c'), // 6
         new Candidate(new FactorialPrimeSwingCache(), "PrimeSwingCache   ", true, true, false, false, false, 1, 'd'), // 7
         new Candidate(new FactorialPrimeVardi(), "PrimeVardi        ", true, true, false, false, false, 2, 'e'), // 8
         new Candidate(new FactorialPrimeLeenstra(), "PrimeLeenstra     ", true, true, false, false, false, 2, 'f'), // 9
@@ -86,13 +90,13 @@ public class Candidate {
     // new Candidate(new FactorialAdditiveSwing(), false,false, false, false, 150, 't'), //23
     // new Candidate(new FactorialAdditiveMoessner(),false, false, false, false, 200, 'u') //24
     };
-    static boolean[] selected;
+    private static boolean[] selected;
 
     static public void setSelected(boolean[] sel) {
         selected = sel;
     }
     static final int IndexOfReference = 4;
-    static Candidate reference = candArray[IndexOfReference];
+    static final Candidate reference = candArray[IndexOfReference];
 
     static public Iterator<Candidate> getSelected() {
         return new Iterator<Candidate>() {

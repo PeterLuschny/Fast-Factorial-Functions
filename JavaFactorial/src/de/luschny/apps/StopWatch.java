@@ -40,23 +40,24 @@ public class StopWatch {
     /**
      * Get the elapsed time converted to seconds.
      * 
-     * @return
+     * @return elapsed time converted to seconds
      */
     public double getSeconds() {
         return elapsedCount / 1000.0;
     }
 
     /**
-     * Get the elapsed time converted to seconds.
+     * Get the elapsed time converted to milli seconds.
      * 
-     * @return
+     * @return elapsed time converted to milli seconds
      */
-    public long getMilliSeconds() {
+    private long getMilliSeconds() {
         return elapsedCount;
     }
 
     /**
-     * Get the elapsed time as a formated string.
+     * Get the elapsed time as a formatted string.
+     * @return milli seconds as string
      */
     @Override
     public String toString() {

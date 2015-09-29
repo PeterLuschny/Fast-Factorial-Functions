@@ -55,6 +55,7 @@ public class FactorialSwingRationalDouble implements IFactorialFunction {
                 h = oddN ? 4 * (h + 2) * (h + 4) : 4 * (h + 2);
                 div = n > 7;
                 break;
+            // Need no default case here.    
         }
 
         g = div ? n / 4 : 1;
@@ -88,8 +89,8 @@ public class FactorialSwingRationalDouble implements IFactorialFunction {
     // ---------------------------------------------------------
     private class Rational {
 
-        private Xint num; // Numerator
-        private Xint den; // Denominator
+        private final Xint num; // Numerator
+        private final Xint den; // Denominator
 
         public Rational(long _num, long _den) {
             long c = gcd(_num, _den);

@@ -25,7 +25,7 @@ public class FactorialPrimeVardi implements IFactorialFunction {
     public Xint factorial(int n) {
         // For very small n the 'NaiveFactorial' is ok.
         if (n < 20) {
-            return Xmath.Factorial(n);
+            return Xmath.smallFactorial(n);
         }
 
         sieve = new PrimeSieve(n);
@@ -54,6 +54,7 @@ public class FactorialPrimeVardi implements IFactorialFunction {
         int k = n / 2, pc = 0, pp = 0, e;
         int rootN = (int) Math.floor(Math.sqrt(n));
 
+        // sieve initialized in function 'factorial!
         Xint bigPrimes = sieve.getPrimorial(k + 1, n);
         Xint smallPrimes = sieve.getPrimorial(k / 2 + 1, n / 3);
 
@@ -91,7 +92,7 @@ public class FactorialPrimeVardi implements IFactorialFunction {
 
         return exp;
     }
-    private static long[] binom = {1, 2, 6, 20, 70, 252, 924, 3432, 12870, 48620, 184756, 705432, 2704156,
+    private static final long[] binom = {1, 2, 6, 20, 70, 252, 924, 3432, 12870, 48620, 184756, 705432, 2704156,
         10400600, 40116600, 155117520, 601080390, 2333606220L, 9075135300L,
         35345263800L, 137846528820L, 538257874440L, 2104098963720L, 8233430727600L,
         32247603683100L};

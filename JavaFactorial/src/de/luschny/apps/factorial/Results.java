@@ -14,12 +14,12 @@ import java.util.Iterator;
 
 public class Results {
 
-    Candidate creator;
-    public double sec;
+    final Candidate creator;
+    public final double sec;
     public double rank;
-    public long crc;
-    public int absRank;
-    public int[] nops;
+    private final long crc;
+    private int absRank;
+    private final int[] nops;
 
     // public String opstring;
     Results(Candidate creator, double sec, long check, int[] nops) {
@@ -34,7 +34,7 @@ public class Results {
     public String toString() {
         return String.format("$0%7.2f Sec <$1%s>", sec, Long.toHexString(crc));
     }
-    public static String nopHeader = "   MUL     mul     DIV     div     Sqr     Lsh";
+    public static final String nopHeader = "   MUL     mul     DIV     div     Sqr     Lsh";
 
     public String nopsAsString() {
         StringBuilder sb = new StringBuilder();
@@ -60,7 +60,7 @@ public class Results {
         return rank;
     }
 
-    public int compareTo(Object o) {
+    private int compareTo(Object o) {
         final double or = ((Results) o).rank;
         if (or == rank) {
             return 0;
@@ -130,7 +130,7 @@ public class Results {
         return fileName;
     }
 
-    static void writeResults(PrintWriter file, int[] benchValues) {
+    private static void writeResults(PrintWriter file, int[] benchValues) {
         for (String item : htmlHeader) {
             file.println(item);
         }
@@ -220,7 +220,7 @@ public class Results {
         file.println("</body>");
         file.println("</html>");
     }
-    private static String[] htmlHeader = {"<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">", "<html>", "<head>",
+    private static final String[] htmlHeader = {"<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">", "<html>", "<head>",
         "<meta name=\"GENERATOR\" content=\"FactorialBenchmark\">", "<title>", "Factorial Benchmark",
         "</title>", "<style type=\"text/css\">", "body     { background-color:white; color: black; ",
         "font-family: Monospace, Sans-Serif, Arial, Helvetica, Verdana; }",

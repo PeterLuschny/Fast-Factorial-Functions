@@ -26,7 +26,7 @@ public class FactorialPrimeSwing implements IFactorialFunction {
     public Xint factorial(int n) {
         // For very small n the 'NaiveFactorial' is OK.
         if (n < 20) {
-            return Xmath.Factorial(n);
+            return Xmath.smallFactorial(n);
         }
 
         int pLen = (int) (2.0 * Math.floor(Math.sqrt(n) + n / (Xmath.log2(n) - 1)));
@@ -48,6 +48,7 @@ public class FactorialPrimeSwing implements IFactorialFunction {
             return Xint.valueOf(smallOddSwing[n]);
         }
 
+        // sieve and primeList initialized in function 'factorial'!
         int sqrtN = (int) Math.floor(Math.sqrt(n));
         IPrimeIteration pIter0 = sieve.getIteration(3, sqrtN);
         IPrimeIteration pIter1 = sieve.getIteration(sqrtN + 1, n / 3);
@@ -77,7 +78,7 @@ public class FactorialPrimeSwing implements IFactorialFunction {
         Xint prod = sieve.getPrimorial(n / 2 + 1, n);
         return prod.multiply(primeList, count);
     }
-    private static int[] smallOddSwing = {1, 1, 1, 3, 3, 15, 5, 35, 35, 315, 63, 693, 231, 3003, 429,
+    private static final int[] smallOddSwing = {1, 1, 1, 3, 3, 15, 5, 35, 35, 315, 63, 693, 231, 3003, 429,
         6435, 6435, 109395, 12155, 230945, 46189, 969969, 88179,
         2028117, 676039, 16900975, 1300075, 35102025, 5014575,
         145422675, 9694845, 300540195, 300540195};

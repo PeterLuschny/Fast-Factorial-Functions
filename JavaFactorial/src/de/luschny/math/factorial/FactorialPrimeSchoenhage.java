@@ -27,7 +27,7 @@ public class FactorialPrimeSchoenhage implements IFactorialFunction {
     public Xint factorial(int n) {
         // For very small n the 'NaiveFactorial' is ok.
         if (n < 20) {
-            return Xmath.Factorial(n);
+            return Xmath.smallFactorial(n);
         }
 
         int log2n = 31 - Integer.numberOfLeadingZeros(n);
@@ -45,6 +45,7 @@ public class FactorialPrimeSchoenhage implements IFactorialFunction {
             return Xint.ONE;
         }
 
+        // // multiList and primeList initialized in function 'factorial'!
         int i = 0, mult = multiList[0];
 
         while (mult > 1) {
@@ -79,6 +80,7 @@ public class FactorialPrimeSchoenhage implements IFactorialFunction {
                 }
             }
 
+            // multiList and primeList initialized in function 'factorial'!
             primeList[count] = prime;
             multiList[count++] = m;
         }

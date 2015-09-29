@@ -33,7 +33,7 @@ public class FactorialAdditiveSwing implements IFactorialFunction {
         return recFactorial(n / 2).square().multiply(swing(n));
     }
 
-    public Xint swing(int n) {
+    private Xint swing(int n) {
         Xint w = Xint.ONE;
 
         if (n > 1) {

@@ -23,10 +23,10 @@ import java.util.logging.Logger;
  */
 public class PrimeSieve implements IPrimeSieve {
 
-    int[] primes;
-    PositiveRange sieveRange;
-    PositiveRange primeRange;
-    Logger logger;
+    private final int[] primes;
+    private final PositiveRange sieveRange;
+    private final PositiveRange primeRange;
+    private static Logger logger;
 
     /**
      * Constructs a prime sieve for the integer range [1,n].
@@ -51,7 +51,7 @@ public class PrimeSieve implements IPrimeSieve {
      */
     @Override
     public void enableLogging(Logger log) {
-        this.logger = log;
+        logger = log;
     }
 
     /**
@@ -257,8 +257,8 @@ public class PrimeSieve implements IPrimeSieve {
         private final PositiveRange primeRange;
         private final int start;
         private final int end;
+        private final AtomicInteger state;
         private int current;
-        private AtomicInteger state;
 
         /**
          * Constructs the iteration for the passed sieve.
@@ -506,8 +506,8 @@ public class PrimeSieve implements IPrimeSieve {
 
                 primeReport.close();
             } catch (IOException e) {
-                if (null != sieve.logger) {
-                    sieve.logger.severe(e.toString());
+                if (null != logger) {
+                    logger.severe(e.toString());
                 }
             }
         }

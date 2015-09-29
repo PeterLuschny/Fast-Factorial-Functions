@@ -15,9 +15,9 @@ import java.util.Date;
 public class LoggedTextBox {
 
     public boolean logToFile;
-    PrintStream ps;
-    JTextArea textArea;
-    StringBuilder sb;
+    private PrintStream ps;
+    private final JTextArea textArea;
+    private StringBuilder sb;
 
     public LoggedTextBox(JTextArea box, String name) throws IOException {
         textArea = box;
@@ -40,7 +40,10 @@ public class LoggedTextBox {
             } else {
                 fileName = logDir + File.separator + fileName;
             }
-        } catch (Exception e) { //
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Exception e) {
+            // 
         }
 
         ps = new PrintStream(fileName);
@@ -54,14 +57,14 @@ public class LoggedTextBox {
         logToFile = val;
     }
 
-    public void Write(String str) {
+    public void write(String str) {
         if (logToFile) {
             ps.print(str);
         }
         sb.append(str);
     }
 
-    public void WriteLine(String str) {
+    public void writeLine(String str) {
         if (logToFile) {
             ps.println(str);
         }
@@ -69,7 +72,7 @@ public class LoggedTextBox {
         sb = new StringBuilder();
     }
 
-    public void WriteLine() {
+    public void writeLine() {
         if (logToFile) {
             ps.println();
         }
@@ -83,7 +86,7 @@ public class LoggedTextBox {
         sb = new StringBuilder();
     }
 
-    public void Flush() {
+    public void flush() {
         ps.flush();
         if (sb.length() > 0) {
             SwingUtilities.invokeLater(new AppendTextCallback(sb.toString()));
@@ -91,7 +94,7 @@ public class LoggedTextBox {
         sb = new StringBuilder();
     }
 
-    public void Dispose() {
+    public void dispose() {
         ps.flush();
         ps.close();
     }
@@ -101,7 +104,7 @@ public class LoggedTextBox {
     // for appending the text on a TextBox control.
     private class AppendTextCallback implements Runnable {
 
-        private String txt;
+        private final String txt;
 
         AppendTextCallback(String txt) {
             this.txt = txt;

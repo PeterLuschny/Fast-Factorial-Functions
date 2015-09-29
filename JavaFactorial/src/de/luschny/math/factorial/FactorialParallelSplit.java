@@ -40,7 +40,7 @@ public class FactorialParallelSplit implements IFactorialFunction {
         int proc = Runtime.getRuntime().availableProcessors();
 
         ExecutorService exe = Executors.newFixedThreadPool(proc);
-        ArrayList<Callable<Xint>> tasks = new ArrayList<Callable<Xint>>(log2n);
+        ArrayList<Callable<Xint>> tasks = new ArrayList<>(log2n);
 
         int high = n, low = n >>> 1, shift = low, taskCounter = 0;
 
@@ -59,13 +59,7 @@ public class FactorialParallelSplit implements IFactorialFunction {
         try {
             List<Future<Xint>> products = exe.invokeAll(tasks);
 
-            Future<Xint> R = exe.submit(new Callable<Xint>() {
-
-                @Override
-                public Xint call() {
-                    return Xint.ONE;
-                }
-            });
+            Future<Xint> R = exe.submit(() -> Xint.ONE);
 
             while (--taskCounter >= 0) {
                 p = p.multiply(products.get(taskCounter).get());
@@ -73,14 +67,14 @@ public class FactorialParallelSplit implements IFactorialFunction {
             }
 
             r = R.get();
-        } catch (Throwable e) {
+        } catch (Throwable ignored) {
         }
 
         exe.shutdownNow();
         return r.shiftLeft(shift);
     }
 
-    final class Multiply implements Callable<Xint> {
+    static class Multiply implements Callable<Xint> {
 
         private final Xint a, b;
 
@@ -110,7 +104,7 @@ final class Product implements Callable<Xint> {
         return product(n, m);
     }
 
-    public static Xint product(int n, int m) {
+    private static Xint product(int n, int m) {
         n = n | 1; // Round n up to the next odd number
         m = (m - 1) | 1; // Round m down to the next odd number
 

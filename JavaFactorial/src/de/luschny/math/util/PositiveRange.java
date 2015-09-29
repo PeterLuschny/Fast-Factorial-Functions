@@ -27,8 +27,7 @@ public final class PositiveRange implements Cloneable {
         if (!(0 <= low && low <= high)) {
             // Yes, we force the arguments to be ordered
             // to make the calling code more readable.
-            throw new IllegalArgumentException(new StringBuffer(64).append("The condition 0 <= ").append(low).append(
-                    " <= ").append(high).append(" is  false.").toString());
+            throw new IllegalArgumentException("The condition 0 <= " + low + " <= " + high + " is  false.");
         }
 
         this.min = low;
@@ -79,7 +78,7 @@ public final class PositiveRange implements Cloneable {
      */
     @Override
     public String toString() {
-        return new StringBuffer(32).append('[').append(min).append(',').append(max).append(']').toString();
+        return "[" + min + ',' + max + ']';
     }
 
     /**
@@ -107,8 +106,7 @@ public final class PositiveRange implements Cloneable {
      */
     public boolean containsOrFail(final int value) {
         if (!(min <= value && value <= max)) {
-            throw new IndexOutOfBoundsException(new StringBuffer(64).append(this.toString()).append(
-                    " does not contain ").append(value).toString());
+            throw new IndexOutOfBoundsException(this.toString() + " does not contain " + value);
         }
         return true;
     }
@@ -139,8 +137,7 @@ public final class PositiveRange implements Cloneable {
      */
     public boolean containsOrFail(final PositiveRange range) {
         if (!(min <= range.min && range.max <= max)) {
-            throw new IndexOutOfBoundsException(new StringBuffer(64).append(this.toString()).append(
-                    " does not contain ").append(range.toString()).toString());
+            throw new IndexOutOfBoundsException(this.toString() + " does not contain " + range.toString());
         }
         return true;
     }

@@ -80,8 +80,8 @@ public class FactorialSwingRational implements IFactorialFunction {
     // ---------------------------------------------------------
     private class Rational {
 
-        private Xint num; // Numerator
-        private Xint den; // Denominator
+        private final Xint num; // Numerator
+        private final Xint den; // Denominator
 
         public Xint getNumerator() {
             Xint cd = num.gcd(den);

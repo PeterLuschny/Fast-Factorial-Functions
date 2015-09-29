@@ -18,26 +18,26 @@ import java.util.Iterator;
 
 class WorkerCompletedEvent {
 
-    boolean cancelled, done;
-    Throwable error;
+    final boolean cancelled;
+    final Throwable error;
 
     public WorkerCompletedEvent(boolean cancelled, boolean done, Throwable error) {
         this.cancelled = cancelled;
-        this.done = done;
+        boolean done1 = done;
         this.error = error;
     }
 }
 
 class BenchmarkWorker {
 
-    private StopWatch watch;
-    private LoggedTextBox Winsole;
+    private final StopWatch watch;
+    private final LoggedTextBox winsole;
+    private final BenchmarkForm monitor; // PropertyChangeListener
     private FactorialTest test;
-    private BenchmarkForm monitor; // PropertyChangeListener
     private BenchmarkExecutor executor;
 
     public BenchmarkWorker(LoggedTextBox ws, BenchmarkForm monitor) {
-        Winsole = ws;
+        winsole = ws;
         this.monitor = monitor;
         watch = new StopWatch();
     }
@@ -71,9 +71,9 @@ class BenchmarkWorker {
             try {
 
                 if (test.sanityTest) {
-                    Winsole.WriteLine();
-                    Winsole.WriteLine("Sanity check is running!");
-                    SanityCheck(1000);
+                    winsole.writeLine();
+                    winsole.writeLine("Sanity check is running!");
+                    sanityCheck(1000);
                     return null;
                 }
 
@@ -92,7 +92,7 @@ class BenchmarkWorker {
                         }
 
                         Candidate cand = selectedCandidates.next();
-                        DoTest(cand, n, test.showFullValue, test.verbose);
+                        doTest(cand, n, test.showFullValue, test.verbose);
 
                         // Report progress as a percentage of the total task.
                         workDone += n * cand.workLoad;
@@ -101,18 +101,18 @@ class BenchmarkWorker {
                     }
 
                     if (test.verbose) {
-                        OperationCount(n);
+                        operationCount(n);
                     }
-                    RelativeRanking(n, test.cardSelected);
+                    relativeRanking(n, test.cardSelected);
                 }
 
-                UsedTime(benchValues);
-                PerformanceProfile(benchValues);
+                usedTime(benchValues);
+                performanceProfile(benchValues);
 
                 String fileName = Results.resultsToFile("FactorialBench", benchValues);
-                Winsole.WriteLine("\nBenchmark was saved to file ");
-                Winsole.WriteLine(fileName);
-                Winsole.Flush();
+                winsole.writeLine("\nBenchmark was saved to file ");
+                winsole.writeLine(fileName);
+                winsole.flush();
 
             } catch (Throwable e) {
                 err = e;
@@ -123,7 +123,7 @@ class BenchmarkWorker {
         }
     }
 
-    void DoTest(Candidate cand, int n, boolean showFullValue, boolean verbose) {
+    private void doTest(Candidate cand, int n, boolean showFullValue, boolean verbose) {
         IFactorialFunction f = cand.fun;
         Xint.clearOpCounter();
 
@@ -137,23 +137,23 @@ class BenchmarkWorker {
         cand.results.put(n, res);
 
         if (verbose) {
-            Winsole.WriteLine();
-            Winsole.WriteLine("SUMMARY: Computed the factorial of");
-            Winsole.WriteLine(n + "! = " + Xmath.asymptFactorial(n));
-            Winsole.WriteLine("Algorithm used: " + f.getName());
-            Winsole.WriteLine("Operations: " + Xint.getOpCountsAsString());
-            Winsole.WriteLine("CheckSum: <" + Long.toHexString(checksum) + ">");
-            Winsole.WriteLine("Computation in " + watch + ".");
+            winsole.writeLine();
+            winsole.writeLine("SUMMARY: Computed the factorial of");
+            winsole.writeLine(n + "! = " + Xmath.asymptFactorial(n));
+            winsole.writeLine("Algorithm used: " + f.getName());
+            winsole.writeLine("Operations: " + Xint.getOpCountsAsString());
+            winsole.writeLine("CheckSum: <" + Long.toHexString(checksum) + ">");
+            winsole.writeLine("Computation in " + watch + ".");
         }
 
         if (showFullValue) {
-            Winsole.WriteLine();
-            Winsole.WriteLine("Now converting to String. Note: It takes longer to convert than to compute!");
-            Winsole.WriteLine(nFact.toString());
+            winsole.writeLine();
+            winsole.writeLine("Now converting to String. Note: It takes longer to convert than to compute!");
+            winsole.writeLine(nFact.toString());
         }
     }
 
-    void RelativeRanking(int n, int count) {
+    private void relativeRanking(int n, int count) {
         if (n < 1000) {
             return; // too small
         }
@@ -170,8 +170,7 @@ class BenchmarkWorker {
         while (challengerCandidates.hasNext()) {
             Candidate cand = challengerCandidates.next();
             res = cand.results.get(n);
-            double r = res.sec / t;
-            res.rank = r;
+            res.rank = res.sec / t;
             resultList[sortLen++] = res;
         }
 
@@ -181,115 +180,115 @@ class BenchmarkWorker {
         // "RANKING [n=" + n + "] (rel. to PrimeSwing)"
         // ============================================
 
-        Winsole.WriteLine();
-        Winsole.WriteLine(dtrenner);
-        Winsole.WriteLine("RANKING [n=" + n + "] (rel. to PrimeSwing)");
-        Winsole.WriteLine(dtrenner);
+        winsole.writeLine();
+        winsole.writeLine(dtrenner);
+        winsole.writeLine("RANKING [n=" + n + "] (rel. to PrimeSwing)");
+        winsole.writeLine(dtrenner);
 
         boolean flag = true;
         for (Results result : resultList) {
             double r = result.rank;
 
             if (flag && (r >= 2.05)) {
-                Winsole.WriteLine("------------------------");
+                winsole.writeLine("------------------------");
                 flag = false;
             }
 
-            Winsole.WriteLine(result.getRankAsString() + " : " + result.creator.getName().trim());
+            winsole.writeLine(result.getRankAsString() + " : " + result.creator.getName().trim());
         }
     }
 
-    void UsedTime(int[] benchValues) {
+    private void usedTime(int[] benchValues) {
         // ======================================
         // " B E N C H M A R K - T I M I N G S  "
         // ======================================
         // TestValuesToString(benchValues)
         // ======================================
 
-        Winsole.WriteLine();
-        Winsole.WriteLine(dtrenner);
-        Winsole.WriteLine("  B E N C H M A R K - T I M I N G S (sec.)");
-        Winsole.WriteLine(dtrenner);
-        Winsole.WriteLine(TestValuesToString(benchValues));
-        Winsole.WriteLine(dtrenner);
+        winsole.writeLine();
+        winsole.writeLine(dtrenner);
+        winsole.writeLine("  B E N C H M A R K - T I M I N G S (sec.)");
+        winsole.writeLine(dtrenner);
+        winsole.writeLine(testValuesToString(benchValues));
+        winsole.writeLine(dtrenner);
 
         int i = 0;
         Iterator<Candidate> slectedCandidates = Candidate.getSelected();
 
         while (slectedCandidates.hasNext()) {
             Candidate cand = slectedCandidates.next();
-            Winsole.Write(cand.getName());
+            winsole.write(cand.getName());
 
             for (int benchValue : benchValues) {
                 Results res = cand.results.get(benchValue);
-                Winsole.Write(res.getTimeAsString());
+                winsole.write(res.getTimeAsString());
             }
 
-            Winsole.WriteLine();
+            winsole.writeLine();
             if (i++ == 4) {
-                Winsole.WriteLine(etrenner);
+                winsole.writeLine(etrenner);
             }
         }
 
-        Winsole.WriteLine(dtrenner);
+        winsole.writeLine(dtrenner);
     }
 
-    void PerformanceProfile(int[] benchValues) {
+    private void performanceProfile(int[] benchValues) {
         // =======================================
         // "P E R F O R M A N C E - P R O F I L E"
         // =======================================
         // TestValuesToString(benchValues)
         // =======================================
 
-        Winsole.WriteLine();
-        Winsole.WriteLine(dtrenner);
-        Winsole.WriteLine("P E R F O R M A N C E - P R O F I L E");
-        Winsole.WriteLine(dtrenner);
-        Winsole.WriteLine(TestValuesToString(benchValues));
-        Winsole.WriteLine(dtrenner);
+        winsole.writeLine();
+        winsole.writeLine(dtrenner);
+        winsole.writeLine("P E R F O R M A N C E - P R O F I L E");
+        winsole.writeLine(dtrenner);
+        winsole.writeLine(testValuesToString(benchValues));
+        winsole.writeLine(dtrenner);
 
         int i = 0;
 
         Iterator<Candidate> selectedCandidates = Candidate.getSelected();
         while (selectedCandidates.hasNext()) {
             Candidate cand = selectedCandidates.next();
-            Winsole.Write(cand.getName());
+            winsole.write(cand.getName());
 
             for (int benchValue : benchValues) {
                 Results res = cand.results.get(benchValue);
-                Winsole.Write(res.getRankAsString());
+                winsole.write(res.getRankAsString());
             }
 
-            Winsole.WriteLine();
+            winsole.writeLine();
             if (i++ == 5) {
-                Winsole.WriteLine(etrenner);
+                winsole.writeLine(etrenner);
             }
         }
-        Winsole.WriteLine(dtrenner);
+        winsole.writeLine(dtrenner);
     }
 
-    void OperationCount(int n) {
+    private void operationCount(int n) {
         // ============================================
         // "OPERATION COUNT [n = " + n + " ]"
         // "  MUL    mul    DIV    div    Sqr    Lsh  "
         // ============================================
 
-        Winsole.WriteLine();
-        Winsole.WriteLine(dtrenner);
-        Winsole.WriteLine("OPERATION COUNT [n = " + n + " ]    ");
-        Winsole.WriteLine(Results.nopHeader);
-        Winsole.WriteLine(dtrenner);
+        winsole.writeLine();
+        winsole.writeLine(dtrenner);
+        winsole.writeLine("OPERATION COUNT [n = " + n + " ]    ");
+        winsole.writeLine(Results.nopHeader);
+        winsole.writeLine(dtrenner);
 
         Iterator<Candidate> selectedCandidates = Candidate.getSelected();
         while (selectedCandidates.hasNext()) {
             Candidate cand = selectedCandidates.next();
             Results res = cand.results.get(n);
-            Winsole.WriteLine(cand.getName());
-            Winsole.WriteLine(res.nopsAsString());
+            winsole.writeLine(cand.getName());
+            winsole.writeLine(res.nopsAsString());
         }
     }
 
-    private static String TestValuesToString(int[] val) {
+    private static String testValuesToString(int[] val) {
         StringBuilder sb = new StringBuilder("   n * 1000, n = ");
         for (int aVal : val) {
             sb.append("   ").append(aVal / 1000);
@@ -297,7 +296,7 @@ class BenchmarkWorker {
         return sb.toString();
     }
 
-    void SanityCheck(int length) {
+    private void sanityCheck(int length) {
         boolean ok = true;
         for (int n = 0; n < length; n++) {
             Xint r = Candidate.reference.fun.factorial(n);
@@ -307,25 +306,25 @@ class BenchmarkWorker {
                 Candidate cand = testCandidates.next();
                 Xint t = cand.fun.factorial(n);
                 if (t.compareTo(r) != 0) {
-                    Winsole.WriteLine(cand.getName().trim() + "(" + n + ") failed!");
+                    winsole.writeLine(cand.getName().trim() + "(" + n + ") failed!");
                     ok = false;
                 }
             }
             if ((n % 10) == 0) {
-                Winsole.Write(" . ");
-                Winsole.Flush();
+                winsole.write(" . ");
+                winsole.flush();
             }
             if ((n % 150) == 149) {
-                Winsole.WriteLine();
+                winsole.writeLine();
             }
         }
 
-        Winsole.WriteLine();
-        Winsole.WriteLine("Well, some values will" + (ok ? " " : " not ") + "give correct results  "
-                + (ok ? ";-)" : "~:("));
+        winsole.writeLine();
+        winsole.writeLine("Well, some values will" + (ok ? " " : " not ")
+                + "give correct results  " + (ok ? ";-)" : "~:("));
     }
 
-    void SaveToFile(int n) throws IOException {
+    void saveToFile(int n) throws IOException {
         Xint factorial = Candidate.reference.fun.factorial(n);
 
         String fileName = "FactorialOf " + n + ".txt";
@@ -343,10 +342,10 @@ class BenchmarkWorker {
         factorialReport.println(factorial.toString());
         factorialReport.close();
 
-        Winsole.WriteLine("Factorial was saved to file: ");
-        Winsole.WriteLine(fileName);
-        Winsole.WriteLine();
+        winsole.writeLine("Factorial was saved to file: ");
+        winsole.writeLine(fileName);
+        winsole.writeLine();
     }
-    private static String dtrenner = "================================================";
-    private static String etrenner = "------------------------------------------------";
+    private final static String dtrenner = "================================================";
+    private final static String etrenner = "------------------------------------------------";
 } // endOfFactorialTest

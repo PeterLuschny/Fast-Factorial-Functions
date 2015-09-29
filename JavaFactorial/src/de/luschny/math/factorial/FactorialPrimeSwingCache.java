@@ -29,10 +29,10 @@ public class FactorialPrimeSwingCache implements IFactorialFunction {
     public Xint factorial(int n) {
         // For very small n the 'NaiveFactorial' is OK.
         if (n < 20) {
-            return Xmath.Factorial(n);
+            return Xmath.smallFactorial(n);
         }
 
-        cache = new HashMap<Integer, CachedPrimorial>();
+        cache = new HashMap<>();
         sieve = new PrimeSieve(n);
         int piN = sieve.getIteration().getNumberOfPrimes();
         primeList = new int[piN];
@@ -75,6 +75,7 @@ public class FactorialPrimeSwingCache implements IFactorialFunction {
             }
         }
 
+        // multiList and primeList initialized in function 'factorial'!
         IPrimeIteration pIter = sieve.getIteration(3, high);
 
         for (int prime : pIter) {
@@ -94,7 +95,7 @@ public class FactorialPrimeSwingCache implements IFactorialFunction {
         return prod.multiply(primeList, count);
     }
 
-    Xint getPrimorial(int low, int high) {
+    private Xint getPrimorial(int low, int high) {
         // System.out.print("Primorial [" + low + "," + high + "] " );
         Xint primorial;
         CachedPrimorial cachedPrimorial = cache.get(low);
@@ -113,7 +114,7 @@ public class FactorialPrimeSwingCache implements IFactorialFunction {
 
         return primorial;
     }
-    private static int[] smallOddSwing = {1, 1, 1, 3, 3, 15, 5, 35, 35, 315, 63, 693, 231, 3003, 429, 6435,
+    private static final int[] smallOddSwing = {1, 1, 1, 3, 3, 15, 5, 35, 35, 315, 63, 693, 231, 3003, 429, 6435,
         6435, 109395, 12155, 230945, 46189, 969969, 88179, 2028117, 676039,
         16900975, 1300075, 35102025, 5014575, 145422675, 9694845,
         300540195, 300540195};
@@ -121,8 +122,8 @@ public class FactorialPrimeSwingCache implements IFactorialFunction {
 
 class CachedPrimorial {
 
-    public int high;
-    public Xint value;
+    public final int high;
+    public final Xint value;
 
     CachedPrimorial(int highBound, Xint val) {
         high = highBound;

@@ -1,21 +1,18 @@
 package de.luschny.apps.factorial;
 
-import com.jgoodies.forms.factories.Borders;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
 
 public class AboutDialog extends JDialog {
 
     private static final long serialVersionUID = 1L;
-    private static String url = "http://www.luschny.de/math/factorial/FastFactorialFunctions.htm";
+    private static final String url = "http://www.luschny.de/math/factorial/FastFactorialFunctions.htm";
 
     public AboutDialog(Frame owner) {
         super(owner);
@@ -27,17 +24,18 @@ public class AboutDialog extends JDialog {
         initComponents();
     }
 
+    @SuppressWarnings( "deprecation" )
     private void initComponents() {
-        dialogPane = new JPanel();
-        contentPane = new JPanel();
-        label9 = new JLabel();
-        separator1 = new JSeparator();
-        label1 = new JLabel();
-        label7 = new JLabel();
-        label3 = new JLabel();
-        label2 = new JLabel();
-        label8 = new JLabel();
-        button1 = new JButton();
+        JPanel dialogPane = new JPanel();
+        JPanel contentPane = new JPanel();
+        JLabel label9 = new JLabel();
+        JSeparator separator1 = new JSeparator();
+        JLabel label1 = new JLabel();
+        JLabel label7 = new JLabel();
+        JLabel label3 = new JLabel();
+        JLabel label2 = new JLabel();
+        JLabel label8 = new JLabel();
+        JButton button1 = new JButton();
         CellConstraints cc = new CellConstraints();
 
         // ======== this ========
@@ -47,7 +45,6 @@ public class AboutDialog extends JDialog {
 
         // ======== dialogPane ========
         {
-            dialogPane.setBorder(Borders.DIALOG_BORDER);
             dialogPane.setLayout(new BorderLayout());
 
             // ======== contentPane ========
@@ -87,13 +84,9 @@ public class AboutDialog extends JDialog {
 
                 // ---- button1 ----
                 button1.setText("OK");
-                button1.addActionListener(new ActionListener() {
-
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        openURI(url);
-                        okButtonActionPerformed(e);
-                    }
+                button1.addActionListener((ActionEvent e) -> {
+                    openURI(url);
+                    okButtonActionPerformed(e);
                 });
                 contentPane.add(button1, cc.xy(3, 11));
             }
@@ -104,11 +97,11 @@ public class AboutDialog extends JDialog {
         setLocationRelativeTo(getOwner());
     }
 
-    void okButtonActionPerformed(ActionEvent e) {
+    private void okButtonActionPerformed(ActionEvent e) {
         this.setVisible(false);
     }
 
-    public static void openURI(String uriText) {
+    private static void openURI(String uriText) {
         if (Desktop.isDesktopSupported()) {
             URI uri = URI.create(uriText);
             try {
@@ -118,14 +111,5 @@ public class AboutDialog extends JDialog {
             }
         }
     }
-    private JPanel dialogPane;
-    private JPanel contentPane;
-    private JLabel label9;
-    private JSeparator separator1;
-    private JLabel label1;
-    private JLabel label7;
-    private JLabel label3;
-    private JLabel label2;
-    private JLabel label8;
-    private JButton button1;
+
 }

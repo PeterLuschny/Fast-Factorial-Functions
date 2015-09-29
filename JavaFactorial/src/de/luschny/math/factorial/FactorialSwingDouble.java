@@ -52,11 +52,12 @@ public class FactorialSwingDouble implements IFactorialFunction {
                 h = oddN ? 4 * (h + 2) * (h + 4) : 4 * (h + 2);
                 div = n > 7;
                 break;
+            // We do not need a default case here.    
         }
 
         Xint b = Xint.valueOf(h);
 
-        long D = 1, N = oddN ? 2 * n : 2 * (n - 1);
+        long D = 1, N = oddN ? 2 * (long)n : 2 * (long)(n - 1);
 
         for (int i = n / 8; i > 0; --i) {
             long num = N * (N - 4), g = num;

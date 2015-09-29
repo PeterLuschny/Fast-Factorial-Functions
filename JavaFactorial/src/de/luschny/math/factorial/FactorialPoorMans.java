@@ -63,9 +63,9 @@ public class FactorialPoorMans {
 
 class DecInteger {
 
-    private final long mod = 100000000L;
-    private int[] digits;
-    private int digitsLength;
+    private static final long mod = 100000000L;
+    private final int[] digits;
+    private final int digitsLength;
 
     public DecInteger(long value) {
         digits = new int[]{(int) value, (int) (value >>> 32)};

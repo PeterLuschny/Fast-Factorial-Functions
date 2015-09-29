@@ -22,13 +22,13 @@ public class Xint {
     public final String getName() {
         return "Arithmetic: Apfloat 1.5.2";
     }
-    private Apint api;
+    private final Apint api;
 
     private Xint(long n) {
         api = new Apint(n, radix);
     }
 
-    public Xint(Apint n) {
+    private Xint(Apint n) {
         api = n;
     }
 
@@ -255,10 +255,10 @@ class Counter {
     public int DIV;
     public int div;
     public int lsh;
-    public int rsh;
+    private int rsh;
     public int sqr;
-    public int neu;
-    public boolean flag;
+    private int neu;
+    private boolean flag;
 
     public void clearOpCounter() {
         ADD = add = SUB = sub = MUL = mul = DIV = div = sqr = lsh = rsh = neu = 0;

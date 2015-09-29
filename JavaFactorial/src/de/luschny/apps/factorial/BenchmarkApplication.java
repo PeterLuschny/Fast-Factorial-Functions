@@ -18,9 +18,9 @@ public final class BenchmarkApplication {
 
     public static void main(String args[]) {
 
-        if (System.getProperty("java.version").compareTo("1.6") < 0) {
-            System.out.println("This program requires Java 1.6 or later.");
-            System.out.println("You can download Java 1.6 from http://java.sun.com");
+        if (System.getProperty("java.version").compareTo("1.8") < 0) {
+            System.out.println("This program requires Java 1.8 or later.");
+            System.out.println("You can download Java 1.8 from http://java.sun.com");
             return;
         }
 
@@ -29,18 +29,13 @@ public final class BenchmarkApplication {
         } catch (Exception ignored) {
         }
 
-        java.awt.EventQueue.invokeLater(new Runnable() {
-
-            @Override
-            public void run() {
-                new BenchmarkForm().setVisible(true);
-            }
-        });
+        java.awt.EventQueue.invokeLater(() -> new BenchmarkForm().setVisible(true));
     }
 
     public static void printAppAndSysProps(java.io.PrintStream ps) {
 
-        final String[] props = {"os.name", "os.version", "java.vendor", "java.version", "java.runtime.version", "java.vm.version",
+        final String[] props = {"os.name", "os.version", "java.vendor", "java.version", 
+            "java.runtime.version", "java.vm.version",
             "java.vm.vendor", "java.vm.name", "java.vm.info", "java.class.version"};
 
         ps.println("<<-- System Environment Information -->>");

@@ -8,7 +8,7 @@ import java.util.Iterator;
 
 public class FactorialTest {
 
-    public static int BenchMax = 100000000;
+    public static final int benchMax = 100000000;
     public boolean[] selectedAlgo;
     public int benchLength;
     public int benchStart;
@@ -28,7 +28,7 @@ public class FactorialTest {
         long value = benchStart;
 
         for (int m = 0; m < benchLength; m++) {
-            if (value < BenchMax) {
+            if (value < benchMax) {
                 benchValues[m] = (int) value;
                 sum += value;
             } else {

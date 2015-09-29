@@ -32,13 +32,12 @@ public final class Xmath {
 
     /**
      * Method declaration
-     * 
+     * Binaeres Suchen - Entscheidungsbaum (5 Tests, selten 6)
      * @param w
      * @return
      */
-    // Binaeres Suchen - Entscheidungsbaum (5 Tests, selten 6)
     public static int bitLen(int w) {
-        return w < 1 << 15 ? (w < 1 << 7 ? (w < 1 << 3 ? (w < 1 << 1 ? (w < 1 << 0 ? (w < 0 ? 32 : 0) : 1)
+        return w < 1 << 15 ? (w < 1 << 7 ? (w < 1 << 3 ? (w < 1 << 1 ? (w < 1 ? (w < 0 ? 32 : 0) : 1)
                 : (w < 1 << 2 ? 2 : 3)) : (w < 1 << 5 ? (w < 1 << 4 ? 4 : 5) : (w < 1 << 6 ? 6 : 7)))
                 : (w < 1 << 11 ? (w < 1 << 9 ? (w < 1 << 8 ? 8 : 9) : (w < 1 << 10 ? 10 : 11))
                 : (w < 1 << 13 ? (w < 1 << 12 ? 12 : 13) : (w < 1 << 14 ? 14 : 15))))
@@ -47,19 +46,12 @@ public final class Xmath {
                 : (w < 1 << 27 ? (w < 1 << 25 ? (w < 1 << 24 ? 24 : 25) : (w < 1 << 26 ? 26 : 27))
                 : (w < 1 << 29 ? (w < 1 << 28 ? 28 : 29) : (w < 1 << 30 ? 30 : 31))));
     }
-    /**
-     * Method declaration
-     * 
-     * @param n
-     * @return
-     * @throws IllegalArgumentException
-     *             <tt>20 &lt; n</tt>.
-     */
-    private static long[] smallFactorials = {1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880, 3628800, 39916800, 479001600,
+
+    private static final long[] smallFactorials = {1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880, 3628800, 39916800, 479001600,
         6227020800L, 87178291200L, 1307674368000L, 20922789888000L, 355687428096000L,
         6402373705728000L, 121645100408832000L, 2432902008176640000L};
 
-    public static Xint Factorial(int n) {
+    public static Xint smallFactorial(int n) {
         if (n > 19) {
             throw new IllegalArgumentException("n < 20 required");
         }

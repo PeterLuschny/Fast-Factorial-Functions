@@ -27,7 +27,7 @@ public class FactorialParallelPrimeSplit implements IFactorialFunction {
     public Xint factorial(int n) {
         // For very small n the 'NaiveFactorial' is OK.
         if (n < 20) {
-            return Xmath.Factorial(n);
+            return Xmath.smallFactorial(n);
         }
 
         PrimeSieve sieve = new PrimeSieve(n);
@@ -36,7 +36,7 @@ public class FactorialParallelPrimeSplit implements IFactorialFunction {
         int log2n = 31 - Integer.numberOfLeadingZeros(n);
 
         ExecutorService exe = Executors.newFixedThreadPool(proc);
-        ArrayList<Callable<Xint>> swingTasks = new ArrayList<Callable<Xint>>(log2n);
+        ArrayList<Callable<Xint>> swingTasks = new ArrayList<>(log2n);
 
         Xint r = Xint.ONE, p = Xint.ONE;
         Xint rl = Xint.ONE, t;
@@ -55,26 +55,26 @@ public class FactorialParallelPrimeSplit implements IFactorialFunction {
             List<Future<Xint>> swings = exe.invokeAll(swingTasks);
             int taskCounter = swings.size();
 
-            for (int i = 0; i < taskCounter; i++) {
-                t = rl.multiply(swings.get(i).get());
+            for (Future<Xint> swing : swings) {
+                t = rl.multiply(swing.get());
                 p = p.multiply(t);
                 rl = r;
                 r = r.multiply(p);
             }
-        } catch (Throwable e) {
+        } catch (Throwable ignored) {
         }
 
         exe.shutdownNow();
         return r.shiftLeft(shift);
     }
     
-    private static int[] smallOddSwing = {1, 1, 1, 3, 3, 15, 5, 35, 35, 315,
+    private static final int[] smallOddSwing = {1, 1, 1, 3, 3, 15, 5, 35, 35, 315,
         63, 693, 231, 3003, 429, 6435, 6435, 109395, 12155, 230945, 46189, 
         969969, 88179, 2028117, 676039, 16900975, 1300075, 35102025, 5014575, 
         145422675, 9694845, 300540195, 300540195};
 
     // -- Concurrent execution of this Class should not fail.
-    final class Swing implements Callable<Xint> {
+    static class Swing implements Callable<Xint> {
 
         private final PrimeSieve Sieve;
         private final int N;
@@ -91,13 +91,7 @@ public class FactorialParallelPrimeSplit implements IFactorialFunction {
                 return Xint.valueOf(smallOddSwing[N]);
             }
 
-            FutureTask<Xint> Primorial = new FutureTask<Xint>(new Callable<Xint>() {
-
-                @Override
-                public Xint call() {
-                    return Sieve.getPrimorial(N / 2 + 1, N);
-                }
-            });
+            FutureTask<Xint> Primorial = new FutureTask<>(() -> Sieve.getPrimorial(N / 2 + 1, N));
 
             new Thread(Primorial).start();
             Xint primeProduct = lowSwing();

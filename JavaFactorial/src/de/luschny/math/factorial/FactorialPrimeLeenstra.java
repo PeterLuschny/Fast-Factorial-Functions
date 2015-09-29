@@ -23,7 +23,7 @@ public class FactorialPrimeLeenstra implements IFactorialFunction {
     public Xint factorial(int n) {
         // For very small n the 'NaiveFactorial' is OK.
         if (n < 20) {
-            return Xmath.Factorial(n);
+            return Xmath.smallFactorial(n);
         }
 
         int rootN = (int) Math.floor(Math.sqrt(n));

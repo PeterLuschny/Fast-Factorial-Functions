@@ -4,7 +4,6 @@
 // Comments mail to: peter(at)luschny.de
 package de.luschny.apps.factorial;
 
-import com.jgoodies.forms.factories.Borders;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 import de.luschny.apps.LoggedTextBox;
@@ -12,7 +11,6 @@ import de.luschny.apps.LoggedTextBox;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
@@ -20,7 +18,7 @@ import java.io.IOException;
 public class BenchmarkForm extends JFrame implements PropertyChangeListener {
 
     private static final long serialVersionUID = 1L;
-    private FactorialTest test;
+    private final FactorialTest test;
 
     public BenchmarkForm() {
         test = new FactorialTest();
@@ -35,32 +33,33 @@ public class BenchmarkForm extends JFrame implements PropertyChangeListener {
         initHandler();
     }
 
+    @SuppressWarnings("unchecked" )
     private void initComponents() {
         checkBoxArray = new JCheckBox[21];
-        menuBar = new JMenuBar();
-        benchMenu = new JMenu();
+        JMenuBar menuBar = new JMenuBar();
+        JMenu benchMenu = new JMenu();
         recommededMenu = new JMenuItem();
-        parallelMenu = new JMenuItem();
+        JMenuItem parallelMenu = new JMenuItem();
         primeMenu = new JMenuItem();
         simpleMenu = new JMenuItem();
-        lameMenu = new JMenuItem();
-        ectMenu = new JMenu();
+        JMenuItem lameMenu = new JMenuItem();
+        JMenu ectMenu = new JMenu();
         sanityMenu = new JMenuItem();
-        aboutMenu = new JMenuItem();
-        algoLabel = new JLabel();
+        JMenuItem aboutMenu = new JMenuItem();
+        JLabel algoLabel = new JLabel();
         logToFileCheckBox = new JCheckBox();
         showValueCheckBox = new JCheckBox();
         verboseCheckBox = new JCheckBox();
-        startLabel = new JLabel();
+        JLabel startLabel = new JLabel();
         startField = new JTextField();
-        stepLabel = new JLabel();
+        JLabel stepLabel = new JLabel();
         stepBox = new JComboBox();
         cancelButton = new JButton();
-        lenghtLabel = new JLabel();
+        JLabel lenghtLabel = new JLabel();
         lenghtSpinner = new JSpinner();
         benchmarkButton = new JButton();
-        algoSelection = new JPanel();
-        scrollPane = new JScrollPane();
+        JPanel algoSelection = new JPanel();
+        JScrollPane scrollPane = new JScrollPane();
         textArea = new JTextArea();
         infoLabel = new JLabel();
         progressBar = new JProgressBar();
@@ -95,65 +94,35 @@ public class BenchmarkForm extends JFrame implements PropertyChangeListener {
         // ---- recommendedMenu ----
         recommededMenu.setText("Recommended");
         recommededMenu.setFont(font);
-        recommededMenu.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                toptenMenuActionPerformed(e);
-            }
-        });
+        recommededMenu.addActionListener((ActionEvent e) -> toptenMenuActionPerformed(e));
 
         benchMenu.add(recommededMenu);
 
         // ---- primeMenu ----
         primeMenu.setText("Prime");
         primeMenu.setFont(font);
-        primeMenu.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                primeMenuActionPerformed(e);
-            }
-        });
+        primeMenu.addActionListener((ActionEvent e) -> primeMenuActionPerformed(e));
 
         benchMenu.add(primeMenu);
 
         // ---- parallelMenu ----
         parallelMenu.setText("Parallel");
         parallelMenu.setFont(font);
-        parallelMenu.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                parallelMenuActionPerformed(e);
-            }
-        });
+        parallelMenu.addActionListener((ActionEvent e) -> parallelMenuActionPerformed(e));
 
         benchMenu.add(parallelMenu);
 
         // ---- simpleMenu ----
         simpleMenu.setText("Simple");
         simpleMenu.setFont(font);
-        simpleMenu.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                simpleMenuActionPerformed(e);
-            }
-        });
+        simpleMenu.addActionListener((ActionEvent e) -> simpleMenuActionPerformed(e));
 
         benchMenu.add(simpleMenu);
 
         // ---- lameMenu ----
         lameMenu.setText("Lame");
         lameMenu.setFont(font);
-        lameMenu.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                lameMenuActionPerformed(e);
-            }
-        });
+        lameMenu.addActionListener((ActionEvent e) -> lameMenuActionPerformed(e));
 
         benchMenu.add(lameMenu);
 
@@ -166,13 +135,7 @@ public class BenchmarkForm extends JFrame implements PropertyChangeListener {
         // ---- sanityMenu ----
         sanityMenu.setText("Sanity Check");
         sanityMenu.setFont(font);
-        sanityMenu.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                sanityMenuActionPerformed(e);
-            }
-        });
+        sanityMenu.addActionListener((ActionEvent e) -> sanityMenuActionPerformed(e));
 
         ectMenu.add(sanityMenu);
         ectMenu.addSeparator();
@@ -180,13 +143,7 @@ public class BenchmarkForm extends JFrame implements PropertyChangeListener {
         // ---- aboutMenu ----
         aboutMenu.setText("About");
         aboutMenu.setFont(font);
-        aboutMenu.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                aboutMenuActionPerformed(e);
-            }
-        });
+        aboutMenu.addActionListener((ActionEvent e) -> aboutMenuActionPerformed(e));
 
         ectMenu.add(aboutMenu);
         menuBar.add(ectMenu);
@@ -233,7 +190,8 @@ public class BenchmarkForm extends JFrame implements PropertyChangeListener {
 
         // ---- stepBox ----
         stepBox.setEditable(true);
-        stepBox.setModel(new DefaultComboBoxModel(new String[]{"1.5", "2.0", "2.5", "3.0"}));
+        DefaultComboBoxModel dcbm = new DefaultComboBoxModel(new String[]{"1.5", "2.0", "2.5", "3.0"});
+        stepBox.setModel(dcbm);
         stepBox.setSelectedIndex(1);
         benchFormContentPane.add(stepBox, cc.xy(10, 11));
 
@@ -243,13 +201,7 @@ public class BenchmarkForm extends JFrame implements PropertyChangeListener {
         cancelButton.setBackground(SystemColor.activeCaption);
         cancelButton.setForeground(SystemColor.window);
         cancelButton.setFont(buttonFont);
-        cancelButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cancelButtonActionPerformed(e);
-            }
-        });
+        cancelButton.addActionListener((ActionEvent e) -> cancelButtonActionPerformed(e));
 
         benchFormContentPane.add(cancelButton, cc.xywh(14, 11, 1, 1, CellConstraints.FILL, CellConstraints.DEFAULT));
 
@@ -265,20 +217,13 @@ public class BenchmarkForm extends JFrame implements PropertyChangeListener {
         // ---- benchmarkButton ----
         benchmarkButton.setText("Benchmark!");
         benchmarkButton.setFont(buttonFont);
-        benchmarkButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                benchmarkButtonActionPerformed(e);
-            }
-        });
+        benchmarkButton.addActionListener((ActionEvent e) -> benchmarkButtonActionPerformed(e));
         benchFormContentPane.add(benchmarkButton, cc.xywh(14, 13, 1, 1, CellConstraints.FILL, CellConstraints.DEFAULT));
 
         // ======== AlgoSelection ========
 
         algoSelection.setPreferredSize(new Dimension(47, 550));
         algoSelection.setBackground(SystemColor.window);
-        algoSelection.setBorder(Borders.createEmptyBorder("1dlu, 1dlu, 1dlu, 1dlu"));
         algoSelection.setLayout(new FormLayout("left:default:grow", "21*(fill:default)"));
 
         for (int i = 0; i < checkBoxArray.length; i++) {
@@ -313,51 +258,39 @@ public class BenchmarkForm extends JFrame implements PropertyChangeListener {
         setLocationRelativeTo(getOwner());
     }
     private JCheckBox[] checkBoxArray;
-    private JMenuBar menuBar;
-    private JMenu benchMenu;
     private JMenuItem recommededMenu;
     private JMenuItem primeMenu;
-    private JMenuItem parallelMenu;
     private JMenuItem simpleMenu;
-    private JMenuItem lameMenu;
-    private JMenu ectMenu;
     private JMenuItem sanityMenu;
-    private JMenuItem aboutMenu;
-    private JLabel algoLabel;
     private JCheckBox logToFileCheckBox;
     private JCheckBox showValueCheckBox;
     private JCheckBox verboseCheckBox;
-    private JLabel startLabel;
     private JTextField startField;
-    private JLabel stepLabel;
     private JComboBox stepBox;
     private JButton cancelButton;
-    private JLabel lenghtLabel;
     private JSpinner lenghtSpinner;
     private JButton benchmarkButton;
-    private JPanel algoSelection;
     private JTextArea textArea;
-    private JScrollPane scrollPane;
     private JLabel infoLabel;
     private JProgressBar progressBar;
-    private LoggedTextBox Winsole;
+    private LoggedTextBox winsole;
     private BenchmarkWorker worker;
 
-    void initHandler() {
+    private void initHandler() {
 
         test.selectedAlgo = new boolean[checkBoxArray.length];
 
         try {
-            Winsole = new LoggedTextBox(textArea, "FactorialBench");
-            Winsole.setLogToFile(true);
-            BenchmarkApplication.printAppAndSysProps(Winsole.getPrintStream());
+            winsole = new LoggedTextBox(textArea, "FactorialBench");
+            winsole.setLogToFile(true);
+            BenchmarkApplication.printAppAndSysProps(winsole.getPrintStream());
         } catch (IOException ioe) {
             JOptionPane.showMessageDialog(this, ioe.getMessage() + "\n", "Logging to file not possible.",
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        worker = new BenchmarkWorker(Winsole, this);
+        worker = new BenchmarkWorker(winsole, this);
 
     }
 
@@ -378,7 +311,7 @@ public class BenchmarkForm extends JFrame implements PropertyChangeListener {
                     "Invalid Argument Error", JOptionPane.ERROR_MESSAGE);
             return false;
         }
-        if (test.benchStart > FactorialTest.BenchMax) {
+        if (test.benchStart > FactorialTest.benchMax) {
             JOptionPane.showMessageDialog(this, "Start must be <= 9000000 because n! is huge.\n",
                     "Invalid Argument Error", JOptionPane.ERROR_MESSAGE);
             return false;
@@ -394,17 +327,22 @@ public class BenchmarkForm extends JFrame implements PropertyChangeListener {
         }
 
         String step = stepBox.getSelectedItem().toString();
-        if (step.equals("1.5")) {
-            test.stepFactor = 1.5;
-        } else if (step.equals("2.0")) {
-            test.stepFactor = 2.0;
-        } else if (step.equals("2.5")) {
-            test.stepFactor = 2.5;
-        } else {
-            test.stepFactor = 3.0;
+        switch (step) {
+            case "1.5":
+                test.stepFactor = 1.5;
+                break;
+            case "2.0":
+                test.stepFactor = 2.0;
+                break;
+            case "2.5":
+                test.stepFactor = 2.5;
+                break;
+            default:
+                test.stepFactor = 3.0;
+                break;
         }
 
-        Winsole.logToFile = logToFileCheckBox.isSelected();
+        winsole.logToFile = logToFileCheckBox.isSelected();
         test.showFullValue = showValueCheckBox.isSelected();
         test.verbose = verboseCheckBox.isSelected();
 
@@ -425,7 +363,7 @@ public class BenchmarkForm extends JFrame implements PropertyChangeListener {
     }
 
     // Disable the input controls until the asynchronous benchmark is done.
-    void EnableControls(boolean en) {
+    private void enableControls(boolean en) {
         lenghtSpinner.setEnabled(en);
         startField.setEnabled(en);
         stepBox.setEnabled(en);
@@ -445,7 +383,7 @@ public class BenchmarkForm extends JFrame implements PropertyChangeListener {
     }
 
     // Die AlgorithmCheckedListBox entsprechend einstellen
-    void simpleMenuActionPerformed(ActionEvent e) {
+    private void simpleMenuActionPerformed(ActionEvent e) {
         boolean[] SimpleAlgos = FactorialTest.getSimpleAlgos();
         int i = 0;
         for (JCheckBox algo : checkBoxArray) {
@@ -454,7 +392,7 @@ public class BenchmarkForm extends JFrame implements PropertyChangeListener {
     }
 
     // Die AlgorithmCheckedListBox entsprechend einstellen
-    void primeMenuActionPerformed(ActionEvent e) {
+    private void primeMenuActionPerformed(ActionEvent e) {
         boolean[] PrimeAlgos = FactorialTest.getPrimeAlgos();
         int i = 0;
         for (JCheckBox algo : checkBoxArray) {
@@ -463,7 +401,7 @@ public class BenchmarkForm extends JFrame implements PropertyChangeListener {
     }
 
     // Die AlgorithmCheckedListBox entsprechend einstellen
-    void parallelMenuActionPerformed(ActionEvent e) {
+    private void parallelMenuActionPerformed(ActionEvent e) {
         boolean[] ParallelAlgos = FactorialTest.getParallelAlgos();
         int i = 0;
         for (JCheckBox algo : checkBoxArray) {
@@ -472,7 +410,7 @@ public class BenchmarkForm extends JFrame implements PropertyChangeListener {
     }
 
     // Die AlgorithmCheckedListBox entsprechend einstellen
-    void toptenMenuActionPerformed(ActionEvent e) {
+    private void toptenMenuActionPerformed(ActionEvent e) {
         boolean[] TopTenAlgos = FactorialTest.getRecommendedAlgos();
         int i = 0;
         for (JCheckBox algo : checkBoxArray) {
@@ -480,7 +418,7 @@ public class BenchmarkForm extends JFrame implements PropertyChangeListener {
         }
     }
 
-    void lameMenuActionPerformed(ActionEvent e) {
+    private void lameMenuActionPerformed(ActionEvent e) {
         boolean[] LameAlgos = FactorialTest.getLameAlgos();
         int i = 0;
         for (JCheckBox algo : checkBoxArray) {
@@ -488,17 +426,17 @@ public class BenchmarkForm extends JFrame implements PropertyChangeListener {
         }
     }
 
-    void sanityMenuActionPerformed(ActionEvent e) {
+    private void sanityMenuActionPerformed(ActionEvent e) {
         doTheBenchmark(e);
     }
 
     // Kleine Infobox anzeigen
-    void aboutMenuActionPerformed(ActionEvent e) {
+    private void aboutMenuActionPerformed(ActionEvent e) {
         AboutDialog dlg = new AboutDialog(this);
         dlg.setVisible(true);
     }
 
-    void cancelButtonActionPerformed(ActionEvent e) {
+    private void cancelButtonActionPerformed(ActionEvent e) {
         infoLabel.setText("Cancelation is in progress!");
 
         // Cancel the asynchronous operation.
@@ -515,7 +453,7 @@ public class BenchmarkForm extends JFrame implements PropertyChangeListener {
     void infoMenuActionPerformed(ActionEvent e) {
     }
 
-    void benchmarkButtonActionPerformed(ActionEvent e) {
+    private void benchmarkButtonActionPerformed(ActionEvent e) {
         doTheBenchmark(e);
     }
 
@@ -524,7 +462,7 @@ public class BenchmarkForm extends JFrame implements PropertyChangeListener {
     // Ueber BenchLength von StartWert by times Stepfactor
     // Ueber alle ausgewaelhten Algorithmen
     private void doTheBenchmark(ActionEvent e) {
-        EnableControls(false);
+        enableControls(false);
 
         test.sanityTest = e.getActionCommand().equalsIgnoreCase("Sanity Check");
 
@@ -543,7 +481,7 @@ public class BenchmarkForm extends JFrame implements PropertyChangeListener {
             // Start the asynchronous background task.
             worker.execute(test);
         } else {
-            EnableControls(true);
+            enableControls(true);
         }
     }
 
@@ -569,10 +507,10 @@ public class BenchmarkForm extends JFrame implements PropertyChangeListener {
             JOptionPane.showMessageDialog(this, event.error.toString(), "Error in worker thread",
                     JOptionPane.ERROR_MESSAGE);
 
-            Winsole.WriteLine();
-            Winsole.WriteLine("Error in worker thread.");
-            Winsole.WriteLine(event.error.toString());
-            Winsole.WriteLine();
+            winsole.writeLine();
+            winsole.writeLine("Error in worker thread.");
+            winsole.writeLine(event.error.toString());
+            winsole.writeLine();
         } else {
             // The benchmark completed normally.
             msg = "Benchmark completed";
@@ -580,7 +518,7 @@ public class BenchmarkForm extends JFrame implements PropertyChangeListener {
 
         infoLabel.setText(msg);
 
-        EnableControls(true);
+        enableControls(true);
 
         // Enable the Start button.
         benchmarkButton.setEnabled(true);
