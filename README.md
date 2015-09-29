@@ -51,11 +51,9 @@ Dependencies
 
 To build the sources you need for
 
-* the C++ version the [MPIR](http://www.mpir.org) library and the
-[boost](http://www.boost.org) library.
+* the C++ version the [MPIR](http://www.mpir.org) library.
 
-* The C# version can be configured to use System.Numerics.BigInteger or to
-use the [MPIR](http://www.mpir.org) library (an interop is provided).
+* The C# version uses the [MPIR](http://www.mpir.org) library (an interop is provided).
 
 * The Java version needs Mikko Tommila's [Apfloat](http://www.apfloat.org/apfloat_java)
 library. If you want to compile the benchmark program additionally Karsten
