@@ -69,5 +69,5 @@ Contributing
 ------------
 
 Please notify me of any bugs. Want to contribute new algorithms? Great, please contact me.
-If you already ported to some other language (Scala, F#, Phython, Ruby, Lisp) then please send me your
+If you already ported to some other language (Scala, F#, Python, Ruby, Lisp) then please send me your
 code so I can incorporate it into this repository.
