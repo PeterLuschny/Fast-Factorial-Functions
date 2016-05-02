@@ -61,16 +61,21 @@ library. If you want to compile the benchmark program additionally Karsten
 Lentzsch's [JGoodies](http://www.jgoodies.com/downloads/libraries.html) is
 needed.
 
+*   The Python version requires [gmpy2](https://pypi.python.org/pypi/gmpy2) and
+[primesieve](https://github.com/hickford/primesieve-python).
+
 Acknowledgement
 ---------------
 
 [Sonia Keys](http://soniacodes.wordpress.com) ported the algorithms to [Go](http://golang.org/).
+
+[Bernardo Meurer](https://github.com/bemeurer) ported the algorithms to [Python 3](https://www.python.org/).
 
 Contributing
 ------------
 
 Please notify me of any bugs. Want to contribute new algorithms? Great, please
 contact me.
-If you already ported to some other language (Scala, F#, Python, Ruby, Lisp)
+If you already ported to some other language (Scala, F#, Ruby, Lisp)
 then please send me your
 code so I can incorporate it into this repository.
