@@ -1,9 +1,9 @@
 CC=gcc
 CXX=g++
 RM=rm -f
-CPPFLAGS=-g -pthread -I/usr/local/include
+CPPFLAGS=-g -std=c++11 -pthread -I/usr/local/include
 
-LDFLAGS=-g -pthread
+LDFLAGS=-g -std=c++11 -pthread
 LDLIBS=-L/usr/local/lib -lgmp
 
 SRCS=binomial.cpp double_fac_ui.cpp parallelbinomial.cpp parallelschoenhage.cpp primeswing.cpp doublefactorial.cpp main.cpp paralleldoublefactorial.cpp parallelswing.cpp schoenhage.cpp
