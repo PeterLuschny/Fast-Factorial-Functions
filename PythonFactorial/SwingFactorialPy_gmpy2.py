@@ -112,15 +112,18 @@ def factorialPS(n):
  
 
 # Test run
-n = 1000000
-while (n < 1000000000):
+def main():
+    n = 1000000
+    while (n < 1000000000):
 
-    print("Test n = {}".format(n), end='', flush=True)
-    start = time.time()
-    f = factorialPS(n) 
-    end = time.time()
-    elapsed = end - start
-    print(", elapsed={:1.2f}s".format(elapsed,))
-    n *= 2
-        
+        print("Test n = {}".format(n), end='', flush=True)
+        start = time.time()
+        f = factorialPS(n)
+        end = time.time()
+        elapsed = end - start
+        print(", elapsed={:1.2f}s".format(elapsed,))
+        n *= 2
+if __name__ == '__main__':
+    main()
+
 
