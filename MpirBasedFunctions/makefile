@@ -4,7 +4,7 @@ RM=rm -f
 CPPFLAGS=-g -std=c++11 -pthread -I/usr/local/include
 
 LDFLAGS=-g -std=c++11 -pthread
-LDLIBS=-L/usr/local/lib -lgmp
+LDLIBS=-L/usr/local/lib -lgmp -lmpir
 
 SRCS=binomial.cpp double_fac_ui.cpp parallelbinomial.cpp parallelschoenhage.cpp primeswing.cpp doublefactorial.cpp main.cpp paralleldoublefactorial.cpp parallelswing.cpp schoenhage.cpp
 

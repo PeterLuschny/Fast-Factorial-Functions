@@ -7,5 +7,7 @@ https://groups.google.com/forum/#!forum/mpir-devel
 I used Brian Gladman's fork for testing with Windows.
 https://github.com/BrianGladman/mpir
 
-Make sure that the file mpir.h is replaced by the file mpir.h
-which was used in the generation of the MPIR library.
+The provided makefile assumes you install mpir library into
+/usr/local/lib and header files into /usr/local/include
+If you choose a different location, then edit the CPPFLAGS and
+LDFLAGS in makefile accordingly.
