@@ -24,6 +24,8 @@ Implementation languages
 * Project SilverFactorial64 : C#
 * Project JavaFactorial : Java
 * Project GoFactorial : Go
+* Project PyFactorial : Python
+* Project JFactorial : Julia
 
 The C# and the Java version come with a small benchmark program.
 Here a screenshot of the [Java](http://www.luschny.de/math/factorial/JavaFactorialBench.png) version
@@ -64,10 +66,11 @@ Acknowledgement
 ---------------
 
 [Sonia Keys](http://soniacodes.wordpress.com) ported the algorithms to [Go](http://golang.org/).
+msaupe for a performance optimized python3 version with gmpy2.
 
 Contributing
 ------------
 
 Please notify me of any bugs. Want to contribute new algorithms? Great, please contact me.
-If you already ported to some other language (Scala, F#, Python, Ruby, Lisp) then please send me your
+If you already ported to some other language (Scala, F#, Rust, Ruby, Lisp) then please send me your
 code so I can incorporate it into this repository.
