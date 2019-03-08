@@ -1,6 +1,8 @@
 Fast Factorial Functions
 ========================
 
+Project status: maintained and up-to-date.
+
 Here you can find implementations of the most efficient algorithms to compute
 
 * the [factorial](http://en.wikipedia.org/wiki/Factorial) function,
@@ -62,15 +64,17 @@ library. If you want to compile the benchmark program additionally Karsten
 Lentzsch's [JGoodies](http://www.jgoodies.com/downloads/libraries.html) is needed.
 
 
-Acknowledgement
----------------
-
-[Sonia Keys](http://soniacodes.wordpress.com) ported the algorithms to [Go](http://golang.org/).
-msaupe for a performance optimized python3 version with gmpy2.
-
 Contributing
 ------------
 
 Please notify me of any bugs. Want to contribute new algorithms? Great, please contact me.
-If you already ported to some other language (Scala, F#, Rust, Ruby, Lisp) then please send me your
-code so I can incorporate it into this repository.
+If you already ported to some other language (Scala, F#, Rust, Ruby, Lisp) then please send 
+me your code so I can incorporate it into this repository.
+
+
+Contributors
+---------------
+
+[Sonia Keys](http://soniacodes.wordpress.com) ported the algorithms to [Go](http://golang.org/).
+
+msaupe contributed a performance optimized python3 version with gmpy2.
