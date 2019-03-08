@@ -77,4 +77,4 @@ Contributors
 
 [Sonia Keys](http://soniacodes.wordpress.com) ported the algorithms to [Go](http://golang.org/).
 
-msaupe contributed a performance optimized python3 version with gmpy2.
+Michael Saupe contributed a performance optimized python3 version with gmpy2.
