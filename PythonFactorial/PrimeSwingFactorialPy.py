@@ -11,8 +11,13 @@ from bisect import bisect_left as bisectleft
 import math
 
 
-def size_hint(n):
-    return int(1.5 * (isqrt(n) + n / (math.log2(n) - 1.0)))
+def prime_pi_upper_bound(n):
+    """
+    Return an upper bound of the number of primes below n.
+    (Christian Axler, 2016)
+    """
+    ln = math.log(n)
+    return int(n / (ln - 1 - 1.17 / ln))
 
 
 def Primes(n):
@@ -37,7 +42,7 @@ def Primes(n):
             else:   s1 += d1; d2 +=  8; p1 += 2; p2 += 6; s2 = p1
 
     # --- Collect the primes.
-    primes = [0]*size_hint(n)
+    primes = [0]*prime_pi_upper_bound(n)
     primes[0] = 2; primes[1] = 3
 
     m, k, p, tog = 1, 0, 5, False
@@ -159,7 +164,7 @@ def main():
         end = time.time()
         elapsed = end - start
         q = elapsed/elapsed_last if elapsed_last > 0 else 0
-        print(", elapsed={:1.3f}s, quot={:1.3f}".format(elapsed, q))
+        print(", elapsed={:1.3f}s, quot={:1.1f}".format(elapsed, q))
         elapsed_last = elapsed
         n *= 4
         # Very roughly: if n is increased by a factor of 4
