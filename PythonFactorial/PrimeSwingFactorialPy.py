@@ -3,10 +3,10 @@
 # psw_factorial, an implementation of the prime swing factorial.
 # The claim is that this is the fastest known algorithm for
 # computing the factorial. It is based on the prime factorization of n!.
-# See also http://www.luschny.de/math/factorial/SwingFactorialPy.html
+# See Peter Luschny, https://oeis.org/A000142/a000142.pdf
+# Also http://www.luschny.de/math/factorial/SwingFactorialPy.html
 # http://luschny.de/math/factorial/FastFactorialFunctions.htm
 
-from operator import add, mul, floordiv
 from bisect import bisect_left as bisectleft
 import math
 
@@ -33,10 +33,8 @@ def Primes(n):
             for k in range(s1 + s2, lim, inc): composite[k] = True
 
             tog = not tog
-            if tog:
-                s1 += d2; d1 += 16; p1 += 2; p2 += 2; s2 = p2
-            else:
-                s1 += d1; d2 +=  8; p1 += 2; p2 += 6; s2 = p1
+            if tog: s1 += d2; d1 += 16; p1 += 2; p2 += 2; s2 = p2
+            else:   s1 += d1; d2 +=  8; p1 += 2; p2 += 6; s2 = p1
 
     # --- Collect the primes.
     primes = [0]*size_hint(n)
@@ -59,13 +57,14 @@ def isqrt(x):
     """
     Return the integer square root of x.
     """
-    if x < 0: raise ValueError('square root not defined for negative numbers')
+    if x < 0:
+        raise ValueError('square root not def. for negative numbers')
     n = int(x)
     if n == 0: return 0
-    a, b = divmod(n.bit_length(), int(2))
+    a, b = divmod(n.bit_length(), 2)
     x = 2 ** (a + b)
     while True:
-        y = floordiv(add(x, floordiv(n, x)), 2)
+        y = (x + n // x) // 2
         if y >= x: return x
         x = y
 
@@ -78,21 +77,22 @@ def product(A):
         n = b - a
         if n < 24:
             p = 1
-            for k in range(a, b+1):
-                p = mul(p, A[k])
+            for k in range(a, b + 1):
+                p *= A[k]
             return p
-        m = floordiv(add(a, b), 2)
+        m = (a + b) // 2
         return prod(a, m) * prod(m + 1, b)
-    return prod(0, len(A)-1)
+    return prod(0, len(A) - 1)
 
 
 def psw_factorial(n):
     """
     Return the factorial of n (using the prime-swing algorithm).
     """
-    small_swing = [1, 1, 1, 3, 3, 15, 5, 35, 35, 315, 63, 693, 231, 3003, 429, 6435, 6435,
-                   109395, 12155, 230945, 46189, 969969, 88179, 2028117, 676039, 16900975,
-                   1300075, 35102025, 5014575, 145422675, 9694845, 300540195, 300540195]
+    small_swing = [1, 1, 1, 3, 3, 15, 5, 35, 35, 315, 63, 693, 231, 3003,
+        429, 6435, 6435, 109395, 12155, 230945, 46189, 969969, 88179,
+        2028117, 676039, 16900975, 1300075, 35102025, 5014575, 145422675,
+        9694845, 300540195, 300540195]
 
     def swing(m, primes):
         if m < 33: return small_swing[m]
@@ -103,26 +103,26 @@ def psw_factorial(n):
         g = bisectleft(primes, 1 + m)
 
         factors = primes[e:g]
-        factors += filter(lambda x: floordiv(m, x) & 1 == 1, primes[s:d])
+        factors += filter(lambda x: (m // x) & 1 == 1, primes[s:d])
         for prime in primes[1:s]:
-            p, q = int(1), m
+            p, q = 1, m
             while True:
-                q = floordiv(q, prime)
+                q //= prime
                 if q == 0: break
                 if q & 1 == 1:
-                    p = mul(p, prime)
+                    p *= prime
             if p > 1: factors.append(p)
 
         return product(factors)
 
     def odd_factorial(n, primes):
         if n < 2: return 1
-        tmp = odd_factorial(floordiv(n, 2), primes)
-        return mul(mul(tmp, tmp), swing(n, primes))
+        tmp = odd_factorial(n // 2, primes)
+        return (tmp * tmp) * swing(n, primes)
 
     def eval(n):
         if n < 0:
-            raise ValueError('factorial not defined for negative numbers')
+            raise ValueError('factorial not def. for negative numbers')
 
         if n == 0: return 1
         if n < 20: return product(range(2, n + 1))
@@ -140,7 +140,6 @@ def psw_factorial(n):
 
 import time
 
-
 def main():
     """
     Test and benchmark:
@@ -151,16 +150,20 @@ def main():
         psw = psw_factorial(n)
         if mf != psw: print("Error at", n)
 
-    n = 1000
-    while n < 1000000:
+    n = 1000; elapsed_last = 0
+    while n < 10000000:
         print("Test n = {}".format(n), end='', flush=True)
         start = time.time()
         psw_factorial(n)
         # math.factorial(n)
         end = time.time()
         elapsed = end - start
-        print(", elapsed={:1.2f}s".format(elapsed, ))
+        q = elapsed/elapsed_last if elapsed_last > 0 else 0
+        print(", elapsed={:1.3f}s, quot={:1.3f}".format(elapsed, q))
+        elapsed_last = elapsed
         n *= 4
+        # Very roughly: if n is increased by a factor of 4
+        # then the elapsed time increases by a factor of 10.
 
 
 if __name__ == '__main__':
