@@ -14,10 +14,9 @@ import math
 def prime_pi_upper_bound(n):
     """
     Return an upper bound of the number of primes below n.
-    (Christian Axler, 2016)
     """
     ln = math.log(n)
-    return int(n / (ln - 1 - 1.17 / ln))
+    return int(n / (ln - 1 - (154/125) / ln))
 
 
 def Primes(n):
