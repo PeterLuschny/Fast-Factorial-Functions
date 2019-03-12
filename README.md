@@ -14,7 +14,7 @@ See also this nice [overview](http://functions.wolfram.com/GammaBetaErf/Factoria
 Short guide:
 
 * If you want to study the different algorithms proposed to compute the factorial function 
-the best start is to look into the [directory](https://github.com/PeterLuschny/Fast-Factorial-Functions/tree/master/SilverFactorial64/Sharith/Factorial).
+the best start is to look into this [directory](https://github.com/PeterLuschny/Fast-Factorial-Functions/tree/master/SilverFactorial64/Sharith/Factorial).
 
 * If you just want to study/use the fastest algorithm the best start probably is to read the 
 [Python implementation](https://github.com/PeterLuschny/Fast-Factorial-Functions/blob/master/PythonFactorial/SwingFactorialPy_gmpy2.py)
