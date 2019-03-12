@@ -11,12 +11,15 @@ Here you can find implementations of the most efficient algorithms to compute
 
 See also this nice [overview](http://functions.wolfram.com/GammaBetaErf/Factorial2/introductions/FactorialBinomials/ShowAll.html).
 
-Additionally you can find in this repository
+Short guide:
 
-* a small database of factorial algorithms which let you
-  quickly find the most appropriate version for your needs.
+* If you want to study the different algorithms proposed to compute the factorial function 
+the best start is to look into the [directory](https://github.com/PeterLuschny/Fast-Factorial-Functions/tree/master/SilverFactorial64/Sharith/Factorial).
 
-* An efficient sieve of Eratosthenes implemented in an object-oriented way.
+* If you just want to study/use the fastest algorithm the best start probably is to read the 
+[Python implementation](https://github.com/PeterLuschny/Fast-Factorial-Functions/blob/master/PythonFactorial/SwingFactorialPy_gmpy2.py)
+or the [Julia implementation](https://github.com/PeterLuschny/Fast-Factorial-Functions/blob/master/JuliaFactorial/PrimeSwingFactorialJulia.jl)
+of the prime swing algorithm.
 
 
 Implementation languages
