@@ -17,7 +17,8 @@ Short guide:
 the best start is to look into this [directory](https://github.com/PeterLuschny/Fast-Factorial-Functions/tree/master/SilverFactorial64/Sharith/Factorial).
 
 * If you just want to study/use the fastest algorithm the best start probably is to read the 
-[Python implementation](https://github.com/PeterLuschny/Fast-Factorial-Functions/blob/master/PythonFactorial/SwingFactorialPy_gmpy2.py)
+[SageMath implementation](https://github.com/PeterLuschny/Fast-Factorial-Functions/blob/master/SageMathFactorial/SageMathPrimeSwingFactorial.ipynb)
+or the [Python implementation](https://github.com/PeterLuschny/Fast-Factorial-Functions/blob/master/PythonFactorial/SwingFactorialPy_gmpy2.py)
 or the [Julia implementation](https://github.com/PeterLuschny/Fast-Factorial-Functions/blob/master/JuliaFactorial/PrimeSwingFactorialJulia.jl)
 of the prime swing algorithm.
 
@@ -29,6 +30,7 @@ Implementation languages
 * Project SilverFactorial64 : C#
 * Project JavaFactorial : Java
 * Project GoFactorial : Go
+* Project SageMathFactorial : SageMath
 * Project PyFactorial : Python
 * Project JFactorial : Julia
 
