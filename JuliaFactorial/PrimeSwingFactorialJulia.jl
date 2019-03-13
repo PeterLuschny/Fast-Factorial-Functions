@@ -32,13 +32,12 @@ const SwingOddpart = [1,1,1,3,3,15,5,35,35, 315, 63, 693, 231, 3003, 429, 6435,
 Computes the odd part of the swinging factorial ``n≀``. Cf. A163590.
 """
 function swing_oddpart(n::Int)
-    n < 33 && return BigInt(SwingOddpart[n+1])
+    n < 33 && return ZZ(SwingOddpart[n+1])
 
     sqrtn = isqrt(n)
     factors = Primes(div(n,2) + 1, n)
     r = Primes(sqrtn + 1, div(n, 3))
     s = filter(x -> isodd(div(n, x)), r)
-    append!(factors, s)
 
     for prime in Primes(3, sqrtn)
         p, q = 1, n
@@ -47,10 +46,10 @@ function swing_oddpart(n::Int)
             q == 0 && break
             isodd(q) && (p *= prime)
         end
-        p > 1 && push!(factors, p)
+        p > 1 && push!(s, p)
     end
 
-    return ∏(factors)
+    return ∏(factors)*∏(s)
 end
 
 """
