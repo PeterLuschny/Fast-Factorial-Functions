@@ -1,12 +1,12 @@
 // xmath package xmath.go
-// 2010/6/29 Sonia Keys 
+// 2010/6/29 Sonia Keys
 // 2011/6/29 Peter Luschny edited
-// MIT license 
+// MIT license
 
 package xmath
 
 import (
-	"big"
+	"math/big"
 )
 
 const productSerialThreshold = 20
@@ -31,7 +31,7 @@ func Product(seq []uint64) *big.Int {
 func FloorSqrt(n uint64) uint64 {
 	for b := n; ; {
 		a := b
-		b = (n / a + a) / 2
+		b = (n/a + a) / 2
 		if b >= a {
 			return a
 		}
@@ -41,37 +41,37 @@ func FloorSqrt(n uint64) uint64 {
 
 func BitCount32(w uint32) uint {
 	const (
-		ff    = 1 << 32 - 1
+		ff    = 1<<32 - 1
 		mask1 = ff / 3
 		mask3 = ff / 5
 		maskf = ff / 17
 		maskp = ff / 255
 	)
 	w -= w >> 1 & mask1
-	w = w & mask3 + w >> 2 & mask3
-	w = (w + w >> 4) & maskf
+	w = w&mask3 + w>>2&mask3
+	w = (w + w>>4) & maskf
 	return uint(w * maskp >> 24)
 }
 
-func BitCount64(w uint64) uint {  // loopfree!
+func BitCount64(w uint64) uint { // loopfree!
 	const (
-		ff    = 1 << 64 - 1
+		ff    = 1<<64 - 1
 		mask1 = ff / 3
 		mask3 = ff / 5
 		maskf = ff / 17
 		maskp = maskf >> 3 & maskf
 	)
 	w -= w >> 1 & mask1
-	w = w & mask3 + w >> 2 & mask3
-	w = (w + w >> 4) & maskf
+	w = w&mask3 + w>>2&mask3
+	w = (w + w>>4) & maskf
 	return uint(w * maskp >> 56)
 }
 
 func BitCount(x uint) uint {
-	x = x - ((x >> 1) & 0x55555555);
-	x = (x & 0x33333333) + ((x >> 2) & 0x33333333);
-	x = (x + (x >> 4)) & 0x0F0F0F0F;
-	x = x + (x >> 8);
-	x = x + (x >> 16);
-	return x & 0x0000003F;
+	x = x - ((x >> 1) & 0x55555555)
+	x = (x & 0x33333333) + ((x >> 2) & 0x33333333)
+	x = (x + (x >> 4)) & 0x0F0F0F0F
+	x = x + (x >> 8)
+	x = x + (x >> 16)
+	return x & 0x0000003F
 }

@@ -6,8 +6,9 @@
 package simplefactorial
 
 import (
-	"big"
-	"../obj/xmath"
+	"math/big"
+
+	"github.com/PeterLuschny/Fast-Factorial-Functions/GoFactorial/xmath"
 )
 
 func Factorial(n uint64) (r *big.Int) {
@@ -15,16 +16,16 @@ func Factorial(n uint64) (r *big.Int) {
 
 	// closes on oddFactNDiv2, oddFactNDiv4
 	oddSwing := func(n uint64) (r *big.Int) {
-		
+
 		if n < uint64(len(smallOddSwing)) {
 			return big.NewInt(smallOddSwing[n])
 		}
 
 		length := (n - 1) / 4
-		if n % 4 != 2 {
+		if n%4 != 2 {
 			length++
 		}
-		high := n - (n + 1) & 1
+		high := n - (n+1)&1
 		ndiv4 := n / 4
 
 		var oddFact big.Int
@@ -40,7 +41,7 @@ func Factorial(n uint64) (r *big.Int) {
 
 	// closes on oddFactNDiv2, oddFactNDiv4, oddSwing, and itself
 	var oddFactorial func(uint64) *big.Int
-	oddFactorial = func (n uint64) (oddFact *big.Int) {
+	oddFactorial = func(n uint64) (oddFact *big.Int) {
 		if n < uint64(len(smallOddFactorial)) {
 			oddFact = big.NewInt(smallOddFactorial[n])
 		} else {
@@ -62,16 +63,16 @@ func Factorial(n uint64) (r *big.Int) {
 
 func oddProduct(m, length uint64) *big.Int {
 	switch length {
-		case 1:
-			return big.NewInt(int64(m))
-		case 2:
-			var mb big.Int
-			mb.SetInt64(int64(m))
-			mb2 := big.NewInt(int64(m - 2))
-			return mb2.Mul(&mb, mb2)
+	case 1:
+		return big.NewInt(int64(m))
+	case 2:
+		var mb big.Int
+		mb.SetInt64(int64(m))
+		mb2 := big.NewInt(int64(m - 2))
+		return mb2.Mul(&mb, mb2)
 	}
 	hlen := length / 2
-	h := oddProduct(m - hlen*2, length - hlen)
+	h := oddProduct(m-hlen*2, length-hlen)
 	return h.Mul(h, oddProduct(m, hlen))
 }
 

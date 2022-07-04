@@ -6,7 +6,7 @@
 package primes
 
 import (
-	"big"
+	"math/big"
 )
 
 // word size dependent constants
@@ -14,7 +14,7 @@ const (
 	bitsPerInt = 64
 	mask       = bitsPerInt - 1
 	log2Int    = 6
-	)
+)
 
 // holds completed sieve
 // isComposite[0] ... isComposite[n] includes
@@ -32,15 +32,15 @@ type Sieve struct {
 // and no call to a sqrt function.
 
 // constructor, completes sieve.
-func Primes(n uint64) (s *Sieve)  {
+func Primes(n uint64) (s *Sieve) {
 
 	s = new(Sieve)
 	s.SieveLen = n
 
-	if n < 967 {
-		s.isComposite = []uint64{ 3644759964122252416,
-		10782565419096678876, 5393006238418678630,
-		7319957818701628715, 16892333181782511326 }
+	if n < 965 {
+		s.isComposite = []uint64{3644759964122252416,
+			10782565419096678876, 5393006238418678630,
+			7319957818701628715, 16892333181782511326}
 		return
 	}
 
@@ -69,17 +69,25 @@ func Primes(n uint64) (s *Sieve)  {
 		l++
 		toggle = !toggle
 		if toggle {
-			s1 += d2; d1 += 16; p1 += 2; p2 += 2; s2 = p2
+			s1 += d2
+			d1 += 16
+			p1 += 2
+			p2 += 2
+			s2 = p2
 		} else {
-			s1 += d1; d2 += 8;  p1 += 2; p2 += 6; s2 = p1
+			s1 += d1
+			d2 += 8
+			p1 += 2
+			p2 += 6
+			s2 = p1
 		}
 	}
 	return
 }
 
-func (s *Sieve) IteratePrimes(min, max uint64, visitor func(prime uint64) ) {
+func (s *Sieve) IteratePrimes(min, max uint64, visitor func(prime uint64)) {
 
-	if max > s.SieveLen  {
+	if max > s.SieveLen {
 		return // Max larger than sieve
 	}
 	if max < 2 {
@@ -93,11 +101,11 @@ func (s *Sieve) IteratePrimes(min, max uint64, visitor func(prime uint64) ) {
 		visitor(3)
 	}
 
-	absPos := (min + (min + 1) % 2) / 3 - 1
+	absPos := (min+(min+1)%2)/3 - 1
 	index := absPos / bitsPerInt
 	bitPos := absPos % bitsPerInt
-	prime := 5 + 3*(bitsPerInt * index + bitPos) - (bitPos & 1)
-	inc := bitPos & 1 * 2 + 2
+	prime := 5 + 3*(bitsPerInt*index+bitPos) - (bitPos & 1)
+	inc := bitPos&1*2 + 2
 
 	for prime <= max {
 		bitField := s.isComposite[index] >> bitPos
@@ -133,9 +141,9 @@ func NumberOfPrimesNotExceeding(n uint64) int {
 func (s *Sieve) NumberOfPrimes(low, high uint64) int {
 
 	if high > s.SieveLen {
-        panic("high bound not in the range of the sieve.")
+		panic("high bound not in the range of the sieve.")
 	}
-	
+
 	var count int
 	visitor := func(prime uint64) {
 		count = count + 1
@@ -149,7 +157,7 @@ func (s *Sieve) NumberOfPrimes(low, high uint64) int {
 func (s *Sieve) IsPrime(n uint64) bool {
 
 	if n > s.SieveLen {
-        panic("n not in the range of the sieve.")
+		panic("n not in the range of the sieve.")
 	}
 
 	var count int
@@ -168,7 +176,7 @@ func (s *Sieve) Primorial(lo, hi uint64) *big.Int {
 		return big.NewInt(1)
 	}
 
-	if hi - lo < 200 {
+	if hi-lo < 200 {
 		var r, t big.Int
 		r.SetInt64(1)
 		s.IteratePrimes(lo, hi, func(prime uint64) {
