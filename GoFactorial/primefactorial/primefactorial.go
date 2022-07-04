@@ -6,9 +6,10 @@
 package primefactorial
 
 import (
-	"big"
-	"../obj/xmath"
-	"../obj/swingfactorial"
+	"math/big"
+
+	"github.com/PeterLuschny/Fast-Factorial-Functions/GoFactorial/swingfactorial"
+	"github.com/PeterLuschny/Fast-Factorial-Functions/GoFactorial/xmath"
 )
 
 func Factorial(n uint64) *big.Int {
@@ -30,8 +31,8 @@ func OddFactorial(s *swingfactorial.Swing, n uint64) *big.Int {
 		return big.NewInt(smallOddFactorial[n])
 	}
 
-	of := OddFactorial(s, n / 2) // recurse
-	of.Mul(of, of)               // square
+	of := OddFactorial(s, n/2) // recurse
+	of.Mul(of, of)             // square
 
 	return of.Mul(of, s.OddSwing(n))
 }

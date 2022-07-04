@@ -1,14 +1,15 @@
 // swingfactorial package swingfactorial.go
-// 2010/6/29 Sonia Keys 
+// 2010/6/29 Sonia Keys
 // 2011/6/29 edited by Peter Luschny
-// MIT license 
+// MIT license
 
 package swingfactorial
 
 import (
-	"big"
-	"../obj/primes"
-	"../obj/xmath"
+	"math/big"
+
+	"github.com/PeterLuschny/Fast-Factorial-Functions/GoFactorial/primes"
+	"github.com/PeterLuschny/Fast-Factorial-Functions/GoFactorial/xmath"
 )
 
 type Swing struct {
@@ -16,7 +17,7 @@ type Swing struct {
 	factors []uint64
 }
 
-// constructor, completes Swing 
+// constructor, completes Swing
 func NewSwing(n uint64) (s *Swing) {
 	s = new(Swing)
 	s.primes = primes.Primes(n)
@@ -53,7 +54,7 @@ func (s *Swing) OddSwing(k uint64) *big.Int {
 	s.primes.IteratePrimes(3, rootK, func(p uint64) {
 		q := k / p
 		for q > 0 {
-			if q & 1 == 1 {
+			if q&1 == 1 {
 				s.factors[i] = p
 				i++
 			}
@@ -61,14 +62,14 @@ func (s *Swing) OddSwing(k uint64) *big.Int {
 		}
 	})
 
-	s.primes.IteratePrimes(rootK + 1, k/3, func(p uint64) {
+	s.primes.IteratePrimes(rootK+1, k/3, func(p uint64) {
 		if (k / p & 1) == 1 {
 			s.factors[i] = p
 			i++
 		}
 	})
 
-	s.primes.IteratePrimes(k/2 + 1, k, func(p uint64) {
+	s.primes.IteratePrimes(k/2+1, k, func(p uint64) {
 		s.factors[i] = p
 		i++
 	})

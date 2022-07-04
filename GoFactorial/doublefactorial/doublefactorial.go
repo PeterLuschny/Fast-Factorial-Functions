@@ -6,15 +6,16 @@
 package doublefactorial
 
 import (
-	"big"
-	"../obj/xmath"
-	"../obj/swingfactorial"
+	"math/big"
+
+	"github.com/PeterLuschny/Fast-Factorial-Functions/GoFactorial/swingfactorial"
+	"github.com/PeterLuschny/Fast-Factorial-Functions/GoFactorial/xmath"
 )
 
 // returns nil if sieve not big enough
 func doubleFactorial(s *swingfactorial.Swing, n uint64) (r *big.Int) {
 
-	nEven := n & 1 == 0
+	nEven := n&1 == 0
 
 	if n < uint64(len(smallOddDoubleFactorial)) {
 		r = big.NewInt(smallOddDoubleFactorial[n])
@@ -42,7 +43,7 @@ func oddDoubleFactorial(s *swingfactorial.Swing, n, m uint64) *big.Int {
 		return big.NewInt(smallOddFactorial[n])
 	}
 
-	of := oddDoubleFactorial(s, n / 2, m)
+	of := oddDoubleFactorial(s, n/2, m)
 	if n < m {
 		of.Mul(of, of)
 	}
@@ -51,7 +52,7 @@ func oddDoubleFactorial(s *swingfactorial.Swing, n, m uint64) *big.Int {
 }
 
 func DoubleFactorial(n uint64) *big.Int {
-	s := swingfactorial.NewSwing(n+1)
+	s := swingfactorial.NewSwing(n + 1)
 	return doubleFactorial(s, n)
 }
 
@@ -62,7 +63,7 @@ var smallOddFactorial []int64 = []int64{1, 1, 1, 3, 3,
 	2143861251406875, 49308808782358125, 147926426347074375,
 	3698160658676859375}
 
-var smallOddDoubleFactorial []int64 = []int64 {1, 1, 1, 3, 1,
+var smallOddDoubleFactorial []int64 = []int64{1, 1, 1, 3, 1,
 	15, 3, 105, 3, 945, 15, 10395, 45, 135135, 315, 2027025, 315,
 	34459425, 2835, 654729075, 14175, 13749310575, 155925,
 	316234143225, 467775, 7905853580625, 6081075, 213458046676875,
