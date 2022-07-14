@@ -6,7 +6,6 @@ from math import isqrt
 from bisect import bisect_left
 from typing import Iterator
 from gmpy2 import mpz, xmpz, mul
-#from gmpy2 import xmpz as gmpy2_xmpz
 
 
 def Primes(limit: int) -> Iterator:
